@@ -14,5 +14,5 @@ comicSortPairings = (
     {"text": "Chaps Available" , "id": 1},
     )
 
-databasePath   = r"C:\Users\Joshua\OneDrive - University of Lincoln\Repos\ManganeloWebScrapper-Local\data\DB.DB"
+databasePath   = os.path.join(os.getcwd(), "data", "DB.DB")
 comicOutputDir = os.path.join(os.path.expanduser("~"), "Documents", "Downloaded Media", "Comics")

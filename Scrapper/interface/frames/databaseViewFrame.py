@@ -1,6 +1,8 @@
 import tkinter as tk
 import functools as ft
 
+import webbrowser
+
 from tkinter import ttk
 
 import functions.functions as funcs
@@ -23,9 +25,15 @@ class DatabaseViewFrame(tk.Frame):
         self.treeView = TreeView(self, ["Comic Title", "Latest Chapter Read", "No. Chapters Available Offline"])
 
         # Creating the right click menu
-        self.rightClickMenu = tk.Menu(self.treeView, tearoff = 0)        
-        self.rightClickMenu.add_command(label = "Open in Explorer", command = self.openInExplorerCommand)
-        self.rightClickMenu.add_command(label = "Edit Record",      command = self.editComicCommand)
+        self.rightClickMenu = tk.Menu(self.treeView, tearoff = 0)
+
+        openMenu = tk.Menu(self.treeView, tearoff = 0)
+        openMenu.add_command(label = "Explorer", command = self.openInExplorerCommand)
+        openMenu.add_command(label = "Browser", command = self.openBrowserCommand)
+        self.rightClickMenu.add_cascade(label = "Open In...", menu = openMenu)
+        self.rightClickMenu.add_separator()
+        
+        self.rightClickMenu.add_command(label = "Edit Record", command = self.editComicCommand)
 
         self.rightClickMenu.add_separator()
 
@@ -47,6 +55,9 @@ class DatabaseViewFrame(tk.Frame):
 
     def openInExplorerCommand(self, event = None):
         funcs.openComicInExplorer(self.treeView.getSelected()[0])
+
+    def openBrowserCommand(self, event = None):
+        webbrowser.open(Database.getMenuUrl(self.treeView.getSelected()[0])[0][0], new = False)
 
     def onRightClick(self, event):
         if (self.treeView.getSelected() != ""):

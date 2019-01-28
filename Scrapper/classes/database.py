@@ -92,5 +92,15 @@ class Database:
             )
         Database.query(sql, values)
 
+    @classmethod
+    def getMenuUrl(cls, comicTitle):
+        sql = (
+            "SELECT menu_url "
+            "FROM COMICS "
+            "WHERE comic_title = ?"
+            )
+        return Database.query(sql, (comicTitle.replace('"', "'"),))
+
+
 
 Database.createTable()

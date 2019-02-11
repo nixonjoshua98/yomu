@@ -1,3 +1,5 @@
+#!python3.4
+
 from interface.interface import Interface
 from classes.comicDownloadManager import ComicDownloadManager
 

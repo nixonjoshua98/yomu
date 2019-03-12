@@ -72,12 +72,14 @@ class DownloadChapter(object):
             try:
                 with PIL.Image.open(img) as i:
                     w, h = i.size
+                    
+                pdf.setPageSize((w, h))
+                pdf.drawImage(img, x = 0, y = 0)
+                pdf.showPage()
+
             except OSError as e: # Image file was not downloaded correctly
                 continue
 
-            pdf.setPageSize((w, h))
-            pdf.drawImage(img, x = 0, y = 0)
-            pdf.showPage()
 
         try:
             pdf.save()

@@ -21,23 +21,25 @@ class SearchComic(list):
 
         try:
             soup = BeautifulSoup(page.content, "html.parser")
-            searchSoup = soup.find(class_ = "daily-update")
-            self.soupSearchResults = searchSoup.findAll(href = True)
-
+            searchSoup = soup.find(class_ = "panel_story_list")
+            self.soupSearchResults = searchSoup.find_all(class_ = "story_item")
+            
         except Exception:
             return False
 
         return True
 
     def extract(self):
-        for i in range(0, len(self.soupSearchResults), 2):
-            comicTitle    = self.soupSearchResults[i].text
-            latestChapter = self.soupSearchResults[i + 1].text
-            menuUrl       = self.soupSearchResults[i]["href"]
-            chapUrl       = self.soupSearchResults[i + 1]["href"]
-            chapUrl       = chapUrl.split("chapter_")[0] + "chapter_{}"
+        for i in range(0, len(self.soupSearchResults), 1):
+            c = self.soupSearchResults[i].find(class_ = "story_name").find(href = True)
 
-            if (not menuUrl.startswith("https:")): menuUrl = "https:" + menuUrl
-            if (not chapUrl.startswith("https:")): chapUrl = "https:" + chapUrl
+            comicTitle = c.text
+            menuUrl = c["href"]
 
-            self.append([comicTitle, latestChapter, menuUrl, chapUrl])
+            if (not menuUrl.startswith("https:")):
+                menuUrl = "https:" + menuUrl
+
+            self.append([comicTitle, -1, menuUrl, "N/A"])
+
+            print(self[-1])
+

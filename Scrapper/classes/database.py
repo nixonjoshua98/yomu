@@ -46,6 +46,14 @@ class Database:
         return Database.query(sql, values)
 
     @classmethod
+    def getAll(cls, comicStatus):
+        values = (comicStatus,)
+        
+        sql = "SELECT * FROM COMICS"
+        
+        return Database.query(sql, values)
+
+    @classmethod
     def getDownloadableComics(cls):
         # Gets all comic statuses which are allowed to be downloaded
         values = [str(i) for i in ComicStatus.allId() if ComicStatus.idToDownloadable(i)]

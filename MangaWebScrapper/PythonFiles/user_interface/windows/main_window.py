@@ -3,11 +3,12 @@ import tkinter.ttk as ttk
 
 import user_interface.widgets as widgets
 import resources.constants as constants
-import functions.functions as funcs
 import user_interface.windows as windows
 import database.database_queries as queries
 
-from database.database_models import MangaStatusEnum
+from functions.functions import (
+    remove_trailing_zeros_if_zero
+)
 
 
 class Application(widgets.RootWindow):
@@ -88,14 +89,12 @@ class Application(widgets.RootWindow):
 	Re-populate the table with the database results
 	"""
 	def update_table(self):
-		manga_enum = MangaStatusEnum(self.status_dropdown.get_index())
-
-		q = queries.manga_select_with_status(manga_enum)
+		q = queries.manga_select_with_status(self.status_dropdown.get_index())
 
 		if q is None:
 			return
 
-		data = [[row.id, row.title, row.chapters_read] for row in q]
+		data = [[row.id, row.title, remove_trailing_zeros_if_zero(row.chapters_read)] for row in q]
 
 		self.table.clear()
 		self.table.populate(data)
@@ -111,9 +110,7 @@ class Application(widgets.RootWindow):
 
 		db_row = queries.manga_select_with_id(row[0])
 
-		print(f"Selected Row: ({db_row})")
-
-		windows.MangaEditWindow(db_row)
+		windows.MangaEditWindow(db_row, self.update_table)
 
 	"""
 	Toggles the queue window between being visible and hidden

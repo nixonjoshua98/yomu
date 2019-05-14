@@ -20,6 +20,10 @@ class Dropdown(ttk.Combobox):
 
         self.bind("<<ComboboxSelected>>", self.on_selected)
 
+    @property
+    def values(self):
+        return self["values"]
+
     def on_selected(self, event=None):
         # Stops the callback from being called if the value is the same previously
         if self.get() != self.prev_val:

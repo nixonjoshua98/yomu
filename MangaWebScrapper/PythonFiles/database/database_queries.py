@@ -74,6 +74,6 @@ def manga_update_with_id(_id, **values):
             return False
 
         for k in get_non_pk_fields(Manga):
-            if values.get(k, False):
+            if values.get(k, None) is not None:
                 setattr(row, k, values[k])
 

@@ -18,7 +18,3 @@ class MangaStatusEnum(enum.Enum):
         attr_name = s.upper().replace(" ", "_")
 
         return getattr(cls, attr_name).value
-
-    @classmethod
-    def str2enum(cls):
-        raise NotImplementedError()

@@ -1,17 +1,13 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-
 from tkinter import messagebox as tkMsgBox
 
-import user_interface.widgets as widgets
-
-from database.database_models import Manga
 import database.database_queries as queries
-
+import user_interface.widgets as widgets
 from database.database_enums import (
     MangaStatusEnum
 )
-
+from database.database_models import Manga
 from functions.functions import (
     remove_trailing_zeros_if_zero,
     is_float
@@ -116,8 +112,9 @@ class MangaEditWindow(widgets.ChildWindow):
 
     def confirm_callback(self, event=None):
         chapters_read = self.input_widgets["chapters_read"].get()
-        if not is_float(chapters_read):
-            tkMsgBox.showerror("Input Error", "Invalid datatype for field 'chapters_read'")
+
+        if not is_float(chapters_read) or len(chapters_read) == 0:
+            tkMsgBox.showerror("Input Error", "Invalid input for field 'chapters_read'")
             return
 
         print(MangaStatusEnum.formatted_name2int(self.input_widgets["status"].get()))

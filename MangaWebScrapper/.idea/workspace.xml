@@ -19,43 +19,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/edit_window.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="448">
-              <caret line="121" column="18" selection-start-line="121" selection-start-column="18" selection-end-line="121" selection-end-column="18" />
+            <state relative-caret-position="51">
+              <caret line="18" column="43" selection-start-line="18" selection-start-column="43" selection-end-line="18" selection-end-column="43" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
-                <element signature="e#482#1205#0" />
-                <element signature="e#1621#1823#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_queries.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="816">
-              <caret line="58" selection-start-line="58" selection-end-line="58" />
-              <folding>
-                <element signature="e#0#34#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_enums.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="20" selection-start-line="20" selection-end-line="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" selection-start-line="6" selection-end-line="6" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -116,60 +84,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="MangaWebScrapper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MangaWebScrapper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
-              <item name="PythonFiles" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MangaWebScrapper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
-              <item name="PythonFiles" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MangaWebScrapper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
-              <item name="PythonFiles" type="462c0819:PsiDirectoryNode" />
-              <item name="functions" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MangaWebScrapper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
-              <item name="PythonFiles" type="462c0819:PsiDirectoryNode" />
-              <item name="user_interface" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MangaWebScrapper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
-              <item name="PythonFiles" type="462c0819:PsiDirectoryNode" />
-              <item name="user_interface" type="462c0819:PsiDirectoryNode" />
-              <item name="widgets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MangaWebScrapper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
-              <item name="PythonFiles" type="462c0819:PsiDirectoryNode" />
-              <item name="user_interface" type="462c0819:PsiDirectoryNode" />
-              <item name="windows" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MangaWebScrapper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
-              <item name="Resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="Scope" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -300,7 +216,14 @@
       <option name="project" value="LOCAL" />
       <updated>1557849522164</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Updated">
+      <created>1557849807695</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1557849807695</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView">
@@ -321,7 +244,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49683878" visible="true" weight="0.18418202" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49683878" weight="0.18418202" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49947312" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -336,14 +259,14 @@
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Updated" />
     <MESSAGE value="TODO: Add offline chapters no." />
-    <option name="LAST_COMMIT_MESSAGE" value="TODO: Add offline chapters no." />
+    <MESSAGE value="Updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
     <entry file="file://$PROJECT_DIR$/database/database_alchemy.py" />
-    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/__init__.py" />
     <entry file="file://$PROJECT_DIR$/setup.py" />
     <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/downloads_window.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -438,16 +361,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PythonFiles/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/widgets/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-          <folding>
-            <element signature="e#2#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/widgets/entry_field.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -490,18 +403,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/edit_window.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="121" column="18" selection-start-line="121" selection-start-column="18" selection-end-line="121" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-            <element signature="e#482#1205#0" />
-            <element signature="e#1621#1823#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_queries.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="816">
@@ -512,6 +413,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/widgets/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+          <folding>
+            <element signature="e#2#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/__init__.py" />
     <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_enums.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
@@ -523,6 +435,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" selection-start-line="6" selection-end-line="6" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/edit_window.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="18" column="43" selection-start-line="18" selection-start-column="43" selection-end-line="18" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

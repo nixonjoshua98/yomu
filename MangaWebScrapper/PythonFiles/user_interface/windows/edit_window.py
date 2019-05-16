@@ -4,10 +4,12 @@ from tkinter import messagebox as tkMsgBox
 
 import database.database_queries as queries
 import user_interface.widgets as widgets
+from database.database_models import Manga
+
 from database.database_enums import (
     MangaStatusEnum
 )
-from database.database_models import Manga
+
 from functions.functions import (
     remove_trailing_zeros_if_zero,
     is_float

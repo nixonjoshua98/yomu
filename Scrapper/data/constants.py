@@ -14,5 +14,5 @@ comicSortPairings = (
     {"text": "Chaps Available" , "id": 1},
     )
 
-databasePath   = os.path.join(r"C:\Users\Joshua\OneDrive - University of Lincoln", "DB.DB")
-comicOutputDir = os.path.join(os.path.expanduser("~"), "Documents", "Downloaded Media", "Comics")
+databasePath   = os.path.join(r"D:\OneDrive - UoL\OneDrive - University of Lincoln", "DB.DB")
+comicOutputDir = os.path.join("D:\\", "Downloaded Media", "Comics")

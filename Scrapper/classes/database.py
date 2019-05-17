@@ -66,6 +66,19 @@ class Database:
 
         return Database.query(sql)
 
+
+    @classmethod
+    def getAllDownloadableComics(cls):
+        # Gets all comic statuses which are allowed to be downloaded
+        values = [str(i) for i in ComicStatus.allId() if ComicStatus.idToDownloadable(i)]
+
+        sql = (
+            "SELECT comic_id, comic_title, menu_url "
+            "FROM COMICS "
+            )
+
+        return Database.query(sql)
+
     @classmethod
     def updateComic(cls, comicTitle, comicStatus, chaptersRead):
         comicTitle = comicTitle.replace('"', "'")

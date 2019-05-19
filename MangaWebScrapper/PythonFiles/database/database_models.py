@@ -1,5 +1,3 @@
-import enum
-
 from sqlalchemy.ext.declarative import declarative_base
 
 from sqlalchemy import (
@@ -7,7 +5,6 @@ from sqlalchemy import (
     Integer,
     String,
     Sequence,
-    Enum,
     Float,
     )
 
@@ -17,6 +14,7 @@ Base = declarative_base()
 class Manga(Base):
     __tablename__ = "manga"
 
+    # Auto-increment primary key
     id = Column(Integer, Sequence("user_id_seq"), primary_key=True)
     title = Column(String(256))
     menu_url = Column(String(256))

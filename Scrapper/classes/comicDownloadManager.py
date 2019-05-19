@@ -29,7 +29,8 @@ class ComicDownloadManager():
 
     def comicDataGen(self):
         while (self.active):
-            data = Database.getAllDownloadableComics()
+            #data = Database.getAllDownloadableComics()
+            data = Database.getDownloadableComics()
             random.shuffle(data)
             self.recordsCount = len(data)
 

@@ -2,27 +2,27 @@ import os
 
 import resources.constants as constants
 
-def removeNastyChars(string):
+def remove_nasty_chars(string):
     return "".join([i for i in string if i not in ':\\/|*"><?.,'])
 
 
 def remove_trailing_zeros_if_zero(n):
-	if isinstance(n, float):
-		if str(n).endswith(".0"):
-			return int(n)
-	return n
+    if str(n).endswith(".0"):
+        return int(n)
+    return n
 
 def is_float(f) -> bool:
-	try:
-		float(f)
-	except Exception as e:
-		return False
-	else:
-		return True
+    try:
+        float(f)
+    except Exception as e:
+        return False
+    else:
+        return True
 
 
+"""
 def getTotalAvailableChapters(title: str, latestChapter: str) -> int:
-	title = removeNastyChars(title)
+    title = removeNastyChars(title)
 
 	mangaList = getSortedMangaList(title)
 
@@ -80,3 +80,4 @@ def getSortedMangaList(title: str) -> list:
 	mangaList = sorted(os.listdir(mangaPath), key = lambda m: float(m.split("Chapter")[-1].replace(".pdf", "")))
 
 	return mangaList
+"""

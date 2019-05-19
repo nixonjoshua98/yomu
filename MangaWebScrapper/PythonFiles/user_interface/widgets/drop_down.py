@@ -1,10 +1,7 @@
-import tkinter as tk
-
 from tkinter import ttk
 
 
 class Dropdown(ttk.Combobox):
-
     def __init__(self, master, values, command):
         super().__init__(master=master, state="readonly")
         
@@ -18,13 +15,13 @@ class Dropdown(ttk.Combobox):
         self.command = command
         self.prev_val = self["values"][0]
 
-        self.bind("<<ComboboxSelected>>", self.on_selected)
+        self.bind("<<ComboboxSelected>>", self._on_selected)
 
     @property
     def values(self):
         return self["values"]
 
-    def on_selected(self, event=None):
+    def _on_selected(self, event=None):
         # Stops the callback from being called if the value is the same previously
         if self.get() != self.prev_val:
             self.prev_val = self.get()

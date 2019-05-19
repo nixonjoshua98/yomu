@@ -2,7 +2,7 @@
 """
 Author: Joshua Nixon
 Email: nixonjoshua98@gmail.com
-Py Version: 3.7.2
+Py Version: 3.7.x
 Sublime Text 3
 """
 

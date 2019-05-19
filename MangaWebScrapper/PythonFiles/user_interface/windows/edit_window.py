@@ -1,14 +1,11 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-from tkinter import messagebox as tkMsgBox
-
 import database.database_queries as queries
 import user_interface.widgets as widgets
-from database.database_models import Manga
 
-from database.database_enums import (
-    MangaStatusEnum
-)
+from database.database_models import Manga
+from database.database_enums import MangaStatusEnum
+from tkinter import messagebox
 
 from functions.functions import (
     remove_trailing_zeros_if_zero,
@@ -99,7 +96,7 @@ class MangaEditWindow(widgets.ChildWindow):
         lbl = tk.Label(row_frame, text="Status")
 
         initial_val_index = MangaStatusEnum(self.manga_data.status).value
-        all_values = [e.formatted_name for e in MangaStatusEnum]
+        all_values = [e.prettify() for e in MangaStatusEnum]
 
         self.input_widgets["status"] = self.create_dropdown(row_frame, all_values, initial_val_index)
 
@@ -115,20 +112,23 @@ class MangaEditWindow(widgets.ChildWindow):
     def confirm_callback(self, event=None):
         chapters_read = self.input_widgets["chapters_read"].get()
 
+        # Checks before adding to the database
         if not is_float(chapters_read) or len(chapters_read) == 0:
-            tkMsgBox.showerror("Input Error", "Invalid input for field 'chapters_read'")
+            messagebox.showerror("Input Error", "Invalid input for field 'chapters_read'")
             return
-
-        print(MangaStatusEnum.formatted_name2int(self.input_widgets["status"].get()))
 
         new_data = {
             "title": self.input_widgets["title"].get(),
             "menu_url": self.input_widgets["menu_url"].get(),
             "chapters_read": self.input_widgets["chapters_read"].get(),
-            "status": MangaStatusEnum.formatted_name2int(self.input_widgets["status"].get())
+            "status": MangaStatusEnum.str_to_int(self.input_widgets["status"].get())
         }
 
-        queries.manga_update_with_id(self.manga_data.id, **new_data)
+        row_updated = queries.manga_update_with_id(self.manga_data.id, **new_data)
+
+        if not row_updated:
+            messagebox.showerror("Database Error", "Row failed to update")
+            return
 
         self.destroy()
 

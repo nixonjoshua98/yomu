@@ -8,7 +8,7 @@ class DownloadsWindow(widgets.ChildWindow):
 	tree_headings = ["Manga Title", "Chapter No"]
 
 	def __init__(self):
-		super().__init__("Downloads", destroy_on_exit = False)
+		super().__init__("Downloads", destroy_on_exit=False)
 
 		# - Frames
 		tree_frame = ttk.Frame(self)

@@ -10,7 +10,7 @@ class ChildWindow(tk.Toplevel):
 
         super().__init__()
 
-        self.is_hidden = False
+        self.is_viewable = False
 
         self.title(title)
         self.resizable(resize, resize)
@@ -24,9 +24,15 @@ class ChildWindow(tk.Toplevel):
             self.protocol("WM_DELETE_WINDOW", self.hide_window)
 
     def show_window(self):
-        self.is_hidden = False
+        self.is_viewable = True
         self.deiconify()
 
     def hide_window(self):
-        self.is_hidden = True
+        self.is_viewable = False
         self.withdraw()
+
+    def toggle_view(self):
+        if self.is_viewable:
+            self.hide_window()
+        else:
+            self.show_window()

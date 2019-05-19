@@ -1,7 +1,7 @@
 from .database_models import Manga
 from .database_alchemy import DatabaseSession
 
-from .database_checks import (
+from .database_functions import (
     all_fields_have_value,
     can_make_row,
 )
@@ -76,4 +76,6 @@ def manga_update_with_id(_id, **values):
         for k in get_non_pk_fields(Manga):
             if values.get(k, None) is not None:
                 setattr(row, k, values[k])
+
+    return True
 

@@ -1,81 +1,94 @@
-from .database_models import Manga
-from .database_alchemy import DatabaseSession
 
-from .database_functions import (
-    all_fields_have_value,
-    can_make_row,
-)
-
-from .database_functions import (
-    get_non_pk_fields
-)
+import database.database_models as database_models
+import database.database_alchemy as database_alchemy
+import database.database_functions as database_functions
 
 
 class InvalidFields(Exception):
     pass
 
 
-def manga_select_with_status(status):
-    with DatabaseSession() as session:
-        query = session.query(Manga).filter_by(status=status).all()
+""" Generic SQLAlchemy queries """
+
+
+def _select_all_where_equals(table, **kwargs):
+    with database_alchemy.DatabaseSession() as session:
+        query = session.query(table).filter_by(**kwargs).all()
     return query
 
 
-def manga_select_with_id(_id):
-    with DatabaseSession() as session:
-        query = session.query(Manga).get(_id)
+def _select_one_where_equals(table, **kwargs):
+    with database_alchemy.DatabaseSession() as session:
+        query = session.query(table).filter_by(**kwargs).first()
     return query
 
 
-def manga_insert_row(**values):
-    # Checks
-    if not all_fields_have_value(Manga, values.keys()):
-        return False
-
-    if not can_make_row(Manga, **values):
-        return False
-
-    with DatabaseSession() as session:
-        row = Manga(**values)
-        session.add(row)
-
-    return True
-
-
-def manga_select_with_statuses(status_list):
-    with DatabaseSession() as session:
-        query = session.query(Manga).filter(Manga.status.in_(status_list)).all()
+def _select_everything(table):
+    with database_alchemy.DatabaseSession() as session:
+        query = session.query(table).all()
     return query
+
+
+def _select_all_in_list(table, field, ls):
+    with database_alchemy.DatabaseSession() as session:
+        query = session.query(table).filter(field.in_(ls)).all()
+    return query
+
+
+def _insert_row_with_values(table, **kwargs):
+    if database_functions.all_fields_have_value(table, kwargs.keys()) and \
+            database_functions.can_make_row(table, **kwargs):
+
+        with database_alchemy.DatabaseSession() as session:
+            row = table(**kwargs)
+
+            session.add(row)
+
+            return True
+
+    return False
+
+
+def _update_row_where_equals(table, old_row_values: dict, new_row_values: dict):
+    completed = False
+
+    with database_alchemy.DatabaseSession() as session:
+        row = session.query(table).filter_by(**old_row_values).first()
+
+        if row is not None:
+            # Could be put into a map operation
+            for k in database_functions.get_non_pk_fields(table):
+                # If a new value is present
+                if new_row_values.get(k, None) is not None:
+                    setattr(row, k, new_row_values[k])
+
+            completed = True
+
+    return completed
+
+
+""" Manga table queries """
+
+
+def manga_select_all_with_status(status):
+    return _select_all_where_equals(database_models.Manga, status=status)
+
+
+def manga_select_one_with_id(_id):
+    return _select_one_where_equals(database_models.Manga, id=_id)
 
 
 def manga_select_all_rows():
-    with DatabaseSession() as session:
-        query = session.query(Manga).all()
-    return query
+    return _select_everything(database_models.Manga)
 
 
-def manga_delete_by_id(_id):
-    row = manga_select_with_id(_id)
+def manga_select_all_in_status_list(ls):
+    return _select_all_in_list(database_models.Manga, database_models.Manga.status, ls)
 
-    if row is None:
-        print(f"ID {_id} cannot be deleted as it is not present in the table")
-        return False
 
-    with DatabaseSession() as session:
-        session.delete(row)
+def manga_insert_row(**values):
+    return _insert_row_with_values(database_models.Manga, **values)
 
 
 def manga_update_with_id(_id, **values):
-    with DatabaseSession() as session:
-        row = session.query(Manga).get(_id)
-
-        if row is None:
-            print(f"ID {_id} cannot be selected as it it is not present in the table");
-            return False
-
-        for k in get_non_pk_fields(Manga):
-            if values.get(k, None) is not None:
-                setattr(row, k, values[k])
-
-    return True
-
+    return _update_row_where_equals(database_models.Manga, {"id": _id}, values)

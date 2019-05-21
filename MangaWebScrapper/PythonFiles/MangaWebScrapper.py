@@ -3,24 +3,20 @@
 Author: Joshua Nixon
 Email: nixonjoshua98@gmail.com
 Py Version: 3.7.x
-Sublime Text 3
 """
+
 
 def get_old_database():
 	import sqlite3
 	from database.database_queries import manga_insert_row
 
-	with sqlite3.connect(r"C:\Users\Joshua\OneDrive - University of Lincoln\DB.DB") as db:
+	with sqlite3.connect(r"D:\OneDrive - UoL\OneDrive - University of Lincoln\DB.DB") as db:
 		cursor = db.cursor()
 		cursor.execute("SELECT * FROM COMICS")
 		rows = cursor.fetchall()
 
 	for i, r in enumerate(rows):
-		manga_insert_row(title=r[1],
-			menu_url=r[2],
-			chapters_read=r[4],
-			status=r[5],
-			)
+		manga_insert_row(title=r[1], menu_url=r[2], chapters_read=r[4], status=r[5], hidden=False)
 
 
 if __name__ == "__main__":
@@ -28,5 +24,7 @@ if __name__ == "__main__":
 	from database.database_alchemy import Database
 
 	Database.create()
+
+	# get_old_database()
 
 	windows.Application().mainloop()

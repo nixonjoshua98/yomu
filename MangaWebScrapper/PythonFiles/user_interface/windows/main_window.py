@@ -1,12 +1,21 @@
+import threading
+
 import tkinter as tk
 import tkinter.ttk as ttk
 
 import user_interface.widgets as widgets
-import resources.constants as constants
 import user_interface.windows as windows
-import database.database_queries as queries
 
-from functions.functions import remove_trailing_zeros_if_zero
+import resources.constants as constants
+
+import database.database_queries as database_queries
+
+import scrapper.scrapper_manganelo as manganelo
+
+from functions.functions import (
+	remove_trailing_zeros_if_zero,
+	check_search_finished
+)
 
 
 class Application(widgets.RootWindow):
@@ -23,6 +32,9 @@ class Application(widgets.RootWindow):
 		# - Create attributes
 		self.table = None
 		self.status_dropdown = None
+		self.search_entry = None
+		self.search_btn = None
+		self.current_search = None
 
 		self.child_windows = {
 			"edit_window": None,
@@ -48,7 +60,8 @@ class Application(widgets.RootWindow):
 
 		# - Right side widgets
 		downloads_btn = ttk.Button(btn_frame, text="Downloads", command=self.toggle_downloads_window)
-		search_btn = ttk.Button(btn_frame, text="Search")
+		self.search_entry = ttk.Entry(btn_frame)
+		self.search_btn = ttk.Button(btn_frame, text="Search", command=self.search_btn_callback)
 
 		# - Widget placement
 		toolbar_frame.pack(fill=tk.X)
@@ -57,7 +70,8 @@ class Application(widgets.RootWindow):
 
 		self.status_dropdown.pack(side=tk.LEFT, padx=3, pady=3)
 
-		search_btn.pack(side=tk.RIGHT, padx=3, pady=3)
+		self.search_btn.pack(side=tk.RIGHT, padx=3, pady=3)
+		self.search_entry.pack(side=tk.RIGHT, padx=3, pady=3)
 		downloads_btn.pack(side=tk.RIGHT, padx=3, pady=3)
 
 	""" Creates the main table which is used to display the data queried from the database """
@@ -81,7 +95,7 @@ class Application(widgets.RootWindow):
 
 	""" Re-populate the table with the database results """
 	def update_table(self):
-		q = queries.manga_select_with_status(self.status_dropdown.get_index())
+		q = database_queries.manga_select_all_with_status(self.status_dropdown.get_index())
 
 		if q is None:
 			return
@@ -98,7 +112,7 @@ class Application(widgets.RootWindow):
 		if row is None:
 			return
 
-		db_row = queries.manga_select_with_id(row[0])
+		db_row = database_queries.manga_select_one_with_id(row[0])
 
 		# Destroy the previous window (only have one open at one time)
 		if self.child_windows["edit_window"] is not None:
@@ -123,5 +137,31 @@ class Application(widgets.RootWindow):
 
 		else:  # Toggle the view between hidden and shown
 			self.child_windows["downloads_window"].toggle_view()
+
+	def search_btn_callback(self, event=None):
+		search_input = self.search_entry.get()
+
+		# Min 3 characters
+		if len(search_input) < 3:
+			return
+
+		self.search_btn.state(["disabled"])
+
+		self.current_search = manganelo.Search(search_input)
+
+		# Create a new thread so it doesn't block the main thread
+		threading.Thread(target=self.current_search.start).start()
+
+		# Keep checking if the search is finished
+		check_search_finished(self, self.current_search, lambda: self.search_finished_callback())
+
+	def search_finished_callback(self):
+		self.search_btn.state(["!disabled"])
+
+		search_results = self.current_search
+
+		self.current_search = None
+
+		print(*search_results, sep="\n")
 
 

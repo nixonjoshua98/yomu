@@ -1,23 +1,24 @@
-import os
-
-import resources.constants as constants
-
-def remove_nasty_chars(string):
-    return "".join([i for i in string if i not in ':\\/|*"><?.,'])
-
 
 def remove_trailing_zeros_if_zero(n):
-    if str(n).endswith(".0"):
+    if is_float(n) and str(n).endswith(".0"):
         return int(n)
     return n
+
 
 def is_float(f) -> bool:
     try:
         float(f)
-    except Exception as e:
+    except ValueError:
         return False
     else:
         return True
+
+
+def check_search_finished(master, search_obj, callback):
+    if search_obj.finished:
+        callback()
+    else:
+        master.after(100, check_search_finished, master, search_obj, callback)
 
 
 """

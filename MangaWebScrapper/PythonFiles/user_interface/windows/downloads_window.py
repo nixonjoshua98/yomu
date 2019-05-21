@@ -22,3 +22,14 @@ class DownloadsWindow(widgets.ChildWindow):
 		tree_frame.pack(expand=True, fill=tk.BOTH)
 
 		self.table.pack(expand=True, fill=tk.BOTH)
+
+		self.update_table()
+
+	def update_table(self):
+		val = (("Poop", "Poop"),)
+
+		if val is not None:
+			self.table.populate(val)
+
+		self.after(1000, self.update_table)
+

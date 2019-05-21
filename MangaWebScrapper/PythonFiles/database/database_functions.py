@@ -20,6 +20,10 @@ def get_non_pk_fields(table) -> list:
     return table_fields
 
 
+def remove_nasty_chars(string):
+    return "".join([i for i in string if i not in ':\\/|*"><?.,'])
+
+
 def all_fields_have_value(table, fields_given, ignore_pk=True):
     if ignore_pk:  # Don't check if the primary key has been given a value (normally because it auto-increments)
         table_fields = get_non_pk_fields(table)
@@ -38,8 +42,9 @@ def all_fields_have_value(table, fields_given, ignore_pk=True):
 def can_make_row(table, **values):
     try:
         table(**values)
-    except TypeError:
-        print(f"Row cannot be added to {table.__tablename__} - {values}")
+    except TypeError as e:
+        print(f"Row cannot be added to {table.__tablename__} - {values} "
+              f"Traceback: {e}")
         return False
     else:
         return True

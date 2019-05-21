@@ -1,4 +1,4 @@
-from sqlalchemy.ext.declarative import declarative_base
+import sqlalchemy.ext.declarative
 
 from sqlalchemy import (
     Column,
@@ -6,9 +6,10 @@ from sqlalchemy import (
     String,
     Sequence,
     Float,
+    Boolean
     )
 
-Base = declarative_base()
+Base = sqlalchemy.ext.declarative.declarative_base()
 
 
 class Manga(Base):
@@ -20,6 +21,7 @@ class Manga(Base):
     menu_url = Column(String(256))
     chapters_read = Column(Float)
     status = Column(Integer)
+    hidden = Column(Boolean)
 
     def __str__(self):
-        return f"{self.id}, {self.title}, {self.menu_url}, {self.chapters_read}, {self.status}"
+        return f"({self.id}, {self.title}, {self.menu_url}, {self.chapters_read}, {self.status}, {self.hidden})"

@@ -20,8 +20,11 @@ def get_non_pk_fields(table) -> list:
     return table_fields
 
 
-def remove_nasty_chars(string):
-    return "".join([i for i in string if i not in ':\\/|*"><?.,'])
+def remove_nasty_chars(s):
+    try:
+        return "".join([i for i in s if i not in ':\\/|*"><?.,'])
+    except TypeError:
+        return s
 
 
 def all_fields_have_value(table, fields_given, ignore_pk=True):
@@ -48,4 +51,3 @@ def can_make_row(table, **values):
         return False
     else:
         return True
-

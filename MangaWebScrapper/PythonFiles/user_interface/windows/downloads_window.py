@@ -5,18 +5,18 @@ import user_interface.widgets as widgets
 
 
 class DownloadsWindow(widgets.ChildWindow):
-	tree_headings = ["Manga Title", "Chapter No"]
+	tree_headings = ["Title", "Chapter No"]
 
-	def __init__(self):
+	def __init__(self, download_controller):
 		super().__init__("Downloads", destroy_on_exit=False)
+
+		self.download_controller = download_controller
 
 		# - Frames
 		tree_frame = ttk.Frame(self)
 
 		# - Table
-		self.table = widgets.Treeview(
-			tree_frame, 
-			DownloadsWindow.tree_headings)
+		self.table = widgets.Treeview(tree_frame, self.tree_headings)
 
 		# - Placements
 		tree_frame.pack(expand=True, fill=tk.BOTH)
@@ -26,10 +26,10 @@ class DownloadsWindow(widgets.ChildWindow):
 		self.update_table()
 
 	def update_table(self):
-		val = (("Poop", "Poop"),)
+		val = self.download_controller.queue.pop()
 
 		if val is not None:
-			self.table.populate(val)
+			self.table.populate([val], top_down=True)
 
-		self.after(1000, self.update_table)
+		self.after(500, self.update_table)
 

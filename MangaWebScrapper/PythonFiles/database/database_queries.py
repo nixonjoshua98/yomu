@@ -35,18 +35,21 @@ def _select_all_in_list(table, field, ls):
     return query
 
 
-def _insert_row_with_values(table, **kwargs):
-    if database_functions.all_fields_have_value(table, kwargs.keys()) and \
-            database_functions.can_make_row(table, **kwargs):
+def _insert_row_with_values(table, need_all_fields=False, **kwargs):
+    if need_all_fields and not database_functions.all_fields_have_value(table, kwargs.keys()):
+        return False
 
-        with database_alchemy.DatabaseSession() as session:
-            row = table(**kwargs)
+    elif not database_functions.can_make_row(table, **kwargs):
+        return False
 
-            session.add(row)
+    completed = False
 
-            return True
+    with database_alchemy.DatabaseSession() as session:
+        row = table(**kwargs)
+        session.add(row)
+        completed = not completed
 
-    return False
+    return completed
 
 
 def _update_row_where_equals(table, old_row_values: dict, new_row_values: dict):
@@ -67,6 +70,19 @@ def _update_row_where_equals(table, old_row_values: dict, new_row_values: dict):
     return completed
 
 
+def _delete_where_equals(table, **kwargs):
+    completed = False
+
+    with database_alchemy.DatabaseSession() as session:
+        row = session.query(table).filter_by(**kwargs).one()
+
+        session.delete(row)
+
+        completed = not completed
+
+    return completed
+
+
 """ Manga table queries """
 
 
@@ -78,6 +94,10 @@ def manga_select_one_with_id(_id):
     return _select_one_where_equals(database_models.Manga, id=_id)
 
 
+def manga_select_one_with_title(title):
+    return _select_one_where_equals(database_models.Manga, title=title)
+
+
 def manga_select_all_rows():
     return _select_everything(database_models.Manga)
 
@@ -87,8 +107,12 @@ def manga_select_all_in_status_list(ls):
 
 
 def manga_insert_row(**values):
-    return _insert_row_with_values(database_models.Manga, **values)
+    return _insert_row_with_values(database_models.Manga, need_all_fields=False, **values)
 
 
 def manga_update_with_id(_id, **values):
     return _update_row_where_equals(database_models.Manga, {"id": _id}, values)
+
+
+def manga_delete_with_id(_id):
+    _delete_where_equals(database_models.Manga, id=_id)

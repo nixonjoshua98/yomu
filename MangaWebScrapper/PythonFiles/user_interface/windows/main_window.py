@@ -7,15 +7,9 @@ import user_interface.widgets as widgets
 import user_interface.windows as windows
 
 import resources.constants as constants
-
 import database.database_queries as database_queries
-
-import scrapper.scrapper_manganelo as manganelo
-
-from functions.functions import (
-	remove_trailing_zeros_if_zero,
-	check_search_finished
-)
+import scrapper.scrapper_manganelo as scrapper_manganelo
+import functions.functions as functions
 
 
 class Application(widgets.RootWindow):
@@ -25,25 +19,33 @@ class Application(widgets.RootWindow):
 		"ID", "Manga Title", "Latest Chapter Read"
 	]
 
-	def __init__(self):
+	def __init__(self, download_controller):
 		# ------------------------------------------ #
 		super().__init__("Web Scrapper", "800x500")
+
+		self.download_controller = download_controller
 
 		# - Create attributes
 		self.table = None
 		self.status_dropdown = None
 		self.search_entry = None
 		self.search_btn = None
+		self.right_click = None
+		self.sort_function = None
 		self.current_search = None
 
 		self.child_windows = {
 			"edit_window": None,
-			"downloads_window": None
+			"downloads_window": None,
+			"search_results_window": None
 		}
 
 		# - Create the UI
 		self.create_toolbar()
 		self.create_table()
+		self.create_right_click_menu()
+
+		self.table.bind("<Button-3>", lambda e: self.right_click.post(e.x_root, e.y_root))
 
 	"""
 	Creates the toolbar which is located at the top of the window,
@@ -69,7 +71,6 @@ class Application(widgets.RootWindow):
 		btn_frame.pack(side=tk.RIGHT, fill=tk.X, padx=3, pady=3)
 
 		self.status_dropdown.pack(side=tk.LEFT, padx=3, pady=3)
-
 		self.search_btn.pack(side=tk.RIGHT, padx=3, pady=3)
 		self.search_entry.pack(side=tk.RIGHT, padx=3, pady=3)
 		downloads_btn.pack(side=tk.RIGHT, padx=3, pady=3)
@@ -85,13 +86,23 @@ class Application(widgets.RootWindow):
 		table_frame = tk.Frame(self)
 
 		# - Widgets
-		self.table = widgets.Treeview(table_frame, self.table_headings, [50, 300], table_callbacks)
+		self.table = widgets.Treeview(table_frame, self.table_headings, (50, 500), table_callbacks)
 
 		# - Widget placement
 		table_frame.pack(expand=True, fill=tk.BOTH)
 		self.table.pack(expand=True, fill=tk.BOTH)
 
 		self.update_table()
+
+	def create_right_click_menu(self):
+		self.right_click = tk.Menu(self.table, tearoff=0)
+
+		sort_menu = tk.Menu(self.right_click, tearoff=0)
+
+		sort_menu.add_command(label="ID", command=self.sort_manga_by_id)
+		sort_menu.add_command(label="Title", command=self.sort_manga_by_title)
+
+		self.right_click.add_cascade(label="Sort Table", menu=sort_menu)
 
 	""" Re-populate the table with the database results """
 	def update_table(self):
@@ -100,7 +111,10 @@ class Application(widgets.RootWindow):
 		if q is None:
 			return
 
-		data = [[row.id, row.title, remove_trailing_zeros_if_zero(row.chapters_read)] for row in q]
+		if self.sort_function is not None:
+			q = self.sort_function(q)
+
+		data = [[row.id, row.title, functions.remove_trailing_zeros_if_zero(row.chapters_read)] for row in q]
 
 		self.table.clear()
 		self.table.populate(data)
@@ -130,7 +144,7 @@ class Application(widgets.RootWindow):
 		""" Create the downloads window if it hasn't been created before,
 		I only want one downloads window to be created """
 		if self.child_windows["downloads_window"] is None:
-			win = windows.DownloadsWindow()
+			win = windows.DownloadsWindow(self.download_controller)
 			win.geometry(self.geometry())
 
 			self.child_windows["downloads_window"] = win
@@ -147,13 +161,13 @@ class Application(widgets.RootWindow):
 
 		self.search_btn.state(["disabled"])
 
-		self.current_search = manganelo.Search(search_input)
+		self.current_search = scrapper_manganelo.Search(search_input)
 
 		# Create a new thread so it doesn't block the main thread
 		threading.Thread(target=self.current_search.start).start()
 
 		# Keep checking if the search is finished
-		check_search_finished(self, self.current_search, lambda: self.search_finished_callback())
+		functions.callback_once_true(self, self.current_search, lambda: self.search_finished_callback())
 
 	def search_finished_callback(self):
 		self.search_btn.state(["!disabled"])
@@ -162,6 +176,22 @@ class Application(widgets.RootWindow):
 
 		self.current_search = None
 
-		print(*search_results, sep="\n")
+		win = windows.SearchResultsWindow(search_results, ("Title", "Latest Chapter"), self.update_table)
+		win.geometry(self.geometry())
+
+		if self.child_windows["search_results_window"] is not None:
+			self.child_windows["search_results_window"].destroy()
+
+		self.child_windows["search_results_window"] = win
+
+	def sort_manga_by_title(self):
+		print(">>> Changing sort to 'Manga Title'")
+		self.sort_function = functions.sort_manga_by_title
+		self.update_table()
+
+	def sort_manga_by_id(self):
+		print(">>> Changing sort to 'Manga ID'")
+		self.sort_function = functions.sort_manga_by_id
+		self.update_table()
 
 

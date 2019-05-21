@@ -18,10 +18,9 @@ class Manga(Base):
     # Auto-increment primary key
     id = Column(Integer, Sequence("user_id_seq"), primary_key=True)
     title = Column(String(256))
-    menu_url = Column(String(256))
-    chapters_read = Column(Float)
-    status = Column(Integer)
-    hidden = Column(Boolean)
+    url = Column(String(256))
+    chapters_read = Column(Float, default=0.0)
+    status = Column(Integer, default=0)
 
     def __str__(self):
-        return f"({self.id}, {self.title}, {self.menu_url}, {self.chapters_read}, {self.status}, {self.hidden})"
+        return f"({self.id}, {self.title}, {self.url}, {self.chapters_read}, {self.status})"

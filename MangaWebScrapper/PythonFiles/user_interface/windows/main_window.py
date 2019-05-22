@@ -16,12 +16,12 @@ class Application(widgets.RootWindow):
 	""" Class which will run the entire UI """
 
 	table_headings = [
-		"ID", "Manga Title", "Latest Chapter Read"
+		"ID", "Manga Title", "Chapter Read", "Latest Chapter"
 	]
 
 	def __init__(self, download_controller):
 		# ------------------------------------------ #
-		super().__init__("Web Scrapper", "800x500")
+		super().__init__("Web Scrapper", "800x400")
 
 		self.download_controller = download_controller
 
@@ -31,7 +31,7 @@ class Application(widgets.RootWindow):
 		self.search_entry = None
 		self.search_btn = None
 		self.right_click = None
-		self.sort_function = None
+		self.sort_function = functions.sort_manga_by_chapters_available  # Default
 		self.current_search = None
 
 		self.child_windows = {
@@ -86,7 +86,7 @@ class Application(widgets.RootWindow):
 		table_frame = tk.Frame(self)
 
 		# - Widgets
-		self.table = widgets.Treeview(table_frame, self.table_headings, (50, 500), table_callbacks)
+		self.table = widgets.Treeview(table_frame, self.table_headings, (50, 500, 100, 100), table_callbacks)
 
 		# - Widget placement
 		table_frame.pack(expand=True, fill=tk.BOTH)
@@ -98,11 +98,18 @@ class Application(widgets.RootWindow):
 		self.right_click = tk.Menu(self.table, tearoff=0)
 
 		sort_menu = tk.Menu(self.right_click, tearoff=0)
+		open_in_menu = tk.Menu(self.right_click, tearoff=0)
 
-		sort_menu.add_command(label="ID", command=self.sort_manga_by_id)
-		sort_menu.add_command(label="Title", command=self.sort_manga_by_title)
+		sort_menu.add_command(label="ID (asc)", command=self.sort_manga_by_id)
+		sort_menu.add_command(label="Title (asc)", command=self.sort_manga_by_title)
+		sort_menu.add_command(label="Latest Chapter (dsc)", command=self.sort_manga_by_latest_chapter)
+		sort_menu.add_command(label="Chapters Available (dsc)", command=self.sort_manga_by_chapters_available)
+
+		open_in_menu.add_command(label="Explorer", command=self.open_manga_in_explorer)
+		open_in_menu.add_command(label="Browser", command=self.open_manga_in_browser)
 
 		self.right_click.add_cascade(label="Sort Table", menu=sort_menu)
+		self.right_click.add_cascade(label="Open In", menu=open_in_menu)
 
 	""" Re-populate the table with the database results """
 	def update_table(self):
@@ -114,7 +121,13 @@ class Application(widgets.RootWindow):
 		if self.sort_function is not None:
 			q = self.sort_function(q)
 
-		data = [[row.id, row.title, functions.remove_trailing_zeros_if_zero(row.chapters_read)] for row in q]
+		# Too long a function name
+		remove_zero = functions.remove_trailing_zeros_if_zero
+
+		data = [
+			[row.id, row.title, remove_zero(row.chapters_read), remove_zero(row.latest_chapter), row.url]
+			for row in q
+		]
 
 		self.table.clear()
 		self.table.populate(data)
@@ -184,14 +197,43 @@ class Application(widgets.RootWindow):
 
 		self.child_windows["search_results_window"] = win
 
+	""" Right click callbacks """
+
 	def sort_manga_by_title(self):
-		print(">>> Changing sort to 'Manga Title'")
+		print(">>> Changing sort to 'Manga Title (asc)'")
 		self.sort_function = functions.sort_manga_by_title
 		self.update_table()
 
 	def sort_manga_by_id(self):
-		print(">>> Changing sort to 'Manga ID'")
+		print(">>> Changing sort to 'Manga ID (asc)'")
 		self.sort_function = functions.sort_manga_by_id
 		self.update_table()
+
+	def sort_manga_by_latest_chapter(self):
+		print(">>> Changing sort to 'Latest Chapter (dsc)'")
+		self.sort_function = functions.sort_manga_by_latest_chapter
+		self.update_table()
+
+	def sort_manga_by_chapters_available(self):
+		print(">>> Changing sort to 'Chapters Available (dsc)'")
+		self.sort_function = functions.sort_manga_by_chapters_available
+		self.update_table()
+
+	def open_manga_in_explorer(self):
+		row = self.table.one()
+
+		if row is None:
+			return
+
+		functions.open_manga_in_explorer(row[1])
+
+	def open_manga_in_browser(self):
+		row = self.table.one()
+
+		if row is None:
+			return
+
+		functions.open_manga_in_browser(row[4])
+
 
 

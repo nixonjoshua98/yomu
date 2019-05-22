@@ -1,6 +1,7 @@
 import threading
 import random
 import os
+import operator
 import collections
 
 import database.database_queries as database_queries
@@ -30,7 +31,7 @@ class MangaDownloadController(threading.Thread):
 
     def database_gen(self):
         while self.running:
-            status = list(e.value for e in database_enums.MangaStatusEnum)
+            status = list(e.value for e in database_enums.MangaStatusEnum if e.value <= 30)
 
             data = database_queries.manga_select_all_in_status_list(status)
 
@@ -45,8 +46,6 @@ class MangaDownloadController(threading.Thread):
         while self.running:
             thread_available = self.max_threads - self.current_threads >= 1
 
-            print(f">>> Concurrent threads: {self.current_threads}")
-
             if thread_available:
                 data = next(self.database_gen)
 
@@ -60,10 +59,12 @@ class MangaDownloadController(threading.Thread):
 
                     thread.start()
 
+            # print(f">>> Concurrent threads: {self.current_threads}")
+
             time.sleep(0.5)
 
     def download_thread(self, data):
-        print(f">>> Checking '{data.title}'")
+        # print(f">>> Checking '{data.title}'")
 
         chapter_list = scrapper_manganelo.ChapterList(data.url)
 
@@ -89,6 +90,14 @@ class MangaDownloadController(threading.Thread):
                     self.queue.append(self.result_named_tuple(title=formatted_title, chapter=c.chapter))
                 else:
                     print(f">>> Failed to download - {formatted_title} {c.chapter}")
+
+        if len(chapter_list) > 0:
+            latest_chapter = max(chapter_list, key=operator.attrgetter("chapter"))
+
+            # Update the latest chapter (Previously read from directory which is very slow)
+            if latest_chapter.chapter > data.latest_chapter:
+                print(f">>> Updating latest chapter for '{data.title[0:25]}' to '{latest_chapter.chapter}'")
+                database_queries.manga_update_with_id(data.id, latest_chapter=latest_chapter.chapter)
 
         self.current_threads -= 1
         self.ids_currently_downloading.remove(data.id)

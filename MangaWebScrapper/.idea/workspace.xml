@@ -2,23 +2,19 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/PythonFiles/database/database_constants.py" line="0" />
-    <bookmark url="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" line="172" />
+    <bookmark url="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" line="185" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="317d46c9-0047-4746-b68e-5f90b5042dba" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/PythonFiles/user_interface/windows/search_results_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Joshua.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/Joshua.xml" afterDir="false" />
+    <list default="true" id="317d46c9-0047-4746-b68e-5f90b5042dba" name="Default Changelist" comment="Intergrated downloads into the system.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/MangaWebScrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/MangaWebScrapper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonFiles/MangaWebScrapper.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonFiles/controllers/manga_download_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/controllers/manga_download_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/database/database_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/database/database_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonFiles/data_structures/queue.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/data_structures/queue.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonFiles/database/database_constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/database/database_constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonFiles/database/database_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/database/database_models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/database/database_queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/database/database_queries.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonFiles/functions/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/functions/functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/resources/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/resources/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonFiles/scrapper/scrapper_manganelo.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/scrapper/scrapper_manganelo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/user_interface/windows/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/user_interface/windows/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/user_interface/windows/downloads_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/user_interface/windows/downloads_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonFiles/user_interface/widgets/root_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/user_interface/widgets/root_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonFiles/user_interface/windows/edit_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/user_interface/windows/edit_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Resources/manga_database.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/manga_database.sqlite3" afterDir="false" />
@@ -30,59 +26,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/PythonFiles/controllers/manga_download_controller.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="62" column="26" selection-start-line="62" selection-start-column="26" selection-end-line="62" selection-end-column="26" />
-              <folding>
-                <element signature="e#0#16#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/search_results_window.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="37" column="42" lean-forward="true" selection-start-line="37" selection-start-column="42" selection-end-line="37" selection-end-column="42" />
-              <folding>
-                <element signature="e#0#20#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonFiles/scrapper/scrapper_manganelo.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="159" column="46" lean-forward="true" selection-start-line="159" selection-start-column="46" selection-end-line="159" selection-end-column="46" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-                <element signature="e#186#1353#0" />
-                <element signature="e#1385#2367#0" />
-                <element signature="e#2645#2896#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/downloads_window.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="424">
-              <caret line="31" column="52" selection-start-line="31" selection-start-column="52" selection-end-line="31" selection-end-column="52" />
-              <folding>
-                <element signature="e#0#20#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -107,25 +51,27 @@
         <option value="$PROJECT_DIR$/PythonFiles/user_interface/widgets/drop_down.py" />
         <option value="$PROJECT_DIR$/PythonFiles/user_interface/widgets/treeview.py" />
         <option value="$PROJECT_DIR$/PythonFiles/database/database_enums.py" />
-        <option value="$PROJECT_DIR$/PythonFiles/data_structures/queue.py" />
         <option value="$PROJECT_DIR$/PythonFiles/scrappers/scrapper_functions.py" />
         <option value="$PROJECT_DIR$/PythonFiles/scrapper/scrapper_functions.py" />
         <option value="$PROJECT_DIR$/PythonFiles/scrapper/scrapper_constants.py" />
-        <option value="$PROJECT_DIR$/PythonFiles/database/database_constants.py" />
         <option value="$PROJECT_DIR$/PythonFiles/database/database_alchemy.py" />
         <option value="$PROJECT_DIR$/PythonFiles/user_interface/windows/__init__.py" />
         <option value="$PROJECT_DIR$/PythonFiles/resources/constants.py" />
         <option value="$PROJECT_DIR$/PythonFiles/database/database_queries.py" />
         <option value="$PROJECT_DIR$/PythonFiles/database/database_functions.py" />
-        <option value="$PROJECT_DIR$/PythonFiles/functions/functions.py" />
-        <option value="$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" />
-        <option value="$PROJECT_DIR$/PythonFiles/database/database_models.py" />
-        <option value="$PROJECT_DIR$/PythonFiles/user_interface/windows/edit_window.py" />
-        <option value="$PROJECT_DIR$/PythonFiles/MangaWebScrapper.py" />
-        <option value="$PROJECT_DIR$/PythonFiles/scrapper/scrapper_manganelo.py" />
         <option value="$PROJECT_DIR$/PythonFiles/user_interface/windows/downloads_window.py" />
         <option value="$PROJECT_DIR$/PythonFiles/user_interface/windows/search_results_window.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/database/database_models.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/scrapper/scrapper_manganelo.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/user_interface/widgets/root_window.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/user_interface/windows/edit_window.py" />
         <option value="$PROJECT_DIR$/PythonFiles/controllers/manga_download_controller.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/functions/functions.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/MangaWebScrapper.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/database/database_constants.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/MangaWebScrapper.pyw" />
+        <option value="$PROJECT_DIR$/PythonFiles/data_structures/queue.py" />
       </list>
     </option>
   </component>
@@ -143,7 +89,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -216,6 +161,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -237,7 +183,7 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="MangaWebScrapper" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+    <configuration name="MangaWebScrapper.pyw" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="MangaWebScrapper" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -249,7 +195,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PythonFiles/MangaWebScrapper.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PythonFiles/MangaWebScrapper.pyw" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -284,19 +230,25 @@
       <option name="project" value="LOCAL" />
       <updated>1558465535224</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Intergrated downloads into the system.">
+      <created>1558479939303</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1558479939303</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15831557" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15806112" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32936078" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32936078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -332,7 +284,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Updated and refactored (plus commenting)" />
     <MESSAGE value="Updated some of the queries" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated some of the queries" />
+    <MESSAGE value="Intergrated downloads into the system." />
+    <option name="LAST_COMMIT_MESSAGE" value="Intergrated downloads into the system." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_checks.py" />
@@ -347,16 +300,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/widgets/root_window.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
@@ -410,113 +353,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/resources/constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="40" selection-start-line="5" selection-start-column="40" selection-end-line="5" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="146" column="66" selection-start-line="146" selection-start-column="66" selection-end-line="146" selection-end-column="66" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" column="90" selection-start-line="25" selection-start-column="90" selection-end-line="25" selection-end-column="90" />
-          <folding>
-            <element signature="e#0#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/edit_window.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="141" column="39" selection-start-line="141" selection-start-column="39" selection-end-line="141" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/MangaWebScrapper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
-          <folding>
-            <element signature="e#106#463#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_enums.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_queries.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="455">
-          <caret line="104" column="35" selection-start-line="104" selection-start-column="4" selection-end-line="104" selection-end-column="35" />
-          <folding>
-            <element signature="e#295#426#0" />
-            <element signature="e#480#613#0" />
-            <element signature="e#651#762#0" />
-            <element signature="e#812#945#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="22" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/functions/functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="33" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/scrapper/scrapper_manganelo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="159" column="46" lean-forward="true" selection-start-line="159" selection-start-column="46" selection-end-line="159" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#186#1353#0" />
-            <element signature="e#1385#2367#0" />
-            <element signature="e#2645#2896#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/widgets/treeview.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -527,27 +363,60 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/data_structures/queue.py">
+    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/search_results_window.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="26" lean-forward="true" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/downloads_window.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="31" column="52" selection-start-line="31" selection-start-column="52" selection-end-line="31" selection-end-column="52" />
+        <state relative-caret-position="527">
+          <caret line="37" column="42" selection-start-line="37" selection-start-column="42" selection-end-line="37" selection-end-column="42" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/search_results_window.py">
+    <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="37" column="42" lean-forward="true" selection-start-line="37" selection-start-column="42" selection-end-line="37" selection-end-column="42" />
+        <state relative-caret-position="357">
+          <caret line="21" column="18" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/edit_window.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-527">
+          <caret line="14" column="38" lean-forward="true" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="22" selection-start-line="22" selection-end-line="26" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_queries.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="492">
+          <caret line="118" lean-forward="true" selection-start-line="118" selection-end-line="118" />
+          <folding>
+            <element signature="e#295#426#0" />
+            <element signature="e#480#613#0" />
+            <element signature="e#651#762#0" />
+            <element signature="e#812#945#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/widgets/root_window.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
@@ -556,11 +425,106 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/PythonFiles/controllers/manga_download_controller.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="62" column="26" selection-start-line="62" selection-start-column="26" selection-end-line="62" selection-end-column="26" />
+        <state relative-caret-position="537">
+          <caret line="80" column="50" selection-start-line="80" selection-start-column="50" selection-end-line="80" selection-end-column="50" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/MangaWebScrapper.py" />
+    <entry file="file://$PROJECT_DIR$/PythonFiles/functions/functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="84" column="36" selection-start-line="84" selection-start-column="4" selection-end-line="84" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="29" selection-start-line="27" selection-start-column="29" selection-end-line="27" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+            <element signature="e#1354#2358#0" />
+            <element signature="e#2479#2846#0" />
+            <element signature="e#3735#4241#0" />
+            <element signature="e#4360#4781#0" />
+            <element signature="e#4829#5297#0" />
+            <element signature="e#5338#5750#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/scrapper/scrapper_manganelo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-189">
+          <caret line="137" selection-start-line="137" selection-end-line="137" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#297#1469#0" />
+            <element signature="e#1501#2488#0" />
+            <element signature="e#3034#3370#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_enums.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/MangaWebScrapper.pyw">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/resources/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="5" column="40" selection-start-line="5" selection-start-column="40" selection-end-line="5" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/downloads_window.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/3/collections/__init__.pyi">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3036">
+          <caret line="232" column="50" lean-forward="true" selection-start-line="232" selection-start-column="50" selection-end-line="232" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/data_structures/queue.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>

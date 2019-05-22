@@ -42,7 +42,7 @@ class Search(list):
 
             self.__soup = soup.find(class_="panel_story_list").find_all(class_="story_item")
 
-        except AttributeError:
+        except (AttributeError, requests.ConnectionError):
             """ Error has occurred """
 
     def __get_results(self):
@@ -84,7 +84,7 @@ class ChapterList(list):
 
             self.__soup = soup.find(class_="chapter-list").findAll(class_="row")
 
-        except AttributeError:
+        except (AttributeError, requests.ConnectionError):
             """ Error has occurred """
 
     def __get_results(self):
@@ -111,7 +111,7 @@ class ChapterDownload:
 
         if len(self.image_urls) > 0:
             with tempfile.TemporaryDirectory() as temp_dir:
-                print(f">>> Using '{temp_dir}'")
+                # print(f">>> Using '{temp_dir}'")
 
                 self.__download_images(temp_dir)
                 self.__create_pdf()
@@ -127,7 +127,7 @@ class ChapterDownload:
 
                 self.image_urls = list(map(lambda i: i["src"], image_soup))
 
-            except AttributeError:
+            except (AttributeError, requests.ConnectionError):
                 """ Error has occurred """
 
     def __download_images(self, temp_save_dir):

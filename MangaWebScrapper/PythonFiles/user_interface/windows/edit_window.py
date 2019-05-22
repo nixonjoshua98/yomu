@@ -146,4 +146,8 @@ class MangaEditWindow(widgets.ChildWindow):
             self.destroy()
 
     def latest_offline_callback(self, event=None):
-        self.input_widgets["chapters_read"].set_text(functions.get_latest_offline_chapter(self.manga_data.title))
+        # self.input_widgets["chapters_read"].set_text(functions.get_latest_offline_chapter(self.manga_data.title))
+
+        remove_zero = functions.remove_trailing_zeros_if_zero
+
+        self.input_widgets["chapters_read"].set_text(remove_zero(self.manga_data.latest_chapter))

@@ -31,7 +31,7 @@ class MangaDownloadController(threading.Thread):
 
     def database_gen(self):
         while self.running:
-            status = list(e.value for e in database_enums.MangaStatusEnum if e.value <= 30)
+            status = list(e.value for e in database_enums.MangaStatusEnum if e.value <= 3)
 
             data = database_queries.manga_select_all_in_status_list(status)
 

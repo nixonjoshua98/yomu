@@ -148,7 +148,10 @@ class Application(widgets.RootWindow):
 
 		# Create the new window
 		win = windows.MangaEditWindow(db_row, self.update_table)
-		win.geometry(self.geometry())  # Update the position
+
+		# Centres the window in the middle of the main window
+		x, y, w, h = self.winfo_x(), self.winfo_y(), self.winfo_width(), self.winfo_height()
+		win.geometry(f"500x200+{x + (w//2) - 250}+{y + (h//2) - 100}")
 
 		self.child_windows["edit_window"] = win
 
@@ -158,12 +161,15 @@ class Application(widgets.RootWindow):
 		I only want one downloads window to be created """
 		if self.child_windows["downloads_window"] is None:
 			win = windows.DownloadsWindow(self.download_controller)
-			win.geometry(self.geometry())
 
 			self.child_windows["downloads_window"] = win
 
 		else:  # Toggle the view between hidden and shown
 			self.child_windows["downloads_window"].toggle_view()
+
+		# Centres the window in the middle of the main window
+		x, y, w, h = self.winfo_x(), self.winfo_y(), self.winfo_width(), self.winfo_height()
+		self.child_windows["downloads_window"].geometry(f"500x300+{x + (w // 2) - 250}+{y + (h // 2) - 150}")
 
 	def search_btn_callback(self, event=None):
 		search_input = self.search_entry.get()

@@ -2,22 +2,38 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/PythonFiles/database/database_constants.py" line="0" />
-    <bookmark url="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" line="185" />
+    <bookmark url="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" line="191" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="317d46c9-0047-4746-b68e-5f90b5042dba" name="Default Changelist" comment="Intergrated downloads into the system.">
+    <list default="true" id="317d46c9-0047-4746-b68e-5f90b5042dba" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/MangaWebScrapper.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonFiles/controllers/manga_download_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/controllers/manga_download_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/data_structures/queue.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/data_structures/queue.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/database/database_constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/database/database_constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/database/database_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/database/database_models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/functions/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/functions/functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/scrapper/scrapper_manganelo.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/scrapper/scrapper_manganelo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/user_interface/widgets/root_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/user_interface/widgets/root_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/user_interface/windows/edit_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/user_interface/windows/edit_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/manga_database.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/manga_database.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/MAIN.pyw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/classes/comicDataDict.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/classes/comicDownloadManager.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/classes/comicSort.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/classes/comicStatus.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/classes/database.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/data/constants.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/functions/functions.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/functions/serverRequest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/interface/frames/databaseViewFrame.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/interface/frames/downloadQueueFrame.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/interface/frames/searchComicFrame.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/interface/frames/searchResultsFrame.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/interface/frames/toolBarFrame.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/interface/interface.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/interface/widgets/childWindow.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/interface/widgets/comboBox.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/interface/widgets/rootWindow.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/interface/widgets/treeView.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/interface/windows/childWindow.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/interface/windows/comicEditWindow.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/interface/windows/rootWindow.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/manganelo/chapterList.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/manganelo/downloadChapter.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Scrapper/manganelo/searchComic.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +42,20 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="435">
+              <caret line="165" lean-forward="true" selection-start-line="165" selection-end-line="165" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -67,11 +96,11 @@
         <option value="$PROJECT_DIR$/PythonFiles/user_interface/windows/edit_window.py" />
         <option value="$PROJECT_DIR$/PythonFiles/controllers/manga_download_controller.py" />
         <option value="$PROJECT_DIR$/PythonFiles/functions/functions.py" />
-        <option value="$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" />
         <option value="$PROJECT_DIR$/PythonFiles/MangaWebScrapper.py" />
         <option value="$PROJECT_DIR$/PythonFiles/database/database_constants.py" />
         <option value="$PROJECT_DIR$/PythonFiles/MangaWebScrapper.pyw" />
         <option value="$PROJECT_DIR$/PythonFiles/data_structures/queue.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" />
       </list>
     </option>
   </component>
@@ -237,18 +266,33 @@
       <option name="project" value="LOCAL" />
       <updated>1558479939303</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Updated">
+      <created>1558533920602</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1558533920602</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Updated">
+      <created>1558533939243</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1558533939243</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15806112" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15806112" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32936078" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32936078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -285,7 +329,8 @@
     <MESSAGE value="Updated and refactored (plus commenting)" />
     <MESSAGE value="Updated some of the queries" />
     <MESSAGE value="Intergrated downloads into the system." />
-    <option name="LAST_COMMIT_MESSAGE" value="Intergrated downloads into the system." />
+    <MESSAGE value="Updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/PythonFiles/database/database_checks.py" />
@@ -444,22 +489,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="29" selection-start-line="27" selection-start-column="29" selection-end-line="27" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-            <element signature="e#1354#2358#0" />
-            <element signature="e#2479#2846#0" />
-            <element signature="e#3735#4241#0" />
-            <element signature="e#4360#4781#0" />
-            <element signature="e#4829#5297#0" />
-            <element signature="e#5338#5750#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PythonFiles/scrapper/scrapper_manganelo.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-189">
@@ -525,6 +554,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="165" lean-forward="true" selection-start-line="165" selection-end-line="165" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

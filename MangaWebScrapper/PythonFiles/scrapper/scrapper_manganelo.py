@@ -142,7 +142,7 @@ class ChapterDownload:
 
                     try:
                         shutil.copyfileobj(image_file.raw, f)
-                    except TimeoutError as e:
+                    except Exception as e:
                         print(f">>> Timeout error - {e}")
                         """ Error occurred """
                     else:

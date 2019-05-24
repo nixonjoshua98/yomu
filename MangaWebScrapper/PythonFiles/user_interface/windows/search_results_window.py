@@ -14,7 +14,7 @@ class SearchResultsWindow(widgets.ChildWindow):
 		self.callback = callback
 
 		table_callbacks = {
-			"Double-1": self.add_manga_to_database
+			"Button-3": self.add_manga_to_database
 		}
 
 		# - Frames
@@ -40,6 +40,9 @@ class SearchResultsWindow(widgets.ChildWindow):
 				messagebox.showinfo(data["title"], "Row with the same title already exists in the database")
 
 			else:
+				if not messagebox.askyesno("Database", f"Are you sure you want to add {data['title']}"):
+					return
+
 				if database_queries.manga_insert_row(**data):
 					messagebox.showinfo("Database", data["title"] + " has been added")
 

@@ -108,8 +108,8 @@ class Application(widgets.RootWindow):
 		open_in_menu.add_command(label="Explorer", command=self.open_manga_in_explorer)
 		open_in_menu.add_command(label="Browser", command=self.open_manga_in_browser)
 
-		self.right_click.add_cascade(label="Sort Table", menu=sort_menu)
 		self.right_click.add_cascade(label="Open In", menu=open_in_menu)
+		self.right_click.add_cascade(label="Sort Table", menu=sort_menu)
 
 	""" Re-populate the table with the database results """
 	def update_table(self):

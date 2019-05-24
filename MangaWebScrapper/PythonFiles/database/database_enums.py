@@ -21,3 +21,5 @@ class MangaStatusEnum(EnumWrapper):
     RARELY_UPDATES = 3
     DROPPED = 4
     COMPLETED = 5
+
+    TESTING = 6

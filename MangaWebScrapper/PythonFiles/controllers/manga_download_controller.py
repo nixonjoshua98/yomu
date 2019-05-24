@@ -23,7 +23,7 @@ class MangaDownloadController(threading.Thread):
 
         self.running = True
         self.current_threads = 0
-        self.max_threads = 25
+        self.max_threads = 5
         self.ids_currently_downloading = []
         self.database_gen = self.database_gen()
 
@@ -32,6 +32,7 @@ class MangaDownloadController(threading.Thread):
     def database_gen(self):
         while self.running:
             status = list(e.value for e in database_enums.MangaStatusEnum if e.value <= 3)
+            # status = (6,)
 
             data = database_queries.manga_select_all_in_status_list(status)
 
@@ -96,7 +97,7 @@ class MangaDownloadController(threading.Thread):
 
             # Update the latest chapter (Previously read from directory which is very slow)
             if latest_chapter.chapter > data.latest_chapter:
-                print(f">>> Updating latest chapter for '{data.title[0:25]}' to '{latest_chapter.chapter}'")
+                # This occurs twice I think but I cannot figure out why
                 database_queries.manga_update_with_id(data.id, latest_chapter=latest_chapter.chapter)
 
         self.current_threads -= 1

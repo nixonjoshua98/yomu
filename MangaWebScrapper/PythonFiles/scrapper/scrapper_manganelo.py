@@ -127,8 +127,8 @@ class ChapterDownload:
 
                 self.image_urls = list(map(lambda i: i["src"], image_soup))
 
-            except (AttributeError, requests.ConnectionError):
-                """ Error has occurred """
+            except (AttributeError, requests.ConnectionError) as e:
+                print(self.url, e, sep=" | ")
 
     def __download_images(self, temp_save_dir):
         for i, image_url in enumerate(self.image_urls):
@@ -143,8 +143,8 @@ class ChapterDownload:
                     try:
                         shutil.copyfileobj(image_file.raw, f)
                     except Exception as e:
-                        print(f">>> Timeout error - {e}")
-                        """ Error occurred """
+                        print(image_url, e, sep=" | ")
+                        """ Error """
                     else:
                         self.image_paths.append(image_path)
 
@@ -165,7 +165,8 @@ class ChapterDownload:
 
         try:
             pdf.save()
-        except Exception:
+        except Exception as e:
+            print(self.chapter_save_dir, e, sep=" | ")
             """ Error occurred """
         else:
             self.success = True

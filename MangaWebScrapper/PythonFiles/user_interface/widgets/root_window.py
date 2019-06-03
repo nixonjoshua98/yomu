@@ -13,7 +13,7 @@ class RootWindow(tk.Tk):
         if geometry is not None:
             self.geometry(geometry)
 
-        self.resizable(0, 0)
+        # self.resizable(0, 0)
         self.protocol("WM_DELETE_WINDOW", self.on_close)
 
     def on_close(self):

@@ -164,8 +164,7 @@ class Application(widgets.RootWindow):
 
 			self.child_windows["downloads_window"] = win
 
-		else:  # Toggle the view between hidden and shown
-			self.child_windows["downloads_window"].toggle_view()
+		self.child_windows["downloads_window"].show_window()
 
 		# Centres the window in the middle of the main window
 		x, y, w, h = self.winfo_x(), self.winfo_y(), self.winfo_width(), self.winfo_height()
@@ -240,6 +239,3 @@ class Application(widgets.RootWindow):
 			return
 
 		functions.open_manga_in_browser(row[4])
-
-
-

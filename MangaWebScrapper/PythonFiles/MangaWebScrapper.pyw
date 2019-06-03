@@ -25,4 +25,6 @@ def main():
 
 
 if __name__ == "__main__":
+	print("UPDATE SEARCH RESULTS RIGHT CLICK MENU")
+
 	main()

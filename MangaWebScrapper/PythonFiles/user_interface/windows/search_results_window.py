@@ -40,7 +40,7 @@ class SearchResultsWindow(widgets.ChildWindow):
 				messagebox.showinfo(data["title"], "Row with the same title already exists in the database")
 
 			else:
-				if not messagebox.askyesno("Database", f"Are you sure you want to add {data['title']}"):
+				if not messagebox.askyesno("Database", f"Are you sure you want to add '{data['title']}'"):
 					return
 
 				if database_queries.manga_insert_row(**data):

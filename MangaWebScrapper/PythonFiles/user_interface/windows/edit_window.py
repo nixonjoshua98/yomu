@@ -34,6 +34,8 @@ class MangaEditWindow(widgets.ChildWindow):
         ttk.Button(self.root_frame, text="Delete", command=self.delete_callback)\
             .pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
 
+        self.bind("<Return>", self.confirm_callback)
+
         self.root_frame.pack(fill=tk.X)
 
     def create_dropdown(self, widget_key, label_text, initial_index, values) -> widgets.Dropdown:
@@ -51,7 +53,7 @@ class MangaEditWindow(widgets.ChildWindow):
         drop_frame.pack(fill=tk.X)
         dropdown.pack(side=tk.RIGHT, fill=tk.X, padx=5, expand=True)
 
-    def create_entry(self, widget_key, label_text, initial_val, disabled) -> tk.Frame:
+    def create_entry(self, widget_key, label_text, initial_val, disabled=False, focus=False) -> tk.Frame:
         lbl_frame = tk.Frame(self.root_frame)
         entry_frame = tk.Frame(self.root_frame)
         entry = widgets.EntryField(entry_frame)
@@ -60,6 +62,9 @@ class MangaEditWindow(widgets.ChildWindow):
 
         if disabled:
             entry.state(["disabled"])
+
+        if focus:
+            entry.focus_set()
 
         tk.Label(lbl_frame, text=label_text).pack(side=tk.LEFT, fill=tk.X)
 
@@ -73,13 +78,13 @@ class MangaEditWindow(widgets.ChildWindow):
 
     def create_field_inputs(self):
         # key, text, initial_val, disabled
-        self.create_entry("id", "Manga ID", self.manga_data.id, True)
-        self.create_entry("title", "Title", self.manga_data.title, True)
-        self.create_entry("url", "Menu URL", self.manga_data.url, False)
+        self.create_entry("id", "Manga ID", self.manga_data.id, disabled=True)
+        self.create_entry("title", "Title", self.manga_data.title, disabled=True)
+        self.create_entry("url", "Menu URL", self.manga_data.url)
 
         default_val = functions.remove_trailing_zeros_if_zero(self.manga_data.chapters_read)
 
-        frame = self.create_entry("chapters_read", "Chapters Read", default_val, False)
+        frame = self.create_entry("chapters_read", "Chapters Read", default_val, focus=True)
 
         ttk.Button(frame, text="Latest Chapter", command=self.latest_offline_callback).pack(side=tk.RIGHT, padx=5)
 

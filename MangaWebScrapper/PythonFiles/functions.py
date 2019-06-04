@@ -107,7 +107,7 @@ def callback_once_true(master, attr, search_obj, callback):
 
 
 def get_latest_offline_chapter(title: str) -> float or int:
-	manga_dir = os.path.join(constants.MANGA_DIR, title)
+	manga_dir = os.path.join(constants.MANGA_SAVE_DIR, title)
 
 	if os.path.isdir(manga_dir):
 		files = os.listdir(manga_dir)
@@ -117,7 +117,7 @@ def get_latest_offline_chapter(title: str) -> float or int:
 
 
 def open_manga_in_explorer(title):
-	path = os.path.join(constants.MANGA_DIR, remove_nasty_chars(title))
+	path = os.path.join(constants.MANGA_SAVE_DIR, remove_nasty_chars(title))
 
 	subprocess.call("explorer {}".format(path, shell=True))
 

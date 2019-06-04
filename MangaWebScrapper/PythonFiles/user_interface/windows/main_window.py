@@ -80,7 +80,7 @@ class Application(widgets.RootWindow):
 	""" Creates the main table which is used to display the data queried from the database """
 	def create_table(self):
 		# - Variables
-		table_callbacks = {"<<TreeviewSelect>>": self.on_row_selected}
+		table_callbacks = {"Double-1": self.on_row_selected}
 
 		# - Frames
 		table_frame = tk.Frame(self)

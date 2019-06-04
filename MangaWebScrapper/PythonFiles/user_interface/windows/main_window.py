@@ -3,16 +3,15 @@ import threading
 import tkinter as tk
 import tkinter.ttk as ttk
 
+import web_scrapper
+import _functions
+import constants
+
 import user_interface.widgets as widgets
 import user_interface.windows as windows
 
-import resources.constants as constants
-import database.database_queries as database_queries
-import scrapper.scrapper_manganelo as scrapper_manganelo
 
-import functions.helper_functions as helper_functions
-import functions.sorting_functions as sorting_functions
-import functions.interface_functions as interface_functions
+import database.database_queries as database_queries
 
 
 class Application(widgets.RootWindow):
@@ -27,7 +26,7 @@ class Application(widgets.RootWindow):
 		super().__init__("Web Scrapper", "800x400")
 
 		self.download_controller = download_controller
-		self.sort_function = sorting_functions.sort_manga_by_chapters_available
+		self.sort_function = _functions.sort_manga_by_chapters_available
 
 		# - Create attributes
 		self.table = None
@@ -82,7 +81,7 @@ class Application(widgets.RootWindow):
 	""" Creates the main table which is used to display the data queried from the database """
 	def create_table(self):
 		# - Variables
-		table_callbacks = {"Double-1": self.on_row_selected}
+		table_callbacks = {"<<TreeviewSelect>>": self.on_row_selected}
 
 		# - Frames
 		table_frame = tk.Frame(self)
@@ -125,7 +124,7 @@ class Application(widgets.RootWindow):
 			self.sort_function(query_results)
 
 		# Too long a function name
-		remove_zero = helper_functions.remove_trailing_zeros_if_zero
+		remove_zero = _functions.remove_trailing_zeros_if_zero
 
 		data = []
 		for row in query_results:
@@ -171,13 +170,13 @@ class Application(widgets.RootWindow):
 
 		self.search_btn.state(["disabled"])
 
-		self.current_search = scrapper_manganelo.Search(search_input)
+		self.current_search = web_scrapper.manganelo.Search(search_input)
 
 		# Create a new thread so it doesn't block the main thread
 		threading.Thread(target=self.current_search.start).start()
 
 		# Keep checking if the search is finished
-		interface_functions.callback_once_true(self, "finished", self.current_search, lambda: self.search_finished_callback())
+		_functions.callback_once_true(self, "finished", self.current_search, lambda: self.search_finished_callback())
 
 	def search_finished_callback(self):
 		self.search_btn.state(["!disabled"])
@@ -197,33 +196,29 @@ class Application(widgets.RootWindow):
 	""" Right click callbacks """
 
 	def sort_manga_by_title(self):
-		print(">>> Changing sort to 'Manga Title (asc)'")
-		self.sort_function = sorting_functions.sort_manga_by_title
+		self.sort_function = _functions.sort_manga_by_title
 		self.update_table()
 
 	def sort_manga_by_id(self):
-		print(">>> Changing sort to 'Manga ID (asc)'")
-		self.sort_function = sorting_functions.sort_manga_by_id
+		self.sort_function = _functions.sort_manga_by_id
 		self.update_table()
 
 	def sort_manga_by_latest_chapter(self):
-		print(">>> Changing sort to 'Latest Chapter (dsc)'")
-		self.sort_function = sorting_functions.sort_manga_by_latest_chapter
+		self.sort_function = _functions.sort_manga_by_latest_chapter
 		self.update_table()
 
 	def sort_manga_by_chapters_available(self):
-		print(">>> Changing sort to 'Chapters Available (dsc)'")
-		self.sort_function = sorting_functions.sort_manga_by_chapters_available
+		self.sort_function = _functions.sort_manga_by_chapters_available
 		self.update_table()
 
 	def open_manga_in_explorer(self):
 		row = self.table.one()
 
 		if row is not None:
-			interface_functions.open_manga_in_explorer(row[1])
+			_functions.open_manga_in_explorer(row[1])
 
 	def open_manga_in_browser(self):
 		row = self.table.one()
 
 		if row is not None:
-			interface_functions.open_manga_in_browser(row[4])
+			_functions.open_manga_in_browser(row[4])

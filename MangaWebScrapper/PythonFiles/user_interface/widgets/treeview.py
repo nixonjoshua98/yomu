@@ -17,7 +17,10 @@ class Treeview(ttk.Treeview):
         # Bind events to commands
         if isinstance(binds, dict):
             for k, v in binds.items():
-                self.bind(f"<{k}>", v)
+                try:
+                    self.bind(f"<{k}>", v)
+                except tk.TclError:
+                    self.bind(f"{k}", v)
 
         self.reset()
 

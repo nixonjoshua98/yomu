@@ -1,8 +1,11 @@
 import tkinter as tk
 import tkinter.ttk as ttk
+
+import _functions
+
+
 import database.database_queries as database_queries
 import user_interface.widgets as widgets
-import functions.helper_functions as helper_functions
 
 from database.database_models import Manga
 from database.database_enums import MangaStatusEnum
@@ -85,7 +88,7 @@ class MangaEditWindow(widgets.ChildWindow):
         row_frame = tk.Frame(self.root_frame)
         btn = ttk.Button(row_frame, text="Latest Chapter", command=self.latest_offline_callback)
 
-        default_val = functions.remove_trailing_zeros_if_zero(self.manga_data.chapters_read)
+        default_val = _functions.remove_trailing_zeros_if_zero(self.manga_data.chapters_read)
 
         tk.Label(row_frame, text="Chapters Read").pack(side=tk.LEFT, padx=5, fill=tk.X)
 
@@ -106,7 +109,7 @@ class MangaEditWindow(widgets.ChildWindow):
         row_frame.pack(fill=tk.X, pady=5)
 
     def undo_callback(self, event=None):
-        chapters_read = functions.remove_trailing_zeros_if_zero(self.manga_data.chapters_read)
+        chapters_read = _functions.remove_trailing_zeros_if_zero(self.manga_data.chapters_read)
 
         self.input_widgets["title"].set_text(self.manga_data.title)
         self.input_widgets["url"].set_text(self.manga_data.url)
@@ -117,12 +120,12 @@ class MangaEditWindow(widgets.ChildWindow):
         chapters_read = self.input_widgets["chapters_read"].get()
 
         # Checks before adding to the database
-        if not functions.is_float(chapters_read) or len(chapters_read) == 0:
+        if not _functions.is_float(chapters_read) or len(chapters_read) == 0:
             messagebox.showerror("Input Error", "Invalid input for field 'chapters_read'")
             return
 
         new_data = {
-            "title": functions.remove_nasty_chars(self.input_widgets["title"].get()),
+            "title": _functions.remove_nasty_chars(self.input_widgets["title"].get()),
             "url": self.input_widgets["url"].get(),
             "chapters_read": self.input_widgets["chapters_read"].get(),
             "status": MangaStatusEnum.str_to_int(self.input_widgets["status"].get())
@@ -145,6 +148,6 @@ class MangaEditWindow(widgets.ChildWindow):
             self.destroy()
 
     def latest_offline_callback(self, event=None):
-        remove_zero = functions.remove_trailing_zeros_if_zero
+        remove_zero = _functions.remove_trailing_zeros_if_zero
 
         self.input_widgets["chapters_read"].set_text(remove_zero(self.manga_data.latest_chapter))

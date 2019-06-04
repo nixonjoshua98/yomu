@@ -8,20 +8,18 @@ Py Version: 3.7.x
 
 def main():
 	import os
+	import web_scrapper
 
 	os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 	import user_interface.windows as windows
 	import database.database_alchemy as database_alchemy
-	import controllers.manga_download_controller as manga_download_controller
 
 	if database_alchemy.Database.create():
-		download_controller = manga_download_controller.MangaDownloadController()
 
-		# Mainloop blocks the main execution so things under od not run yet
-		windows.Application(download_controller).mainloop()
+		manga_download_controller = web_scrapper.WebScrapperController()
 
-		download_controller.running = False
+		windows.Application(manga_download_controller).mainloop()
 
 
 if __name__ == "__main__":

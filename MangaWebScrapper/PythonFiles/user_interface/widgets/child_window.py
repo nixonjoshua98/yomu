@@ -1,9 +1,5 @@
 import tkinter as tk
 
-# Sometimes messagebox cannot be imported
-# bringing it into the file 'as' a name fixes this issue
-from tkinter import messagebox as tkMsgBox
-
 
 class ChildWindow(tk.Toplevel):
     def __init__(self, title: str, resize: bool = True, geometry: str = None, destroy_on_exit: bool = True):

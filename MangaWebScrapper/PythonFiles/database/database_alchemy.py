@@ -1,4 +1,5 @@
 import sqlalchemy
+import os
 
 from .database_constants import *
 
@@ -14,14 +15,13 @@ class Database:
     session_factory = None
 
     @classmethod
-    def create(cls):
+    def create(cls) -> bool:
         from .database_models import Base
 
         # Create the database path if not already created
         os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
 
         if cls.engine is None:  # Create the engine with debug (echo) off
-            print(">>> DB engine created")
             cls.engine = sqlalchemy.create_engine(CON_STR, echo=False)
 
         """ Database session factory which will be used in the context manager
@@ -29,14 +29,12 @@ class Database:
         the session factory becomes invalid after each commit(?)
         """
         if cls.session_factory is None:
-            print(">>> DB session factory created")
-            cls.session_factory = sqlalchemy.orm.sessionmaker(
-                bind=cls.engine,
-                expire_on_commit=False,
-                )
+            cls.session_factory = sqlalchemy.orm.sessionmaker(bind=cls.engine, expire_on_commit=False)
 
         # Create or update all of the models which was created in <database_models> using <Base>
         Base.metadata.create_all(cls.engine)
+
+        return True
 
 
 class DatabaseSession:

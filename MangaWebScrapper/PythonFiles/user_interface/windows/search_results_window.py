@@ -1,10 +1,7 @@
 import tkinter as tk
-
-from tkinter import messagebox
-
 import user_interface.widgets as widgets
-
 import database.database_queries as database_queries
+from tkinter import messagebox
 
 
 class SearchResultsWindow(widgets.ChildWindow):
@@ -13,9 +10,7 @@ class SearchResultsWindow(widgets.ChildWindow):
 
 		self.callback = callback
 
-		table_callbacks = {
-			"Button-3": self.add_manga_to_database
-		}
+		table_callbacks = {"Button-3": self.add_manga_to_database}
 
 		# - Frames
 		table_frame = tk.Frame(self)
@@ -27,6 +22,7 @@ class SearchResultsWindow(widgets.ChildWindow):
 		table_frame.pack(expand=True, fill=tk.BOTH)
 		table.pack(expand=True, fill=tk.BOTH)
 
+		# Dict keep their order now (3.7.x)
 		table.populate(list(map(lambda r: list(r.values()), search_results)))
 
 	def add_manga_to_database(self, event=None):
@@ -40,15 +36,12 @@ class SearchResultsWindow(widgets.ChildWindow):
 				messagebox.showinfo(data["title"], "Row with the same title already exists in the database")
 
 			else:
-				if not messagebox.askyesno("Database", f"Are you sure you want to add '{data['title']}'"):
-					return
+				if messagebox.askyesno("Database", f"Are you sure you want to add '{data['title']}'"):
+					if database_queries.manga_insert_row(**data):
+						messagebox.showinfo("Database", data["title"] + " has been added")
 
-				if database_queries.manga_insert_row(**data):
-					messagebox.showinfo("Database", data["title"] + " has been added")
+						self.destroy()
+						self.callback()
 
-					self.destroy()
-
-					self.callback()
-
-				else:
-					messagebox.showinfo(data["title"], "Row failed to be added")
+					else:
+						messagebox.showinfo(data["title"], "Row failed to be added")

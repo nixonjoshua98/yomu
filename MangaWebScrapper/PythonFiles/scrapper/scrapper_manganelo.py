@@ -3,7 +3,6 @@ import shutil
 import PIL
 import os
 import tempfile
-import reportlab.pdfgen
 
 from .scrapper_constants import *
 from .scrapper_functions import *
@@ -11,7 +10,7 @@ from reportlab.pdfgen import canvas
 
 from bs4 import BeautifulSoup
 
-import functions.functions as functions
+import functions.helper_functions as helper_functions
 
 
 class Search(list):
@@ -94,7 +93,7 @@ class ChapterList(list):
             url = ele.find("a")["href"] if ele.find("a")["href"].startswith("http") else "http" + ele.find("a")["href"]
             num = url.split("chapter_")[-1]
 
-            self.append(result_named_tuple(functions.remove_trailing_zeros_if_zero(num), url))
+            self.append(result_named_tuple(helper_functions.remove_trailing_zeros_if_zero(num), url))
 
 
 class ChapterDownload:
@@ -111,7 +110,6 @@ class ChapterDownload:
 
         if len(self.image_urls) > 0:
             with tempfile.TemporaryDirectory() as temp_dir:
-                # print(f">>> Using '{temp_dir}'")
 
                 self.__download_images(temp_dir)
                 self.__create_pdf()
@@ -142,8 +140,7 @@ class ChapterDownload:
 
                     try:
                         shutil.copyfileobj(image_file.raw, f)
-                    except Exception as e:
-                        print(image_url, e, sep=" | ")
+                    except Exception as e:  # Too broad
                         """ Error """
                     else:
                         self.image_paths.append(image_path)

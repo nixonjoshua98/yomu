@@ -7,7 +7,7 @@ def send_request(url):
     try:
         page = requests.get(url, stream=True, timeout=5, headers=headers)
 
-    except Exception:
+    except Exception:  # Should narrow it down
         return None
 
     else:

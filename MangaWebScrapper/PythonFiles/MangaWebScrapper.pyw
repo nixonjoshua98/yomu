@@ -5,6 +5,7 @@ Email: nixonjoshua98@gmail.com
 Py Version: 3.7.x
 """
 
+
 def main():
 	import os
 
@@ -14,17 +15,14 @@ def main():
 	import database.database_alchemy as database_alchemy
 	import controllers.manga_download_controller as manga_download_controller
 
-	database_alchemy.Database.create()
+	if database_alchemy.Database.create():
+		download_controller = manga_download_controller.MangaDownloadController()
 
-	download_controller = manga_download_controller.MangaDownloadController()
+		# Mainloop blocks the main execution so things under od not run yet
+		windows.Application(download_controller).mainloop()
 
-	# Mainloop blocks the main execution so things under od not run yet
-	windows.Application(download_controller).mainloop()
-
-	download_controller.running = False
+		download_controller.running = False
 
 
 if __name__ == "__main__":
-	print("UPDATE SEARCH RESULTS RIGHT CLICK MENU")
-
 	main()

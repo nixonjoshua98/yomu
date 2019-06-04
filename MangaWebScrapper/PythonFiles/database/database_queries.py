@@ -1,7 +1,8 @@
 
 import database.database_models as database_models
 import database.database_alchemy as database_alchemy
-import database.database_functions as database_functions
+
+import functions.database_functions as database_functions
 
 
 class InvalidFields(Exception):
@@ -115,4 +116,4 @@ def manga_update_with_id(_id, **values):
 
 
 def manga_delete_with_id(_id):
-    _delete_where_equals(database_models.Manga, id=_id)
+    return _delete_where_equals(database_models.Manga, id=_id)

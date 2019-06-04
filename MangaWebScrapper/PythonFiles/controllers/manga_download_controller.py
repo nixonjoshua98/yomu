@@ -7,7 +7,7 @@ import collections
 import database.database_queries as database_queries
 import database.database_enums as database_enums
 import resources.constants as constants
-import database.database_functions as database_functions
+import functions.helper_functions as helper_functions
 import scrapper.scrapper_manganelo as scrapper_manganelo
 
 
@@ -32,7 +32,6 @@ class MangaDownloadController(threading.Thread):
     def database_gen(self):
         while self.running:
             status = list(e.value for e in database_enums.MangaStatusEnum if e.value <= 3)
-            status = (6,)
 
             data = database_queries.manga_select_all_in_status_list(status)
 
@@ -60,20 +59,16 @@ class MangaDownloadController(threading.Thread):
 
                     thread.start()
 
-            # print(f">>> Concurrent threads: {self.current_threads}")
-
             time.sleep(0.5)
 
     def download_thread(self, data):
-        # print(f">>> Checking '{data.title}'")
-
         chapter_list = scrapper_manganelo.ChapterList(data.url)
 
         chapter_list.start()
 
         for c in chapter_list:
             # Should be formatted before entering the database - just a double check
-            formatted_title = database_functions.remove_nasty_chars(data.title)
+            formatted_title = helper_functions.remove_nasty_chars(data.title)
 
             output_dir = os.path.join(constants.MANGA_DIR, formatted_title)
             file_name = f"{formatted_title} Chapter {c.chapter}.pdf"
@@ -82,15 +77,12 @@ class MangaDownloadController(threading.Thread):
             os.makedirs(output_dir, exist_ok=True)
 
             if not os.path.isfile(file_path):
-                # ...download chapter here
                 download = scrapper_manganelo.ChapterDownload(c.url, file_path)
 
                 download.start()
 
                 if download.success:
                     self.queue.append(self.result_named_tuple(title=formatted_title, chapter=c.chapter))
-                else:
-                    print(f">>> Failed to download - {formatted_title} {c.chapter}")
 
         if len(chapter_list) > 0:
             latest_chapter = max(chapter_list, key=operator.attrgetter("chapter"))

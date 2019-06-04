@@ -1,9 +1,8 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import database.database_queries as database_queries
-import database.database_functions as database_functions
 import user_interface.widgets as widgets
-import functions.functions as functions
+import functions.helper_functions as helper_functions
 
 from database.database_models import Manga
 from database.database_enums import MangaStatusEnum
@@ -123,7 +122,7 @@ class MangaEditWindow(widgets.ChildWindow):
             return
 
         new_data = {
-            "title": database_functions.remove_nasty_chars(self.input_widgets["title"].get()),
+            "title": functions.remove_nasty_chars(self.input_widgets["title"].get()),
             "url": self.input_widgets["url"].get(),
             "chapters_read": self.input_widgets["chapters_read"].get(),
             "status": MangaStatusEnum.str_to_int(self.input_widgets["status"].get())
@@ -146,8 +145,6 @@ class MangaEditWindow(widgets.ChildWindow):
             self.destroy()
 
     def latest_offline_callback(self, event=None):
-        # self.input_widgets["chapters_read"].set_text(functions.get_latest_offline_chapter(self.manga_data.title))
-
         remove_zero = functions.remove_trailing_zeros_if_zero
 
         self.input_widgets["chapters_read"].set_text(remove_zero(self.manga_data.latest_chapter))

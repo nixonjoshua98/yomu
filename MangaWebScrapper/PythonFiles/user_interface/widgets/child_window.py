@@ -31,8 +31,14 @@ class ChildWindow(tk.Toplevel):
         self.is_viewable = False
         self.withdraw()
 
-    def toggle_view(self):
-        if self.is_viewable:
-            self.hide_window()
-        else:
-            self.show_window()
+    def center_in_root(self, w, h):
+        master_x, master_y = self.master.winfo_x(), self.master.winfo_y()
+        master_w, master_h = self.master.winfo_width(), self.master.winfo_height()
+
+        win_x, win_y = self.winfo_x(), self.winfo_y()
+        win_w, win_h = w, h
+
+        center_x = master_x + (master_w // 2) - (win_w // 2)
+        center_y = master_y + (master_h // 2) - (win_h // 2)
+
+        self.geometry(f"{win_w}x{win_h}+{center_x}+{center_y}")

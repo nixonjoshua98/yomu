@@ -9,7 +9,10 @@ import user_interface.windows as windows
 import resources.constants as constants
 import database.database_queries as database_queries
 import scrapper.scrapper_manganelo as scrapper_manganelo
-import functions.functions as functions
+
+import functions.helper_functions as helper_functions
+import functions.sorting_functions as sorting_functions
+import functions.interface_functions as interface_functions
 
 
 class Application(widgets.RootWindow):
@@ -24,6 +27,7 @@ class Application(widgets.RootWindow):
 		super().__init__("Web Scrapper", "800x400")
 
 		self.download_controller = download_controller
+		self.sort_function = sorting_functions.sort_manga_by_chapters_available
 
 		# - Create attributes
 		self.table = None
@@ -31,7 +35,6 @@ class Application(widgets.RootWindow):
 		self.search_entry = None
 		self.search_btn = None
 		self.right_click = None
-		self.sort_function = functions.sort_manga_by_chapters_available  # Default
 		self.current_search = None
 
 		self.child_windows = {
@@ -45,6 +48,7 @@ class Application(widgets.RootWindow):
 		self.create_table()
 		self.create_right_click_menu()
 
+		# - Post the right click menu on right click at cursor x, y
 		self.table.bind("<Button-3>", lambda e: self.right_click.post(e.x_root, e.y_root))
 
 	"""
@@ -78,9 +82,7 @@ class Application(widgets.RootWindow):
 	""" Creates the main table which is used to display the data queried from the database """
 	def create_table(self):
 		# - Variables
-		table_callbacks = {
-			"Double-1": self.on_row_selected
-		}
+		table_callbacks = {"Double-1": self.on_row_selected}
 
 		# - Frames
 		table_frame = tk.Frame(self)
@@ -113,21 +115,21 @@ class Application(widgets.RootWindow):
 
 	""" Re-populate the table with the database results """
 	def update_table(self):
-		q = database_queries.manga_select_all_with_status(self.status_dropdown.get_index())
+		query_results = database_queries.manga_select_all_with_status(self.status_dropdown.get_index())
 
-		if q is None:
+		if query_results is None:
 			return
 
+		# Do sorting
 		if self.sort_function is not None:
-			q = self.sort_function(q)
+			self.sort_function(query_results)
 
 		# Too long a function name
-		remove_zero = functions.remove_trailing_zeros_if_zero
+		remove_zero = helper_functions.remove_trailing_zeros_if_zero
 
-		data = [
-			[row.id, row.title, remove_zero(row.chapters_read), remove_zero(row.latest_chapter), row.url]
-			for row in q
-		]
+		data = []
+		for row in query_results:
+			data.append((row.id, row.title, remove_zero(row.chapters_read), remove_zero(row.latest_chapter), row.url))
 
 		self.table.clear()
 		self.table.populate(data)
@@ -141,19 +143,13 @@ class Application(widgets.RootWindow):
 
 		db_row = database_queries.manga_select_one_with_id(row[0])
 
-		# Destroy the previous window (only have one open at one time)
-		if self.child_windows["edit_window"] is not None:
+		try:
 			self.child_windows["edit_window"].destroy()
-			self.child_windows["edit_window"] = None
+		except AttributeError:
+			""" Window is None (this is expected) """
 
-		# Create the new window
-		win = windows.MangaEditWindow(db_row, self.update_table)
-
-		# Centres the window in the middle of the main window
-		x, y, w, h = self.winfo_x(), self.winfo_y(), self.winfo_width(), self.winfo_height()
-		win.geometry(f"500x200+{x + (w//2) - 250}+{y + (h//2) - 100}")
-
-		self.child_windows["edit_window"] = win
+		self.child_windows["edit_window"] = windows.MangaEditWindow(db_row, self.update_table)
+		self.child_windows["edit_window"].center_in_root(500, 200)
 
 	""" Toggles the queue window between being visible and hidden """
 	def toggle_downloads_window(self, event=None):
@@ -161,14 +157,10 @@ class Application(widgets.RootWindow):
 		I only want one downloads window to be created """
 		if self.child_windows["downloads_window"] is None:
 			win = windows.DownloadsWindow(self.download_controller)
-
 			self.child_windows["downloads_window"] = win
 
 		self.child_windows["downloads_window"].show_window()
-
-		# Centres the window in the middle of the main window
-		x, y, w, h = self.winfo_x(), self.winfo_y(), self.winfo_width(), self.winfo_height()
-		self.child_windows["downloads_window"].geometry(f"500x300+{x + (w // 2) - 250}+{y + (h // 2) - 150}")
+		self.child_windows["downloads_window"].center_in_root(500, 300)
 
 	def search_btn_callback(self, event=None):
 		search_input = self.search_entry.get()
@@ -185,7 +177,7 @@ class Application(widgets.RootWindow):
 		threading.Thread(target=self.current_search.start).start()
 
 		# Keep checking if the search is finished
-		functions.callback_once_true(self, self.current_search, lambda: self.search_finished_callback())
+		interface_functions.callback_once_true(self, "finished", self.current_search, lambda: self.search_finished_callback())
 
 	def search_finished_callback(self):
 		self.search_btn.state(["!disabled"])
@@ -206,36 +198,32 @@ class Application(widgets.RootWindow):
 
 	def sort_manga_by_title(self):
 		print(">>> Changing sort to 'Manga Title (asc)'")
-		self.sort_function = functions.sort_manga_by_title
+		self.sort_function = sorting_functions.sort_manga_by_title
 		self.update_table()
 
 	def sort_manga_by_id(self):
 		print(">>> Changing sort to 'Manga ID (asc)'")
-		self.sort_function = functions.sort_manga_by_id
+		self.sort_function = sorting_functions.sort_manga_by_id
 		self.update_table()
 
 	def sort_manga_by_latest_chapter(self):
 		print(">>> Changing sort to 'Latest Chapter (dsc)'")
-		self.sort_function = functions.sort_manga_by_latest_chapter
+		self.sort_function = sorting_functions.sort_manga_by_latest_chapter
 		self.update_table()
 
 	def sort_manga_by_chapters_available(self):
 		print(">>> Changing sort to 'Chapters Available (dsc)'")
-		self.sort_function = functions.sort_manga_by_chapters_available
+		self.sort_function = sorting_functions.sort_manga_by_chapters_available
 		self.update_table()
 
 	def open_manga_in_explorer(self):
 		row = self.table.one()
 
-		if row is None:
-			return
-
-		functions.open_manga_in_explorer(row[1])
+		if row is not None:
+			interface_functions.open_manga_in_explorer(row[1])
 
 	def open_manga_in_browser(self):
 		row = self.table.one()
 
-		if row is None:
-			return
-
-		functions.open_manga_in_browser(row[4])
+		if row is not None:
+			interface_functions.open_manga_in_browser(row[4])

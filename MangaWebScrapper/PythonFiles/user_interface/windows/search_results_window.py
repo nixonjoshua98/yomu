@@ -1,8 +1,8 @@
 import functions
+import database.queries
 
 import tkinter as tk
 import user_interface.widgets as widgets
-import database.database_queries as database_queries
 from tkinter import messagebox
 
 
@@ -31,20 +31,20 @@ class SearchResultsWindow(widgets.ChildWindow):
 		row = event.widget.one()
 
 		if row is not None:
-			row_index = _functions.find_obj_with_attr("title", row[0], self.search_results)
+			row_index = functions.find_obj_with_attr("title", row[0], self.search_results)
 
 			title = self.search_results[row_index].title
 			url = self.search_results[row_index].url
 
 			# Check if already in database
-			if database_queries.manga_select_one_with_title(title):
+			if database.queries.manga_select_one_with_title(title):
 				messagebox.showinfo(title, "Row with the same title already exists in the database")
 
 			else:
 				data = {"title": title, "url": url}
 
 				if messagebox.askyesno("Database", f"Are you sure you want to add '{title}'"):
-					if database_queries.manga_insert_row(**data):
+					if database.queries.manga_insert_row(**data):
 						messagebox.showinfo("Database", title + " has been added")
 
 						self.destroy()

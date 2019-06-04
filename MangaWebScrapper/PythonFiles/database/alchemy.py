@@ -3,7 +3,7 @@ import os
 import constants
 
 
-class Database:
+class DatabaseFactory:
     """ Static class which creates and updates the database models, as well as storing a session factory
     for database connections """
 
@@ -15,7 +15,7 @@ class Database:
 
     @classmethod
     def create(cls) -> bool:
-        from .database_models import Base
+        from .models import Base
 
         # Create the database path if not already created
         os.makedirs(os.path.dirname(constants.DB_PATH), exist_ok=True)
@@ -39,11 +39,11 @@ class Database:
 class DatabaseSession:
     """ Context manager for connecting to the database """
     def __init__(self):
-        if Database.session_factory is None or Database.engine is None:
-            raise Database.DatabaseEngineError("Database session or engine has not been initialised yet")
+        if DatabaseFactory.session_factory is None or DatabaseFactory.engine is None:
+            raise DatabaseFactory.DatabaseEngineError("Database session or engine has not been initialised yet")
 
     def __enter__(self):
-        self.session = sqlalchemy.orm.scoped_session(Database.session_factory)
+        self.session = sqlalchemy.orm.scoped_session(DatabaseFactory.session_factory)
 
         return self.session
 

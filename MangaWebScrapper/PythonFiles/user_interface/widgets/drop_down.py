@@ -2,7 +2,7 @@ from tkinter import ttk
 
 
 class Dropdown(ttk.Combobox):
-    def __init__(self, master, values, command):
+    def __init__(self, master, values, command = None):
         super().__init__(master=master, state="readonly")
         
         self["values"] = values
@@ -25,7 +25,9 @@ class Dropdown(ttk.Combobox):
         # Stops the callback from being called if the value is the same previously
         if self.get() != self.prev_val:
             self.prev_val = self.get()
-            self.command()
+
+            if self.command is not None:
+                self.command()
 
     # Returns the index of the current value
     def get_index(self):

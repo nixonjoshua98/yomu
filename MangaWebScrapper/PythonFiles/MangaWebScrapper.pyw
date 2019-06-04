@@ -9,13 +9,13 @@ Py Version: 3.7.x
 def main():
 	import os
 	import web_scrapper
+	import database.alchemy
+
+	from user_interface import windows
 
 	os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-	import user_interface.windows as windows
-	import database.database_alchemy as database_alchemy
-
-	if database_alchemy.Database.create():
+	if database.alchemy.DatabaseFactory.create():
 
 		manga_download_controller = web_scrapper.WebScrapperController()
 

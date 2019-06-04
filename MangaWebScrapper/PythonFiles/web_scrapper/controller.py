@@ -5,7 +5,7 @@ import random
 
 from data_structures.queue import Queue
 
-import database.database_queries as database_queries
+import database.queries as database_queries
 
 from .worker import WebScrapperWorker
 

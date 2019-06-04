@@ -1,6 +1,6 @@
 
-import database.database_models as database_models
-import database.database_alchemy as database_alchemy
+import database.models
+import database.alchemy
 
 import functions
 
@@ -13,25 +13,25 @@ class InvalidFields(Exception):
 
 
 def _select_all_where_equals(table, **kwargs):
-    with database_alchemy.DatabaseSession() as session:
+    with database.alchemy.DatabaseSession() as session:
         query = session.query(table).filter_by(**kwargs).all()
     return query
 
 
 def _select_one_where_equals(table, **kwargs):
-    with database_alchemy.DatabaseSession() as session:
+    with database.alchemy.DatabaseSession() as session:
         query = session.query(table).filter_by(**kwargs).first()
     return query
 
 
 def _select_everything(table):
-    with database_alchemy.DatabaseSession() as session:
+    with database.alchemy.DatabaseSession() as session:
         query = session.query(table).all()
     return query
 
 
 def _select_all_in_list(table, field, ls):
-    with database_alchemy.DatabaseSession() as session:
+    with database.alchemy.DatabaseSession() as session:
         query = session.query(table).filter(field.in_(ls)).all()
     return query
 
@@ -45,7 +45,7 @@ def _insert_row_with_values(table, need_all_fields=False, **kwargs):
 
     completed = False
 
-    with database_alchemy.DatabaseSession() as session:
+    with database.alchemy.DatabaseSession() as session:
         row = table(**kwargs)
         session.add(row)
         completed = not completed
@@ -56,7 +56,7 @@ def _insert_row_with_values(table, need_all_fields=False, **kwargs):
 def _update_row_where_equals(table, old_row_values: dict, new_row_values: dict):
     completed = False
 
-    with database_alchemy.DatabaseSession() as session:
+    with database.alchemy.DatabaseSession() as session:
         row = session.query(table).filter_by(**old_row_values).first()
 
         if row is not None:
@@ -74,7 +74,7 @@ def _update_row_where_equals(table, old_row_values: dict, new_row_values: dict):
 def _delete_where_equals(table, **kwargs):
     completed = False
 
-    with database_alchemy.DatabaseSession() as session:
+    with database.alchemy.DatabaseSession() as session:
         row = session.query(table).filter_by(**kwargs).one()
 
         session.delete(row)
@@ -88,32 +88,32 @@ def _delete_where_equals(table, **kwargs):
 
 
 def manga_select_all_with_status(status):
-    return _select_all_where_equals(database_models.Manga, status=status)
+    return _select_all_where_equals(database.models.Manga, status=status)
 
 
 def manga_select_one_with_id(_id):
-    return _select_one_where_equals(database_models.Manga, id=_id)
+    return _select_one_where_equals(database.models.Manga, id=_id)
 
 
 def manga_select_one_with_title(title):
-    return _select_one_where_equals(database_models.Manga, title=title)
+    return _select_one_where_equals(database.models.Manga, title=title)
 
 
 def manga_select_all_rows():
-    return _select_everything(database_models.Manga)
+    return _select_everything(database.models.Manga)
 
 
 def manga_select_all_in_status_list(ls):
-    return _select_all_in_list(database_models.Manga, database_models.Manga.status, ls)
+    return _select_all_in_list(database.models.Manga, database.models.Manga.status, ls)
 
 
 def manga_insert_row(**values):
-    return _insert_row_with_values(database_models.Manga, need_all_fields=False, **values)
+    return _insert_row_with_values(database.models.Manga, need_all_fields=False, **values)
 
 
 def manga_update_with_id(_id, **values):
-    return _update_row_where_equals(database_models.Manga, {"id": _id}, values)
+    return _update_row_where_equals(database.models.Manga, {"id": _id}, values)
 
 
 def manga_delete_with_id(_id):
-    return _delete_where_equals(database_models.Manga, id=_id)
+    return _delete_where_equals(database.models.Manga, id=_id)

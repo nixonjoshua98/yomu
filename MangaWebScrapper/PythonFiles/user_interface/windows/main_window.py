@@ -7,11 +7,10 @@ import web_scrapper
 import functions
 import constants
 
+import database.queries
+
 import user_interface.widgets as widgets
 import user_interface.windows as windows
-
-
-import database.database_queries as database_queries
 
 
 class Application(widgets.RootWindow):
@@ -114,7 +113,7 @@ class Application(widgets.RootWindow):
 
 	""" Re-populate the table with the database results """
 	def update_table(self):
-		query_results = database_queries.manga_select_all_with_status(self.status_dropdown.get_index())
+		query_results = database.queries.manga_select_all_with_status(self.status_dropdown.get_index())
 
 		if query_results is None:
 			return
@@ -140,7 +139,7 @@ class Application(widgets.RootWindow):
 		if row is None:
 			return
 
-		db_row = database_queries.manga_select_one_with_id(row[0])
+		db_row = database.queries.manga_select_one_with_id(row[0])
 
 		try:
 			self.child_windows["edit_window"].destroy()
@@ -148,7 +147,7 @@ class Application(widgets.RootWindow):
 			""" Window is None (this is expected) """
 
 		self.child_windows["edit_window"] = windows.MangaEditWindow(db_row, self.update_table)
-		self.child_windows["edit_window"].center_in_root(500, 200)
+		self.child_windows["edit_window"].center_in_root(500, 300)
 
 	""" Toggles the queue window between being visible and hidden """
 	def toggle_downloads_window(self, event=None):

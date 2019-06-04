@@ -1,4 +1,4 @@
-from database.database_enums import MangaStatusEnum
+import database.enums
 
 # - Manganelo constants
 
@@ -22,6 +22,6 @@ DB_CON_STR = "sqlite:///" + DB_PATH
 
 # - Interface constants
 
-MANGA_STATUS = [e.prettify() for e in MangaStatusEnum]
+MANGA_STATUS = [e.prettify() for e in database.enums.MangaStatusEnum]
 
 # -

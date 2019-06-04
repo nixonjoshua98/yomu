@@ -27,7 +27,7 @@ class Search(list):
 
 		self.__soup = None
 		self.finished = False
-		self.search_url = _functions.create_manganelo_search_url(title)
+		self.search_url = functions.create_manganelo_search_url(title)
 
 	def start(self):
 		self.__get_soup()
@@ -38,7 +38,7 @@ class Search(list):
 		self.finished = True
 
 	def __get_soup(self):
-		page = _functions.send_request(self.search_url)
+		page = functions.send_request(self.search_url)
 
 		if page:
 			try:
@@ -142,14 +142,14 @@ class ChapterDownload:
 			image_ext = image_url.split(".")[-1]
 			image_dst_path = os.path.join(temp_save_dir, f"{i}.{image_ext}")
 
-			if _functions.copy_file_url_to_file(image_url, image_dst_path):
+			if functions.copy_file_url_to_file(image_url, image_dst_path):
 				self.image_paths.append(image_dst_path)
 
 	def __create_pdf(self):
 		pdf = canvas.Canvas(self.dst_path)
 
 		for image in self.image_paths:
-			image_size = _functions.get_image_dimensions(image)
+			image_size = functions.get_image_dimensions(image)
 
 			if image_size is not None:
 				pdf.setPageSize((image_size.width, image_size.height))

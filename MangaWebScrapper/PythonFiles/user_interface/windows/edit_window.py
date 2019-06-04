@@ -5,16 +5,15 @@ from tkinter import messagebox
 
 import functions
 import constants
+import database.enums
+import database.queries
 
-import database.database_queries as database_queries
 import user_interface.widgets as widgets
-
-from database.database_enums import MangaStatusEnum
 
 
 class MangaEditWindow(widgets.ChildWindow):
     def __init__(self, manga_data, success_callback):
-        super().__init__(manga_data.title, resize=True, destroy_on_exit=True)
+        super().__init__(manga_data.title, resize=False, destroy_on_exit=True)
 
         self.manga_data = manga_data
         self.input_widgets = {}
@@ -26,20 +25,21 @@ class MangaEditWindow(widgets.ChildWindow):
         self.create_field_inputs()
 
         # - Default Buttons
-        confirm_btn = ttk.Button(self.root_frame, text="Confirm", command=self.confirm_callback)
-        undo_btn = ttk.Button(self.root_frame, text="Undo", command=self.undo_callback)
-        delete_btn = ttk.Button(self.root_frame, text="Delete", command=self.delete_callback)
+        ttk.Button(self.root_frame, text="Confirm", command=self.confirm_callback)\
+            .pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
 
-        # - Placements
+        ttk.Button(self.root_frame, text="Undo", command=self.undo_callback)\
+            .pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
+
+        ttk.Button(self.root_frame, text="Delete", command=self.delete_callback)\
+            .pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
+
         self.root_frame.pack(fill=tk.X)
-        confirm_btn.pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
-        undo_btn.pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
-        delete_btn.pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
 
     def create_dropdown(self, widget_key, label_text, initial_index, values) -> widgets.Dropdown:
         lbl_frame = tk.Frame(self.root_frame)
         drop_frame = tk.Frame(self.root_frame)
-        dropdown = widgets.Dropdown(drop_frame, values, lambda: print())
+        dropdown = widgets.Dropdown(drop_frame, values)
 
         tk.Label(lbl_frame, text=label_text).pack(side=tk.LEFT, fill=tk.X)
 
@@ -83,7 +83,7 @@ class MangaEditWindow(widgets.ChildWindow):
 
         ttk.Button(frame, text="Latest Chapter", command=self.latest_offline_callback).pack(side=tk.RIGHT, padx=5)
 
-        initial_index = MangaStatusEnum(self.manga_data.status).value
+        initial_index = database.enums.MangaStatusEnum(self.manga_data.status).value
 
         self.create_dropdown("status", "Status", initial_index, constants.MANGA_STATUS)
 
@@ -93,7 +93,7 @@ class MangaEditWindow(widgets.ChildWindow):
         self.input_widgets["title"].set_text(self.manga_data.title)
         self.input_widgets["url"].set_text(self.manga_data.url)
         self.input_widgets["chapters_read"].set_text(chapters_read)
-        self.input_widgets["status"].current(MangaStatusEnum(self.manga_data.status).value)
+        self.input_widgets["status"].current(database.enums.MangaStatusEnum(self.manga_data.status).value)
 
     def confirm_callback(self, event=None):
         chapters_read = self.input_widgets["chapters_read"].get()
@@ -107,10 +107,10 @@ class MangaEditWindow(widgets.ChildWindow):
             "title": functions.remove_nasty_chars(self.input_widgets["title"].get()),
             "url": self.input_widgets["url"].get(),
             "chapters_read": self.input_widgets["chapters_read"].get(),
-            "status": MangaStatusEnum.str_to_int(self.input_widgets["status"].get())
+            "status": database.enums.MangaStatusEnum.str_to_int(self.input_widgets["status"].get())
         }
 
-        row_updated = database_queries.manga_update_with_id(self.manga_data.id, **new_data)
+        row_updated = database.queries.manga_update_with_id(self.manga_data.id, **new_data)
 
         if not row_updated:
             messagebox.showerror("Database Error", "Row failed to update")
@@ -121,7 +121,7 @@ class MangaEditWindow(widgets.ChildWindow):
 
     def delete_callback(self):
         if messagebox.askyesno("Delete Row", f"Remove {self.manga_data.title} from database?"):
-            database_queries.manga_delete_with_id(self.manga_data.id)
+            database.queries.manga_delete_with_id(self.manga_data.id)
 
             self.callback()
             self.destroy()

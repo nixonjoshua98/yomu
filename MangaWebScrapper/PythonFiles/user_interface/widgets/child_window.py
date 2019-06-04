@@ -31,7 +31,6 @@ class ChildWindow(tk.Toplevel):
         master_x, master_y = self.master.winfo_x(), self.master.winfo_y()
         master_w, master_h = self.master.winfo_width(), self.master.winfo_height()
 
-        win_x, win_y = self.winfo_x(), self.winfo_y()
         win_w, win_h = w, h
 
         center_x = master_x + (master_w // 2) - (win_w // 2)

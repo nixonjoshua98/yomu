@@ -6,7 +6,6 @@ from sqlalchemy import (
     String,
     Sequence,
     Float,
-    Boolean
     )
 
 Base = sqlalchemy.ext.declarative.declarative_base()

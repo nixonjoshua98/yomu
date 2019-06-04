@@ -2,7 +2,7 @@
 import database.database_models as database_models
 import database.database_alchemy as database_alchemy
 
-import _functions
+import functions
 
 
 class InvalidFields(Exception):
@@ -37,10 +37,10 @@ def _select_all_in_list(table, field, ls):
 
 
 def _insert_row_with_values(table, need_all_fields=False, **kwargs):
-    if need_all_fields and not _functions.all_fields_have_value(table, kwargs.keys()):
+    if need_all_fields and not functions.all_fields_have_value(table, kwargs.keys()):
         return False
 
-    elif not _functions.can_make_row(table, **kwargs):
+    elif not functions.can_make_row(table, **kwargs):
         return False
 
     completed = False
@@ -61,7 +61,7 @@ def _update_row_where_equals(table, old_row_values: dict, new_row_values: dict):
 
         if row is not None:
             # Could be put into a map operation
-            for k in _functions.get_non_pk_fields(table):
+            for k in functions.get_non_pk_fields(table):
                 # If a new value is present
                 if new_row_values.get(k, None) is not None:
                     setattr(row, k, new_row_values[k])

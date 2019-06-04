@@ -1,4 +1,4 @@
-import _functions
+import functions
 
 import tkinter as tk
 import user_interface.widgets as widgets

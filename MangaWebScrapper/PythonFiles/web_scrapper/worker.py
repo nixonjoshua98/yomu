@@ -1,7 +1,7 @@
 import os
 import threading
 import dataclasses
-import _functions
+import functions
 
 from . import manganelo
 
@@ -26,9 +26,9 @@ class WebScrapperWorker(threading.Thread):
 		chapter_list.start()
 
 		for c in chapter_list:
-			formatted_title = _functions.remove_nasty_chars(self.data.title)
+			formatted_title = functions.remove_nasty_chars(self.data.title)
 
-			file_path = _functions.get_chapter_save_location(formatted_title, c.chapter_num)
+			file_path = functions.get_chapter_save_location(formatted_title, c.chapter_num)
 
 			os.makedirs(os.path.dirname(file_path), exist_ok=True)
 

@@ -1,7 +1,6 @@
 import sqlalchemy
 import os
-
-from .database_constants import *
+import constants
 
 
 class Database:
@@ -19,10 +18,10 @@ class Database:
         from .database_models import Base
 
         # Create the database path if not already created
-        os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+        os.makedirs(os.path.dirname(constants.DB_PATH), exist_ok=True)
 
         if cls.engine is None:  # Create the engine with debug (echo) off
-            cls.engine = sqlalchemy.create_engine(CON_STR, echo=False)
+            cls.engine = sqlalchemy.create_engine(constants.DB_CON_STR, echo=False)
 
         """ Database session factory which will be used in the context manager
         to connect to the database, <expire_on_commit> must be set to False otherwise

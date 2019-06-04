@@ -4,7 +4,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 
 import web_scrapper
-import _functions
+import functions
 import constants
 
 import user_interface.widgets as widgets
@@ -26,7 +26,7 @@ class Application(widgets.RootWindow):
 		super().__init__("Web Scrapper", "800x400")
 
 		self.download_controller = download_controller
-		self.sort_function = _functions.sort_manga_by_chapters_available
+		self.sort_function = functions.sort_manga_by_chapters_available
 
 		# - Create attributes
 		self.table = None
@@ -124,7 +124,7 @@ class Application(widgets.RootWindow):
 			self.sort_function(query_results)
 
 		# Too long a function name
-		remove_zero = _functions.remove_trailing_zeros_if_zero
+		remove_zero = functions.remove_trailing_zeros_if_zero
 
 		data = []
 		for row in query_results:
@@ -176,7 +176,7 @@ class Application(widgets.RootWindow):
 		threading.Thread(target=self.current_search.start).start()
 
 		# Keep checking if the search is finished
-		_functions.callback_once_true(self, "finished", self.current_search, lambda: self.search_finished_callback())
+		functions.callback_once_true(self, "finished", self.current_search, lambda: self.search_finished_callback())
 
 	def search_finished_callback(self):
 		self.search_btn.state(["!disabled"])
@@ -196,29 +196,29 @@ class Application(widgets.RootWindow):
 	""" Right click callbacks """
 
 	def sort_manga_by_title(self):
-		self.sort_function = _functions.sort_manga_by_title
+		self.sort_function = functions.sort_manga_by_title
 		self.update_table()
 
 	def sort_manga_by_id(self):
-		self.sort_function = _functions.sort_manga_by_id
+		self.sort_function = functions.sort_manga_by_id
 		self.update_table()
 
 	def sort_manga_by_latest_chapter(self):
-		self.sort_function = _functions.sort_manga_by_latest_chapter
+		self.sort_function = functions.sort_manga_by_latest_chapter
 		self.update_table()
 
 	def sort_manga_by_chapters_available(self):
-		self.sort_function = _functions.sort_manga_by_chapters_available
+		self.sort_function = functions.sort_manga_by_chapters_available
 		self.update_table()
 
 	def open_manga_in_explorer(self):
 		row = self.table.one()
 
 		if row is not None:
-			_functions.open_manga_in_explorer(row[1])
+			functions.open_manga_in_explorer(row[1])
 
 	def open_manga_in_browser(self):
 		row = self.table.one()
 
 		if row is not None:
-			_functions.open_manga_in_browser(row[4])
+			functions.open_manga_in_browser(row[4])

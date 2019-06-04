@@ -1,19 +1,19 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 
-import _functions
+from tkinter import messagebox
 
+import functions
+import constants
 
 import database.database_queries as database_queries
 import user_interface.widgets as widgets
 
-from database.database_models import Manga
 from database.database_enums import MangaStatusEnum
-from tkinter import messagebox
 
 
 class MangaEditWindow(widgets.ChildWindow):
-    def __init__(self, manga_data: Manga, success_callback):
+    def __init__(self, manga_data, success_callback):
         super().__init__(manga_data.title, resize=True, destroy_on_exit=True)
 
         self.manga_data = manga_data
@@ -36,80 +36,59 @@ class MangaEditWindow(widgets.ChildWindow):
         undo_btn.pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
         delete_btn.pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
 
-    def create_entry(self, parent, default_text, disabled=False) -> widgets.EntryField:
-        entry = widgets.EntryField(parent)
-        entry.set_text(default_text)
+    def create_dropdown(self, widget_key, label_text, initial_index, values) -> widgets.Dropdown:
+        lbl_frame = tk.Frame(self.root_frame)
+        drop_frame = tk.Frame(self.root_frame)
+        dropdown = widgets.Dropdown(drop_frame, values, lambda: print())
+
+        tk.Label(lbl_frame, text=label_text).pack(side=tk.LEFT, fill=tk.X)
+
+        dropdown.current(initial_index)
+
+        self.input_widgets[widget_key] = dropdown
+
+        lbl_frame.pack(fill=tk.X, pady=5)
+        drop_frame.pack(fill=tk.X)
+        dropdown.pack(side=tk.RIGHT, fill=tk.X, padx=5, expand=True)
+
+    def create_entry(self, widget_key, label_text, initial_val, disabled) -> tk.Frame:
+        lbl_frame = tk.Frame(self.root_frame)
+        entry_frame = tk.Frame(self.root_frame)
+        entry = widgets.EntryField(entry_frame)
+
+        entry.set_text(initial_val)
 
         if disabled:
             entry.state(["disabled"])
 
+        tk.Label(lbl_frame, text=label_text).pack(side=tk.LEFT, fill=tk.X)
+
+        self.input_widgets[widget_key] = entry
+
+        lbl_frame.pack(fill=tk.X, pady=5)
+        entry_frame.pack(fill=tk.X)
         entry.pack(side=tk.LEFT, fill=tk.X, padx=5, expand=True)
 
-        return entry
-
-    def create_dropdown(self, parent, values, initial_value_index) -> widgets.Dropdown:
-        dropdown = widgets.Dropdown(parent, values, lambda: print())
-
-        dropdown.current(initial_value_index)
-
-        dropdown.pack(side=tk.RIGHT, fill=tk.X, padx=5, expand=True)
-
-        return dropdown
+        return entry_frame
 
     def create_field_inputs(self):
-        # - ID (PK)
-        row_frame = tk.Frame(self.root_frame)
+        # key, text, initial_val, disabled
+        self.create_entry("id", "Manga ID", self.manga_data.id, True)
+        self.create_entry("title", "Title", self.manga_data.title, True)
+        self.create_entry("url", "Menu URL", self.manga_data.url, False)
 
-        tk.Label(row_frame, text="Manga ID").pack(side=tk.LEFT, padx=5, fill=tk.X)
+        default_val = functions.remove_trailing_zeros_if_zero(self.manga_data.chapters_read)
 
-        self.input_widgets["id"] = self.create_entry(row_frame, self.manga_data.id, disabled=True)
+        frame = self.create_entry("chapters_read", "Chapters Read", default_val, False)
 
-        row_frame.pack(fill=tk.X, pady=5)
+        ttk.Button(frame, text="Latest Chapter", command=self.latest_offline_callback).pack(side=tk.RIGHT, padx=5)
 
-        # - Title
-        row_frame = tk.Frame(self.root_frame)
+        initial_index = MangaStatusEnum(self.manga_data.status).value
 
-        tk.Label(row_frame, text="Title").pack(side=tk.LEFT, padx=5, fill=tk.X)
-
-        self.input_widgets["title"] = self.create_entry(row_frame, self.manga_data.title, disabled=True)
-
-        row_frame.pack(fill=tk.X, pady=5)
-
-        # - Menu URL
-        row_frame = tk.Frame(self.root_frame)
-
-        tk.Label(row_frame, text="Menu URL").pack(side=tk.LEFT, padx=5, fill=tk.X)
-
-        self.input_widgets["url"] = self.create_entry(row_frame, self.manga_data.url)
-
-        row_frame.pack(fill=tk.X, pady=5)
-
-        # - Chapters Read
-        row_frame = tk.Frame(self.root_frame)
-        btn = ttk.Button(row_frame, text="Latest Chapter", command=self.latest_offline_callback)
-
-        default_val = _functions.remove_trailing_zeros_if_zero(self.manga_data.chapters_read)
-
-        tk.Label(row_frame, text="Chapters Read").pack(side=tk.LEFT, padx=5, fill=tk.X)
-
-        self.input_widgets["chapters_read"] = self.create_entry(row_frame, default_val)
-
-        btn.pack(side=tk.LEFT, padx=5)
-        row_frame.pack(fill=tk.X, pady=5)
-
-        # - Manga Status
-        row_frame = tk.Frame(self.root_frame)
-        tk.Label(row_frame, text="Status").pack(side=tk.LEFT, padx=5, fill=tk.X)
-
-        initial_val_index = MangaStatusEnum(self.manga_data.status).value
-        all_values = [e.prettify() for e in MangaStatusEnum]
-
-        self.input_widgets["status"] = self.create_dropdown(row_frame, all_values, initial_val_index)
-
-        row_frame.pack(fill=tk.X, pady=5)
+        self.create_dropdown("status", "Status", initial_index, constants.MANGA_STATUS)
 
     def undo_callback(self, event=None):
-        chapters_read = _functions.remove_trailing_zeros_if_zero(self.manga_data.chapters_read)
+        chapters_read = functions.remove_trailing_zeros_if_zero(self.manga_data.chapters_read)
 
         self.input_widgets["title"].set_text(self.manga_data.title)
         self.input_widgets["url"].set_text(self.manga_data.url)
@@ -120,12 +99,12 @@ class MangaEditWindow(widgets.ChildWindow):
         chapters_read = self.input_widgets["chapters_read"].get()
 
         # Checks before adding to the database
-        if not _functions.is_float(chapters_read) or len(chapters_read) == 0:
+        if not functions.is_float(chapters_read) or len(chapters_read) == 0:
             messagebox.showerror("Input Error", "Invalid input for field 'chapters_read'")
             return
 
         new_data = {
-            "title": _functions.remove_nasty_chars(self.input_widgets["title"].get()),
+            "title": functions.remove_nasty_chars(self.input_widgets["title"].get()),
             "url": self.input_widgets["url"].get(),
             "chapters_read": self.input_widgets["chapters_read"].get(),
             "status": MangaStatusEnum.str_to_int(self.input_widgets["status"].get())
@@ -148,6 +127,6 @@ class MangaEditWindow(widgets.ChildWindow):
             self.destroy()
 
     def latest_offline_callback(self, event=None):
-        remove_zero = _functions.remove_trailing_zeros_if_zero
+        remove_zero = functions.remove_trailing_zeros_if_zero
 
         self.input_widgets["chapters_read"].set_text(remove_zero(self.manga_data.latest_chapter))

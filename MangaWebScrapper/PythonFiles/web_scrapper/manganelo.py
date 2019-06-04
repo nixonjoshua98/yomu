@@ -1,4 +1,4 @@
-import _functions
+import functions
 import dataclasses
 import requests
 import tempfile
@@ -81,7 +81,7 @@ class ChapterList(list):
 			self.__get_results()
 
 	def __get_soup(self):
-		page = _functions.send_request(self.url)
+		page = functions.send_request(self.url)
 
 		if page:
 			try:
@@ -124,7 +124,7 @@ class ChapterDownload:
 				self.__create_pdf()
 
 	def __get_image_urls(self):
-		page = _functions.send_request(self.src_url)
+		page = functions.send_request(self.src_url)
 
 		if page:
 			try:

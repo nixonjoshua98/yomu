@@ -16,7 +16,7 @@ def database_generator(status_list):
 	while True:
 		data = database_queries.manga_select_all_in_status_list(status_list)
 
-		# random.shuffle(data)
+		random.shuffle(data)
 
 		for c in data:
 			yield c
@@ -29,7 +29,7 @@ class WebScrapperController(threading.Thread):
 		self.queue = Queue()
 
 		self.total_threads = 0
-		self.max_threads = 1
+		self.max_threads = 5
 
 		self.ids_downloading = []
 

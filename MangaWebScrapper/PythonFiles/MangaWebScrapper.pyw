@@ -10,8 +10,7 @@ def main():
 	import os
 	import web_scrapper
 	import database.alchemy
-
-	from user_interface import windows
+	import user_interface.windows
 
 	os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
@@ -19,7 +18,7 @@ def main():
 
 		manga_download_controller = web_scrapper.WebScrapperController()
 
-		windows.Application(manga_download_controller).mainloop()
+		user_interface.windows.Application(manga_download_controller).mainloop()
 
 
 if __name__ == "__main__":

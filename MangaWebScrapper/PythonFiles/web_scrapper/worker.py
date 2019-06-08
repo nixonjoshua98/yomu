@@ -24,7 +24,11 @@ class WebScrapperWorker(threading.Thread):
 
 		chapter_list.start()
 
+		print("Gotten chapters")
+
 		for c in reversed(chapter_list.results):
+			print(c.chapter_num)
+
 			formatted_title = functions.remove_nasty_chars(self.data.title)
 
 			file_path = functions.get_chapter_save_location(formatted_title, c.chapter_num)

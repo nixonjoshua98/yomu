@@ -19,6 +19,7 @@ class SearchResultsWindow(user_interface.widgets.ChildWindow):
 		notebook = ttk.Notebook(self)
 
 		for k, v in self.search_results.items():
+			# k - enum, v - Search
 			table_callbacks = {"Button-3": ft.partial(self.add_manga_to_database, k)}
 
 			frame = tk.Frame(self)
@@ -26,7 +27,7 @@ class SearchResultsWindow(user_interface.widgets.ChildWindow):
 
 			table.pack(expand=True, fill=tk.BOTH)
 
-			notebook.add(frame, text=k.title())
+			notebook.add(frame, text=k.prettify())
 
 			table.populate(list(map(lambda r: (r.title, r.desc), v)))
 

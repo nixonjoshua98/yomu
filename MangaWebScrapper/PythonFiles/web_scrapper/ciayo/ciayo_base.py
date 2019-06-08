@@ -11,28 +11,28 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 class CiayoBase:
-	def __init__(self):
-		self.url = None
+	def __init__(self, url: str):
+		self.url = url
 		self.popup_paths = []
 		self.results = []
+		self.browser = None
 		self.finished = False
 
 	def start(self):
-		if self._setup():
-			if self._remove_popup_models():
+		if self.setup():
+			if self.remove_popup_models():
 
 				self.browser.get(self.url)
 
-				self._extract()
+				self.extract()
 
 		self.finished = True
 
 		self.browser.quit()
 
-	def _setup(self) -> bool:
+	def setup(self) -> bool:
 		chrome_options = Options()
 		chrome_options.headless = True
-		# chrome_options.add_experimental_option("detach", True)
 
 		self.browser = Chrome(constants.CHROME_DRIVER_PATH, options=chrome_options)
 
@@ -40,13 +40,12 @@ class CiayoBase:
 
 		return True
 
-	def _remove_popup_models(self) -> bool:
+	def remove_popup_models(self) -> bool:
 		for p in self.popup_paths:
 			try:
 				wait = WebDriverWait(self.browser, 5)
 
-				ele = wait.until(
-					EC.presence_of_element_located((By.XPATH, p)))
+				ele = wait.until(EC.presence_of_element_located((By.XPATH, p)))
 
 			except selenium.common.exceptions.TimeoutException:
 				return False
@@ -62,7 +61,7 @@ class CiayoBase:
 
 		return True
 
-	def _scroll_to_bottom(self, scroll_delay=0.5):
+	def scroll_to_bottom(self, scroll_delay=0.5):
 		last_height = self.browser.execute_script("return document.body.scrollHeight")
 
 		while True:
@@ -77,4 +76,4 @@ class CiayoBase:
 
 			last_height = new_height
 
-	def _extract(self): ...
+	def extract(self): ...

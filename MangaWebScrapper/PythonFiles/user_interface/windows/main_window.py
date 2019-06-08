@@ -3,7 +3,6 @@ import threading
 import tkinter as tk
 import tkinter.ttk as ttk
 
-import web_scrapper
 import functions
 import constants
 
@@ -11,6 +10,8 @@ import database.queries
 
 import user_interface.widgets as widgets
 import user_interface.windows as windows
+
+import web_scrapper.enum2module
 
 
 class Application(widgets.RootWindow):
@@ -34,10 +35,7 @@ class Application(widgets.RootWindow):
 		self.search_btn = None
 		self.right_click = None
 
-		self.current_searchs = {
-			"manganelo": web_scrapper.manganelo.Search,
-			"ciayo": web_scrapper.ciayo.Search
-		}
+		self.current_searches = {**web_scrapper.enum2module.MODULE_TABLE}
 
 		self.child_windows = {
 			"edit_window": None,
@@ -174,26 +172,23 @@ class Application(widgets.RootWindow):
 		self.search_btn.state(["disabled"])
 
 		# Create a new thread so it doesn't block the main thread
-		for k, search_class in self.current_searchs.items():
-			try:
-				new_search = search_class(search_input)
-			except TypeError:
-				new_search = type(search_class)(search_input)
+		for k, module in self.current_searches.items():
+			new_search = web_scrapper.enum2module.MODULE_TABLE[k].Search(search_input)
 
-			self.current_searchs[k] = new_search
+			self.current_searches[k] = new_search
 
-			threading.Thread(target=self.current_searchs[k].start).start()
+			threading.Thread(target=self.current_searches[k].start).start()
 
 			functions.callback_once_true(self, "finished", new_search, lambda: self.search_finished_callback())
 
 	def search_finished_callback(self):
 		# Not all searches have finished
-		if not all(map(lambda s: s.finished, list(self.current_searchs.values()))):
+		if not all(map(lambda s: s.finished, list(self.current_searches.values()))):
 			return
 
 		self.search_btn.state(["!disabled"])
 
-		search_results = {k: v.results for k, v in self.current_searchs.items()}
+		search_results = {k: v.results for k, v in self.current_searches.items()}
 
 		win = windows.SearchResultsWindow(search_results, ("Title", "Description"), self.update_table)
 		win.geometry(self.geometry())

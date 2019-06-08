@@ -1,12 +1,7 @@
 import functions
 import requests
-import tempfile
-import os
-
-from . import _dataclasses
 
 from bs4 import BeautifulSoup
-from reportlab.pdfgen import canvas
 
 
 class ManganeloBase:

@@ -49,7 +49,7 @@ class ChapterList(CiayoBase):
 		self.url = url
 
 	def _extract(self):
-		self._scroll_to_bottom()
+		self._scroll_to_bottom(1.0)
 
 		for c in self.browser.find_elements_by_class_name("comicEpisodeList-item"):
 			chapter = _dataclasses.MangaChapter()

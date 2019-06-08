@@ -40,7 +40,7 @@ class WebScrapperWorker(threading.Thread):
 
 		chapter_list.start()
 
-		for c in chapter_list:
+		for c in chapter_list.results:
 			formatted_title = functions.remove_nasty_chars(self.data.title)
 
 			file_path = functions.get_chapter_save_location(formatted_title, c.chapter_num)
@@ -56,8 +56,8 @@ class WebScrapperWorker(threading.Thread):
 					self.queue.append(DownloadQueueRow(title=formatted_title, chapter=c.chapter_num))
 
 		# Update the latest chapter in the database
-		if len(chapter_list) > 0:
-			latest_chapter = max(chapter_list, key=operator.attrgetter("chapter_num"))
+		if len(chapter_list.results) > 0:
+			latest_chapter = max(chapter_list.results, key=operator.attrgetter("chapter_num"))
 
 			# Update the latest chapter (Previously read from directory which is very slow)
 			if latest_chapter.chapter_num > self.data.latest_chapter:

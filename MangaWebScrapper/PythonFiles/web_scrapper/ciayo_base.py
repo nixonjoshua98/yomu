@@ -1,5 +1,4 @@
 import constants
-import functions
 import time
 
 import selenium.common.exceptions

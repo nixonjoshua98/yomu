@@ -4,42 +4,20 @@ import tempfile
 import os
 
 from . import _dataclasses
+from .manganelo_base import ManganeloBase
 
 from bs4 import BeautifulSoup
 from reportlab.pdfgen import canvas
 
 
-class Search():
+class Search(ManganeloBase):
 	def __init__(self, title):
-		super().__init__()
+		super().__init__("panel_story_list", "story_item")
 
-		self.results = []
-		self.__soup = None
-		self.finished = False
-		self.search_url = functions.create_manganelo_search_url(title)
+		self.url = functions.create_manganelo_search_url(title)
 
-	def start(self):
-		self.__get_soup()
-
-		if self.__soup is not None:
-			self.__get_results()
-
-		self.finished = True
-
-	def __get_soup(self):
-		page = functions.send_request(self.search_url)
-
-		if page:
-			try:
-				soup = BeautifulSoup(page.content, "html.parser")
-
-				self.__soup = soup.find(class_="panel_story_list").find_all(class_="story_item")
-
-			except (AttributeError, requests.ConnectionError):
-				self.__soup = None
-
-	def __get_results(self):
-		for i, ele in enumerate(self.__soup):
+	def _extract(self):
+		for i, ele in enumerate(self.soup):
 			story_name = ele.find(class_="story_name").find(href=True)
 			story_chap = ele.find(class_="story_chapter").find(href=True)
 
@@ -55,34 +33,14 @@ class Search():
 			self.results.append(row)
 
 
-class ChapterList(list):
+class ChapterList(ManganeloBase):
 	def __init__(self, url: str):
-		super().__init__()
+		super().__init__("chapter-list", "row")
 
 		self.url = url
 
-		self.__soup = None
-
-	def start(self):
-		self.__get_soup()
-
-		if self.__soup is not None:
-			self.__get_results()
-
-	def __get_soup(self):
-		page = functions.send_request(self.url)
-
-		if page:
-			try:
-				soup = BeautifulSoup(page.content, "html.parser")
-
-				self.__soup = soup.find(class_="chapter-list").findAll(class_="row")
-
-			except (AttributeError, requests.ConnectionError):
-				self.__soup = None
-
-	def __get_results(self):
-		for i, ele in enumerate(reversed(self.__soup)):
+	def _extract(self):
+		for i, ele in enumerate(reversed(self.soup)):
 			chapter = _dataclasses.MangaChapter()
 
 			chapter.url = ele.find("a")["href"]
@@ -91,7 +49,7 @@ class ChapterList(list):
 			if not ele.find("a")["href"].startswith("http"):
 				chapter.url = "http" + ele.find("a")["href"]
 
-			self.append(chapter)
+			self.results.append(chapter)
 
 
 class ChapterDownload:

@@ -23,3 +23,11 @@ def main():
 
 if __name__ == "__main__":
 	main()
+
+	import web_scrapper
+
+	ls = web_scrapper.ciayo.ChapterList("https://www.ciayo.com/en/comic/radiative")
+
+	ls.start()
+
+	print(ls.results)

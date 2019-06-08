@@ -1,30 +1,19 @@
 import functions
-import dataclasses
 import requests
 import tempfile
 import os
+
+from . import _dataclasses
 
 from bs4 import BeautifulSoup
 from reportlab.pdfgen import canvas
 
 
-@dataclasses.dataclass(init=False)
-class SearchResult:
-	latest_chapter: float
-	url: str
-
-
-@dataclasses.dataclass(init=False)
-class MangaChapter:
-	title: str
-	chapter_num: float
-	url: str
-
-
-class Search(list):
+class Search():
 	def __init__(self, title):
 		super().__init__()
 
+		self.results = []
 		self.__soup = None
 		self.finished = False
 		self.search_url = functions.create_manganelo_search_url(title)
@@ -54,16 +43,16 @@ class Search(list):
 			story_name = ele.find(class_="story_name").find(href=True)
 			story_chap = ele.find(class_="story_chapter").find(href=True)
 
-			row = SearchResult()
+			row = _dataclasses.SearchResult()
 
 			row.title = story_name.text
-			row.latest_chapter = story_chap["title"]
+			row.desc = story_chap["title"]
 			row.url = story_name["href"]
 
 			if not row.url.startswith("http"):
 				row.url = "http" + story_name["href"]
 
-			self.append(row)
+			self.results.append(row)
 
 
 class ChapterList(list):
@@ -94,7 +83,7 @@ class ChapterList(list):
 
 	def __get_results(self):
 		for i, ele in enumerate(reversed(self.__soup)):
-			chapter = MangaChapter()
+			chapter = _dataclasses.MangaChapter()
 
 			chapter.url = ele.find("a")["href"]
 			chapter.chapter_num = functions.remove_trailing_zeros_if_zero(chapter.url.split("chapter_")[-1])

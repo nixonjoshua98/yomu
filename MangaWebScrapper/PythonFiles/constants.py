@@ -1,4 +1,5 @@
-import database.enums
+import os
+import enums
 
 # - Manganelo constants
 
@@ -6,6 +7,11 @@ MANGANELO_BASE_URL = "http://manganelo.com/"
 MANGANELO_SEARCH_URL = MANGANELO_BASE_URL + "search/"
 
 # -
+
+# - Ciayo constants
+
+CIAYO_BASE_URL = "https://www.ciayo.com/en/"
+CIAYO_SEARCH_URL = CIAYO_BASE_URL + "search?q="
 
 # - Manga save constants
 
@@ -22,6 +28,12 @@ DB_CON_STR = "sqlite:///" + DB_PATH
 
 # - Interface constants
 
-MANGA_STATUS = [e.prettify() for e in database.enums.MangaStatusEnum]
+MANGA_STATUS = [e.prettify() for e in enums.MangaStatusEnum]
+
+# -
+
+# - Asset locations
+
+CHROME_DRIVER_PATH = os.path.join(os.getcwd(), "..", "Assets", "chromedriver.exe")
 
 # -

@@ -33,7 +33,11 @@ class Application(widgets.RootWindow):
 		self.search_entry = None
 		self.search_btn = None
 		self.right_click = None
-		self.current_search = None
+
+		self.current_searchs = {
+			"manganelo": web_scrapper.manganelo.Search,
+			"ciayo": web_scrapper.ciayo.Search
+		}
 
 		self.child_windows = {
 			"edit_window": None,
@@ -169,22 +173,29 @@ class Application(widgets.RootWindow):
 
 		self.search_btn.state(["disabled"])
 
-		self.current_search = web_scrapper.manganelo.Search(search_input)
-
 		# Create a new thread so it doesn't block the main thread
-		threading.Thread(target=self.current_search.start).start()
+		for k, search_class in self.current_searchs.items():
+			try:
+				new_search = search_class(search_input)
+			except TypeError:
+				new_search = type(search_class)(search_input)
 
-		# Keep checking if the search is finished
-		functions.callback_once_true(self, "finished", self.current_search, lambda: self.search_finished_callback())
+			self.current_searchs[k] = new_search
+
+			threading.Thread(target=self.current_searchs[k].start).start()
+
+			functions.callback_once_true(self, "finished", new_search, lambda: self.search_finished_callback())
 
 	def search_finished_callback(self):
+		# Not all searches have finished
+		if not all(map(lambda s: s.finished, list(self.current_searchs.values()))):
+			return
+
 		self.search_btn.state(["!disabled"])
 
-		search_results = self.current_search
+		search_results = {k: v.results for k, v in self.current_searchs.items()}
 
-		self.current_search = None
-
-		win = windows.SearchResultsWindow(search_results, ("Title", "Latest Chapter"), self.update_table)
+		win = windows.SearchResultsWindow(search_results, ("Title", "Description"), self.update_table)
 		win.geometry(self.geometry())
 
 		if self.child_windows["search_results_window"] is not None:

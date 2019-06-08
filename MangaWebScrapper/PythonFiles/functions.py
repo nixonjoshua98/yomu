@@ -15,6 +15,10 @@ def create_manganelo_search_url(manga_title) -> str:
 	return constants.MANGANELO_SEARCH_URL + manga_title.replace(" ", "_")
 
 
+def create_ciayo_search_url(manga_title) -> str:
+	return constants.CIAYO_SEARCH_URL + manga_title.replace(" ", "_")
+
+
 def send_request(url):
 	headers = requests.utils.default_headers()
 

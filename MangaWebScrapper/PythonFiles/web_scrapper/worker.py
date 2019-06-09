@@ -3,6 +3,7 @@ import threading
 import data_classes
 import functions
 import operator
+import time
 
 import database.queries
 
@@ -20,15 +21,15 @@ class WebScrapperWorker(threading.Thread):
 	def run(self):
 		scrapper_module = enum2module.str2module(self.data.url)
 
+		if scrapper_module is None:
+			self.completion_callback(self.data.id)
+			return
+
 		chapter_list = scrapper_module.ChapterList(self.data.url)
 
 		chapter_list.start()
 
-		print("Gotten chapters")
-
-		for c in reversed(chapter_list.results):
-			print(c.chapter_num)
-
+		for c in chapter_list.results:
 			formatted_title = functions.remove_nasty_chars(self.data.title)
 
 			file_path = functions.get_chapter_save_location(formatted_title, c.chapter_num)

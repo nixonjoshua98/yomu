@@ -35,7 +35,7 @@ class Application(widgets.RootWindow):
 		self.search_btn = None
 		self.right_click = None
 
-		self.current_searches = {**web_scrapper.enum2module.MODULE_TABLE}
+		self.current_searches = {**web_scrapper.enum2module.SEARCH_MODULES}
 
 		self.child_windows = {
 			"edit_window": None,

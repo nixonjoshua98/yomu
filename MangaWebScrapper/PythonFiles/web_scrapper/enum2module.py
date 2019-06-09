@@ -10,10 +10,18 @@ MODULE_TABLE = {
 	WebsiteEnum.CIAYO: ciayo
 }
 
+SEARCH_MODULES = {
+	WebsiteEnum.MANGANELO: manganelo,
+}
+
+# SEARCH_MODULES = MODULE_TABLE
+
 
 def str2module(s):
 	if "manganelo" in s:
-		return manganelo
+		return MODULE_TABLE.get(WebsiteEnum.MANGANELO, None)
 
 	elif "ciayo" in s:
-		return ciayo
+		return MODULE_TABLE.get(WebsiteEnum.CIAYO, None)
+
+	return None

@@ -1,9 +1,11 @@
 import functions
 import data_classes
+import time
 
 from .ciayo_base import CiayoBase
 
 from web_scrapper.download_base import DownloadBase
+from bs4 import BeautifulSoup
 
 
 class Search(CiayoBase):
@@ -56,7 +58,7 @@ class ChapterList(CiayoBase):
 			chapter.url = url
 			chapter.chapter_num = chapter_num
 
-			self.results.append(chapter)
+			self.results.insert(0, chapter)
 
 
 class ChapterDownload(DownloadBase, CiayoBase):

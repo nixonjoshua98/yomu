@@ -17,11 +17,18 @@ CIAYO_SEARCH_URL = CIAYO_BASE_URL + "search?q="
 
 MANGA_SAVE_DIR = r"D:\Downloaded Media\Comics"
 
+if not os.path.isdir(MANGA_SAVE_DIR):
+    MANGA_SAVE_DIR = r"C:\Users\Joshua\Documents\Downloaded Media\Comics"
+    
 # -
 
 # - Database constants
 
 DB_PATH = r"D:\OneDrive - UoL\OneDrive - University of Lincoln\manga_database.sqlite3"
+
+if not os.path.isfile(DB_PATH):
+    DB_PATH = r"C:\Users\Joshua\OneDrive - University of Lincoln\manga_database.sqlite3"
+
 DB_CON_STR = "sqlite:///" + DB_PATH
 
 # -

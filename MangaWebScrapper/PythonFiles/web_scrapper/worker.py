@@ -3,11 +3,8 @@ import threading
 import data_classes
 import functions
 import operator
-import time
 
 import database.queries
-
-from . import enum2module
 
 
 class WebScrapperWorker(threading.Thread):
@@ -19,9 +16,10 @@ class WebScrapperWorker(threading.Thread):
 		self.completion_callback = completion_callback
 
 	def run(self):
-		scrapper_module = enum2module.str2module(self.data.url)
+		scrapper_module = functions.url_to_scrapper_module(self.data.url)
 
 		if scrapper_module is None:
+			print(self.data.url, "is not a supported url")
 			self.completion_callback(self.data.id)
 			return
 

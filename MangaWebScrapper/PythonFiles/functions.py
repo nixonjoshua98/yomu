@@ -3,6 +3,7 @@ import constants
 import shutil
 import collections
 import PIL
+import enums
 import webbrowser
 import operator
 import subprocess
@@ -181,3 +182,10 @@ def can_make_row(table, **values):
 
 	else:
 		return True
+
+
+def url_to_scrapper_module(s):
+	if "manganelo" in s:
+		return constants.SCRAPPER_MODULE_TABLE.get(enums.WebsiteEnum.MANGANELO, None)
+
+	return None

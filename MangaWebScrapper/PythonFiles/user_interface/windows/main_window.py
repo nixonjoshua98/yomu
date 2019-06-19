@@ -11,8 +11,6 @@ import database.queries
 import user_interface.widgets as widgets
 import user_interface.windows as windows
 
-import web_scrapper.enum2module
-
 
 class Application(widgets.RootWindow):
 	""" Class which will run the entire UI """
@@ -35,7 +33,7 @@ class Application(widgets.RootWindow):
 		self.search_btn = None
 		self.right_click = None
 
-		self.current_searches = {**web_scrapper.enum2module.SEARCH_MODULES}
+		self.current_searches = {**constants.SCRAPPER_MODULE_TABLE}
 
 		self.child_windows = {
 			"edit_window": None,

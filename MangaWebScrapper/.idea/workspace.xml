@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" line="188" />
+    <bookmark url="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" line="186" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="317d46c9-0047-4746-b68e-5f90b5042dba" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonFiles/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonFiles/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonFiles/user_interface/widgets/drop_down.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/user_interface/widgets/drop_down.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/web_scrapper/ciayo/ciayo.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/web_scrapper/ciayo/ciayo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/web_scrapper/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/web_scrapper/controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PythonFiles/web_scrapper/enum2module.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/web_scrapper/enum2module.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonFiles/web_scrapper/ciayo/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonFiles/web_scrapper/ciayo/ciayo.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonFiles/web_scrapper/ciayo/ciayo_base.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PythonFiles/web_scrapper/enum2module.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/PythonFiles/web_scrapper/worker.py" beforeDir="false" afterPath="$PROJECT_DIR$/PythonFiles/web_scrapper/worker.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,12 +25,24 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/PythonFiles/web_scrapper/enum2module.py">
+        <entry file="file://$PROJECT_DIR$/PythonFiles/functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+            <state relative-caret-position="424">
+              <caret line="188" column="46" selection-start-line="188" selection-start-column="46" selection-end-line="188" selection-end-column="46" />
               <folding>
-                <element signature="e#0#29#0" expanded="true" />
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="11" column="40" selection-start-line="11" selection-start-column="40" selection-end-line="11" selection-end-column="40" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -95,10 +111,8 @@
         <option value="$PROJECT_DIR$/PythonFiles/web_scrapper/__init__.py" />
         <option value="$PROJECT_DIR$/PythonFiles/web_scrapper/dataclasses.py" />
         <option value="$PROJECT_DIR$/PythonFiles/web_scrapper/selenium_base.py" />
-        <option value="$PROJECT_DIR$/PythonFiles/functions.py" />
         <option value="$PROJECT_DIR$/PythonFiles/web_scrapper/_dataclasses.py" />
         <option value="$PROJECT_DIR$/PythonFiles/enums.py" />
-        <option value="$PROJECT_DIR$/PythonFiles/constants.py" />
         <option value="$PROJECT_DIR$/PythonFiles/web_scrapper/chapterdownload_bas.py" />
         <option value="$PROJECT_DIR$/PythonFiles/user_interface/windows/edit_window.py" />
         <option value="$PROJECT_DIR$/PythonFiles/web_scrapper/manganelo_base.py" />
@@ -116,17 +130,19 @@
         <option value="$PROJECT_DIR$/PythonFiles/user_interface/widgets/root_window.py" />
         <option value="$PROJECT_DIR$/PythonFiles/web_scrapper/ciayo/ciayo_base.py" />
         <option value="$PROJECT_DIR$/PythonFiles/web_scrapper/download_base.py" />
-        <option value="$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" />
         <option value="$PROJECT_DIR$/PythonFiles/web_scrapper/controller.py" />
-        <option value="$PROJECT_DIR$/PythonFiles/web_scrapper/worker.py" />
         <option value="$PROJECT_DIR$/PythonFiles/web_scrapper/ciayo/ciayo.py" />
         <option value="$PROJECT_DIR$/PythonFiles/web_scrapper/enum2module.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/constants.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/web_scrapper/worker.py" />
+        <option value="$PROJECT_DIR$/PythonFiles/functions.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+    <option name="x" value="-114" />
+    <option name="y" value="-15" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -138,7 +154,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -174,13 +189,6 @@
               <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
               <item name="PythonFiles" type="462c0819:PsiDirectoryNode" />
               <item name="user_interface" type="462c0819:PsiDirectoryNode" />
-              <item name="widgets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MangaWebScrapper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
-              <item name="PythonFiles" type="462c0819:PsiDirectoryNode" />
-              <item name="user_interface" type="462c0819:PsiDirectoryNode" />
               <item name="windows" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -189,17 +197,11 @@
               <item name="PythonFiles" type="462c0819:PsiDirectoryNode" />
               <item name="web_scrapper" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="MangaWebScrapper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
-              <item name="PythonFiles" type="462c0819:PsiDirectoryNode" />
-              <item name="web_scrapper" type="462c0819:PsiDirectoryNode" />
-              <item name="ciayo" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -358,7 +360,14 @@
       <option name="project" value="LOCAL" />
       <updated>1560033906547</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="- Stable -">
+      <created>1560072718473</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1560072718473</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -370,7 +379,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32932165" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32286024" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32286024" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -414,7 +423,8 @@
     <MESSAGE value="Added scrapper inheritance" />
     <MESSAGE value="Ciayo support" />
     <MESSAGE value="Ciayo support but super slow" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ciayo support but super slow" />
+    <MESSAGE value="- Stable -" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Stable -" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/3/collections/__init__.pyi">
@@ -464,37 +474,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
-          <caret line="90" lean-forward="true" selection-start-line="90" selection-end-line="90" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PythonFiles/data_classes.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="18" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/MangaWebScrapper.pyw">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="31">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -526,26 +509,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="38" column="39" selection-start-line="38" selection-start-column="39" selection-end-line="38" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/web_scrapper/worker.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/web_scrapper/controller.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="35" column="49" selection-start-line="35" selection-start-column="49" selection-end-line="35" selection-end-column="49" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
@@ -617,9 +580,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="16" column="25" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -673,16 +633,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="42" column="41" selection-start-line="42" selection-start-column="41" selection-end-line="42" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/search_results_window.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -704,6 +654,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="286">
           <caret line="41" column="9" lean-forward="true" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/MangaWebScrapper.pyw">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/windows/main_window.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="11" column="40" selection-start-line="11" selection-start-column="40" selection-end-line="11" selection-end-column="40" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
@@ -712,10 +676,47 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/PythonFiles/web_scrapper/enum2module.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+        <state relative-caret-position="51">
+          <caret line="3" selection-start-line="3" selection-end-line="7" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="458">
+          <caret line="45" column="21" selection-start-line="45" selection-end-line="45" selection-end-column="21" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/web_scrapper/controller.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="42" column="35" lean-forward="true" selection-start-line="42" selection-start-column="35" selection-end-line="42" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/web_scrapper/worker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PythonFiles/functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="188" column="46" selection-start-line="188" selection-start-column="46" selection-end-line="188" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>

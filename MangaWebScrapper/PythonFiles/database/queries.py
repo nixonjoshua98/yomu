@@ -1,6 +1,6 @@
 
 from . import models
-from . import alchemy
+from .context_manager import DatabaseSession
 
 import functions
 
@@ -13,25 +13,25 @@ class InvalidFields(Exception):
 
 
 def _select_all_where_equals(table, **kwargs):
-    with alchemy.DatabaseSession() as session:
+    with DatabaseSession() as session:
         query = session.query(table).filter_by(**kwargs).all()
     return query
 
 
 def _select_one_where_equals(table, **kwargs):
-    with alchemy.DatabaseSession() as session:
+    with DatabaseSession() as session:
         query = session.query(table).filter_by(**kwargs).first()
     return query
 
 
 def _select_everything(table):
-    with alchemy.DatabaseSession() as session:
+    with DatabaseSession() as session:
         query = session.query(table).all()
     return query
 
 
 def _select_all_in_list(table, field, ls):
-    with alchemy.DatabaseSession() as session:
+    with DatabaseSession() as session:
         query = session.query(table).filter(field.in_(ls)).all()
     return query
 
@@ -45,7 +45,7 @@ def _insert_row_with_values(table, need_all_fields=False, **kwargs):
 
     completed = False
 
-    with alchemy.DatabaseSession() as session:
+    with DatabaseSession() as session:
         row = table(**kwargs)
         session.add(row)
         completed = not completed
@@ -56,7 +56,7 @@ def _insert_row_with_values(table, need_all_fields=False, **kwargs):
 def _update_row_where_equals(table, old_row_values: dict, new_row_values: dict):
     completed = False
 
-    with alchemy.DatabaseSession() as session:
+    with DatabaseSession() as session:
         row = session.query(table).filter_by(**old_row_values).first()
 
         if row is not None:
@@ -74,7 +74,7 @@ def _update_row_where_equals(table, old_row_values: dict, new_row_values: dict):
 def _delete_where_equals(table, **kwargs):
     completed = False
 
-    with alchemy.DatabaseSession() as session:
+    with DatabaseSession() as session:
         row = session.query(table).filter_by(**kwargs).one()
 
         session.delete(row)

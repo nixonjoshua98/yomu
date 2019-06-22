@@ -1,10 +1,11 @@
 import threading
+import operator
+import functions
+import constants
+import webbrowser
 
 import tkinter as tk
 import tkinter.ttk as ttk
-
-import functions
-import constants
 
 import database.queries
 
@@ -26,7 +27,7 @@ class Application(widgets.RootWindow):
 		super().__init__("Web Scrapper", "800x400")
 
 		self.download_controller = download_controller
-		self.sort_function = functions.sort_manga_by_chapters_available
+		self.sort_function = lambda manga: manga.sort(key=lambda m: m.latest_chapter - m.chapters_read, reverse=True)
 
 		# - Create attributes
 		self.table = None
@@ -173,7 +174,7 @@ class Application(widgets.RootWindow):
 
 		# Create a new thread so it doesn't block the main thread
 		for k, module in self.current_searches.items():
-			new_search = web_scrapper.enum2module.MODULE_TABLE[k].Search(search_input)
+			new_search = constants.SCRAPPER_MODULE_TABLE[k].Search(search_input)
 
 			self.current_searches[k] = new_search
 
@@ -201,19 +202,19 @@ class Application(widgets.RootWindow):
 	""" Right click callbacks """
 
 	def sort_manga_by_title(self):
-		self.sort_function = functions.sort_manga_by_title
+		self.sort_function = lambda manga: manga.sort(key=operator.attrgetter("title"))
 		self.update_table()
 
 	def sort_manga_by_id(self):
-		self.sort_function = functions.sort_manga_by_id
+		self.sort_function = lambda manga: manga.sort(key=operator.attrgetter("id"))
 		self.update_table()
 
 	def sort_manga_by_latest_chapter(self):
-		self.sort_function = functions.sort_manga_by_latest_chapter
+		self.sort_function = lambda manga: manga.sort(key=operator.attrgetter("latest_chapter"), reverse=True)
 		self.update_table()
 
 	def sort_manga_by_chapters_available(self):
-		self.sort_function = functions.sort_manga_by_chapters_available
+		self.sort_function = lambda manga: manga.sort(key=lambda m: m.latest_chapter - m.chapters_read, reverse=True)
 		self.update_table()
 
 	def open_manga_in_explorer(self):
@@ -226,4 +227,4 @@ class Application(widgets.RootWindow):
 		row = self.table.one()
 
 		if row is not None:
-			functions.open_manga_in_browser(row[4])
+			webbrowser.open(row[4], new=False)

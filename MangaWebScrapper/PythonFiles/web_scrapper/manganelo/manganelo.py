@@ -1,12 +1,10 @@
 import functions
 import requests
-import data_classes
 
-from .manganelo_base import ManganeloBase
-
+from .manganelo_base 			import ManganeloBase
 from web_scrapper.download_base import DownloadBase
-
-from bs4 import BeautifulSoup
+from data_classes 				import MangaDataClass
+from bs4 						import BeautifulSoup
 
 
 class Search(ManganeloBase):
@@ -20,7 +18,7 @@ class Search(ManganeloBase):
 			story_name = ele.find(class_="story_name").find(href=True)
 			story_chap = ele.find(class_="story_chapter").find(href=True)
 
-			row = data_classes.SearchResult()
+			row = MangaDataClass()
 
 			row.title = story_name.text
 			row.desc = story_chap["title"]
@@ -40,7 +38,7 @@ class ChapterList(ManganeloBase):
 
 	def _extract(self):
 		for i, ele in enumerate(reversed(self.soup)):
-			chapter = data_classes.MangaChapter()
+			chapter = MangaDataClass()
 
 			chapter.url = ele.find("a")["href"]
 			chapter.chapter_num = functions.remove_trailing_zeros_if_zero(chapter.url.split("chapter_")[-1])
@@ -54,6 +52,8 @@ class ChapterList(ManganeloBase):
 class ChapterDownload(DownloadBase):
 	def __init__(self, src_url, dst_path):
 		super().__init__(src_url, dst_path)
+
+		self.image_urls = []
 
 	def get_image_urls(self):
 		page = functions.send_request(self.src_url)

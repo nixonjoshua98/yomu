@@ -6,7 +6,6 @@ Py Version: 3.7.x
 """
 
 
-
 def main():
 	import os
 	import database

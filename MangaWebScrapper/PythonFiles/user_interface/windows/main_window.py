@@ -98,18 +98,29 @@ class Application(widgets.RootWindow):
 		self.update_table()
 
 	def create_right_click_menu(self):
-		self.right_click = tk.Menu(self.table, tearoff=0)
+		sort_menu_layout = (
+			("ID (asc)",                 "sort_manga_by_id"),
+			("Title (asc)",              "sort_manga_by_title"),
+			("Latest Chapter (dsc)",     "sort_manga_by_latest_chapter"),
+			("Chapters Available (dsc)", "sort_manga_by_chapters_available")
+		)
 
+		open_in_menu_layout = (
+			("Explorer", "open_manga_in_explorer"),
+			("Browser", "open_manga_in_browser"),
+		)
+
+		# Create the menus
+		self.right_click = tk.Menu(self.table, tearoff=0)
 		sort_menu = tk.Menu(self.right_click, tearoff=0)
 		open_in_menu = tk.Menu(self.right_click, tearoff=0)
 
-		sort_menu.add_command(label="ID (asc)", command=self.sort_manga_by_id)
-		sort_menu.add_command(label="Title (asc)", command=self.sort_manga_by_title)
-		sort_menu.add_command(label="Latest Chapter (dsc)", command=self.sort_manga_by_latest_chapter)
-		sort_menu.add_command(label="Chapters Available (dsc)", command=self.sort_manga_by_chapters_available)
+		# Add the callbacks
+		for txt, callback in sort_menu_layout:
+			sort_menu.add_command(label=txt, command=getattr(self, callback))
 
-		open_in_menu.add_command(label="Explorer", command=self.open_manga_in_explorer)
-		open_in_menu.add_command(label="Browser", command=self.open_manga_in_browser)
+		for txt, callback in open_in_menu_layout:
+			open_in_menu.add_command(label=txt, command=getattr(self, callback))
 
 		self.right_click.add_cascade(label="Open In", menu=open_in_menu)
 		self.right_click.add_cascade(label="Sort Table", menu=sort_menu)

@@ -6,6 +6,10 @@ class EnumWrapper(enum.Enum):
         return self.name.split(".")[-1].title().replace("_", " ")
 
     @classmethod
+    def all_prettify(cls):
+        return [e.prettify() for e in cls]
+
+    @classmethod
     def str_to_int(cls, enum_string: str) -> int:
         attr_name = enum_string.upper().replace(" ", "_")
 
@@ -27,4 +31,3 @@ class WebsiteEnum(EnumWrapper):
     """ Enum class for the source websites"""
 
     MANGANELO = 0
-    CIAYO = 1

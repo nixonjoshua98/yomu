@@ -13,7 +13,7 @@ class Search(ManganeloBase):
 	def __init__(self, title):
 		super().__init__("panel_story_list", "story_item")
 
-		self.url = functions.create_manganelo_search_url(title)
+		self.url = self.MANGANELO_SEARCH_URL + title.replace(" ", "_")
 
 	def _extract(self):
 		for i, ele in enumerate(self.soup):

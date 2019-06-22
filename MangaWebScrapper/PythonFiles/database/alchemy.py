@@ -1,6 +1,5 @@
 import sqlalchemy
 import os
-import constants
 
 
 class DatabaseFactory:
@@ -16,12 +15,15 @@ class DatabaseFactory:
     @classmethod
     def create(cls) -> bool:
         from .models import Base
+        from user_data import UserData
 
         # Create the database path if not already created
-        os.makedirs(os.path.dirname(constants.DB_PATH), exist_ok=True)
+        os.makedirs(os.path.dirname(UserData.database_path), exist_ok=True)
+
+        con_str = UserData.database_con_str + UserData.database_path
 
         if cls.engine is None:  # Create the engine with debug (echo) off
-            cls.engine = sqlalchemy.create_engine(constants.DB_CON_STR, echo=False)
+            cls.engine = sqlalchemy.create_engine(con_str, echo=False)
 
         """ Database session factory which will be used in the context manager
         to connect to the database, <expire_on_commit> must be set to False otherwise

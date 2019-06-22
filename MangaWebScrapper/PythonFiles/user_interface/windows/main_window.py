@@ -11,6 +11,8 @@ import database.queries
 import user_interface.widgets as widgets
 import user_interface.windows as windows
 
+from enums import MangaStatusEnum
+
 
 class Application(widgets.RootWindow):
 	""" Class which will run the entire UI """
@@ -60,7 +62,7 @@ class Application(widgets.RootWindow):
 		dropdown_frame = tk.Frame(toolbar_frame, relief=tk.RAISED, borderwidth=1)
 
 		# - Left side widgets
-		self.status_dropdown = widgets.Dropdown(dropdown_frame, constants.MANGA_STATUS, self.update_table)
+		self.status_dropdown = widgets.Dropdown(dropdown_frame, MangaStatusEnum.all_prettify(), self.update_table)
 
 		# - Right side widgets
 		downloads_btn = ttk.Button(btn_frame, text="Downloads", command=self.toggle_downloads_window)

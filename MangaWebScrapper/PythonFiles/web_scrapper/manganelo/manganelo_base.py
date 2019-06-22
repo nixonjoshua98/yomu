@@ -5,6 +5,9 @@ from bs4 import BeautifulSoup
 
 
 class ManganeloBase:
+	MANGANELO_BASE_URL = "http://manganelo.com/"
+	MANGANELO_SEARCH_URL = MANGANELO_BASE_URL + "search/"
+
 	def __init__(self, find_class, find_all_class):
 		self.find_class = find_class
 		self.find_all_class = find_all_class

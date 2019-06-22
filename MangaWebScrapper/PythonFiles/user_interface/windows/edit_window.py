@@ -1,12 +1,12 @@
-import enums
+
 import functions
-import constants
 import database.queries
 
 import tkinter as tk
 import tkinter.ttk as ttk
 
 from tkinter import messagebox
+from enums import MangaStatusEnum
 
 import user_interface.widgets as widgets
 
@@ -88,9 +88,9 @@ class MangaEditWindow(widgets.ChildWindow):
 
         ttk.Button(frame, text="Latest Chapter", command=self.latest_offline_callback).pack(side=tk.RIGHT, padx=5)
 
-        initial_index = enums.MangaStatusEnum(self.manga_data.status).value
+        initial_index = MangaStatusEnum(self.manga_data.status).value
 
-        self.create_dropdown("status", "Status", initial_index, constants.MANGA_STATUS)
+        self.create_dropdown("status", "Status", initial_index, MangaStatusEnum.all_prettify())
 
     def undo_callback(self, event=None):
         chapters_read = functions.remove_trailing_zeros_if_zero(self.manga_data.chapters_read)
@@ -98,7 +98,7 @@ class MangaEditWindow(widgets.ChildWindow):
         self.input_widgets["title"].set_text(self.manga_data.title)
         self.input_widgets["url"].set_text(self.manga_data.url)
         self.input_widgets["chapters_read"].set_text(chapters_read)
-        self.input_widgets["status"].current(enums.MangaStatusEnum(self.manga_data.status).value)
+        self.input_widgets["status"].current(MangaStatusEnum(self.manga_data.status).value)
 
     def confirm_callback(self, event=None):
         chapters_read = self.input_widgets["chapters_read"].get()
@@ -112,7 +112,7 @@ class MangaEditWindow(widgets.ChildWindow):
             "title": functions.remove_nasty_chars(self.input_widgets["title"].get()),
             "url": self.input_widgets["url"].get(),
             "chapters_read": self.input_widgets["chapters_read"].get(),
-            "status": enums.MangaStatusEnum.str_to_int(self.input_widgets["status"].get())
+            "status": MangaStatusEnum.str_to_int(self.input_widgets["status"].get())
         }
 
         row_updated = database.queries.manga_update_with_id(self.manga_data.id, **new_data)

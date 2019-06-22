@@ -1,1 +1,5 @@
-from .manganelo import (Search, ChapterList, ChapterDownload)
+from .manganelo import (
+	Search,
+	ChapterList,
+	ChapterDownload
+)

@@ -10,11 +10,6 @@ MANGANELO_SEARCH_URL = MANGANELO_BASE_URL + "search/"
 
 # -
 
-# - Ciayo constants (support taken out)
-
-CIAYO_BASE_URL = "https://www.ciayo.com/en/"
-CIAYO_SEARCH_URL = CIAYO_BASE_URL + "search?q="
-
 # - Manga save constants
 
 MANGA_SAVE_DIR = r"D:\Downloaded Media\Comics"

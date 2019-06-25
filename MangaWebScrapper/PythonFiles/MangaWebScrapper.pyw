@@ -5,6 +5,20 @@ Email: nixonjoshua98@gmail.com
 Py Version: 3.7.x
 """
 
+"""
+data_structures
+database
+interface_widgets
+manga_downloader
+static_classes
+	data_classes
+	enums
+	user_data
+
+functions.py
+main.py
+"""
+
 
 def main():
 	import os

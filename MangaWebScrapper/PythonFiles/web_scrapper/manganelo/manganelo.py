@@ -41,7 +41,7 @@ class ChapterList(ManganeloBase):
 			chapter = MangaDataClass()
 
 			chapter.url = ele.find("a")["href"]
-			chapter.chapter_num = functions.remove_trailing_zeros_if_zero(chapter.url.split("chapter_")[-1])
+			chapter.chapter = functions.remove_trailing_zeros_if_zero(chapter.url.split("chapter_")[-1])
 
 			if not ele.find("a")["href"].startswith("http"):
 				chapter.url = "http" + ele.find("a")["href"]

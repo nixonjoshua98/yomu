@@ -1,10 +1,11 @@
 import os
 import threading
-import data_classes
 import functions
 import operator
 
 import database.queries
+
+from data_classes import MangaDataClass
 
 
 class WebScrapperWorker(threading.Thread):
@@ -30,7 +31,7 @@ class WebScrapperWorker(threading.Thread):
 		for c in chapter_list.results:
 			formatted_title = functions.remove_nasty_chars(self.data.title)
 
-			file_path = functions.get_chapter_save_location(formatted_title, c.chapter_num)
+			file_path = functions.get_chapter_save_location(formatted_title, c.chapter)
 
 			os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
@@ -40,15 +41,20 @@ class WebScrapperWorker(threading.Thread):
 				download.start()
 
 				if download.success:
-					self.queue.append(data_classes.DownloadQueueRow(title=formatted_title, chapter=c.chapter_num))
+					row = MangaDataClass()
+
+					row.title = formatted_title
+					row.chapter = c.chapter
+
+					self.queue.append(row)
 
 		# Update the latest chapter in the database
 		if len(chapter_list.results) > 0:
-			latest_chapter = max(chapter_list.results, key=operator.attrgetter("chapter_num"))
+			latest_chapter = max(chapter_list.results, key=operator.attrgetter("chapter"))
 
 			# Update the latest chapter (Previously read from directory which is very slow)
-			if latest_chapter.chapter_num > self.data.latest_chapter:
+			if latest_chapter.chapter > self.data.latest_chapter:
 				# This occurs twice I think but I cannot figure out why
-				database.queries.manga_update_with_id(self.data.id, latest_chapter=latest_chapter.chapter_num)
+				database.queries.manga_update_with_id(self.data.id, latest_chapter=latest_chapter.chapter)
 
 		self.completion_callback(self.data.id)

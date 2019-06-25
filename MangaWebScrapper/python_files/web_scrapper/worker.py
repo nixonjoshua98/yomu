@@ -38,7 +38,7 @@ class WebScrapperWorker(threading.Thread):
 			if not os.path.isfile(file_path):
 				download = scrapper_module.ChapterDownload(c.url, file_path)
 
-				download.start()
+				# download.start()
 
 				if download.success:
 					row = MangaDataClass()

@@ -12,33 +12,33 @@ class UserDataMeta(type):
 	}
 
 	@classmethod
-	def _write_default_data(cls):
-		cls._write_data(cls.DEFAULT_DATA)
+	def _write_default_data(mcs):
+		mcs._write_data(mcs.DEFAULT_DATA)
 
 	@classmethod
-	def _read_data(cls) -> dict:
-		with open(cls.USER_DATA_PATH, "r") as f:
+	def _read_data(mcs) -> dict:
+		with open(mcs.USER_DATA_PATH, "r") as f:
 			data = json.load(f)
 
 		return data
 
 	@classmethod
-	def _write_data(cls, d):
-		with open(cls.USER_DATA_PATH, "w") as f:
+	def _write_data(mcs, d):
+		with open(mcs.USER_DATA_PATH, "w") as f:
 			json.dump(d, f)
 
 	@classmethod
-	def _validate_file(cls):
-		if not os.path.isfile(cls.USER_DATA_PATH):
+	def _validate_file(mcs):
+		if not os.path.isfile(mcs.USER_DATA_PATH):
 			""" Log Error """
 
-			cls._write_default_data()
+			mcs._write_default_data()
 
 	@classmethod
-	def __getattribute__(cls, item):
-		cls._validate_file()
+	def __getattribute__(mcs, item):
+		mcs._validate_file()
 
-		data = cls._read_data()
+		data = mcs._read_data()
 
 		if item in data:
 			return data[item]
@@ -47,16 +47,16 @@ class UserDataMeta(type):
 			raise AttributeError(f"{item} is not in the user data")
 
 	@classmethod
-	def __setattr__(cls, item, val):
+	def __setattr__(mcs, item, val):
 		raise Exception("Setattr has been disabled")
 
-		cls._validate_file()
+		mcs._validate_file()
 
-		data = cls._read_data()
+		data = mcs._read_data()
 
 		if item in data:
 			data[item] = val
-			cls._write_data(data)
+			mcs._write_data(data)
 
 		else:
 			raise AttributeError(f"{item} is not in the user data")

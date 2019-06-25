@@ -27,7 +27,5 @@ class MangaStatusEnum(EnumWrapper):
     COMPLETED = 5
 
 
-class WebsiteEnum(EnumWrapper):
-    """ Enum class for the source websites"""
-
+class WebsiteEnum:
     MANGANELO = 0

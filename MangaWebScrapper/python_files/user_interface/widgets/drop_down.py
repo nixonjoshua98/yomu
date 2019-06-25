@@ -2,7 +2,7 @@ from tkinter import ttk
 
 
 class Dropdown(ttk.Combobox):
-    def __init__(self, master, values, command = None):
+    def __init__(self, master, values, command=None):
         super().__init__(master=master, state="readonly")
         
         self["values"] = values

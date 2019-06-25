@@ -14,8 +14,8 @@ static_classes
 	data_classes
 	enums
 	user_data
-
-functions.py
+user_interface
+	
 main.py
 """
 

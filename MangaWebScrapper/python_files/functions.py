@@ -4,8 +4,6 @@ import shutil
 import collections
 import PIL
 import enums
-import webbrowser
-import operator
 import subprocess
 import requests
 

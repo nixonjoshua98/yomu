@@ -3,7 +3,7 @@ import requests
 
 from .manganelo_base 			import ManganeloBase
 from web_scrapper.download_base import DownloadBase
-from data_classes 				import MangaDataClass
+from data_classes 				import (MangaSearchResult, MangaDataClass)
 from bs4 						import BeautifulSoup
 
 
@@ -18,7 +18,7 @@ class Search(ManganeloBase):
 			story_name = ele.find(class_="story_name").find(href=True)
 			story_chap = ele.find(class_="story_chapter").find(href=True)
 
-			row = MangaDataClass()
+			row = MangaSearchResult()
 
 			row.title = story_name.text
 			row.desc = story_chap["title"]

@@ -1,5 +1,4 @@
 import os
-import constants
 import shutil
 import collections
 import PIL
@@ -61,7 +60,7 @@ def get_image_dimensions(path) -> collections.namedtuple or None:
 	try:
 		with PIL.Image.open(path) as img:
 			return_tuple = named_tuple(*img.size)
-	except OSError:
+	except (OSError, UnboundLocalError):
 		return None
 	else:
 		return return_tuple
@@ -154,10 +153,3 @@ def can_make_row(table, **values):
 
 	else:
 		return True
-
-
-def url_to_scrapper_module(s):
-	if "manganelo" in s:
-		return constants.SCRAPPER_MODULE_TABLE.get(enums.WebsiteEnum.MANGANELO, None)
-
-	return None

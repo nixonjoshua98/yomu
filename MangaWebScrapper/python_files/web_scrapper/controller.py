@@ -33,7 +33,7 @@ class WebScrapperController(threading.Thread):
 		self.start()
 
 	def run(self):
-		data_gen = database_generator((0, 1, 2, 3))
+		data_gen = database_generator((0, 1, 2))
 
 		while True:
 			time.sleep(0.5)

@@ -1,7 +1,6 @@
 import threading
 import operator
 import functions
-import constants
 import webbrowser
 
 import tkinter as tk
@@ -13,6 +12,7 @@ import user_interface.widgets as widgets
 import user_interface.windows as windows
 
 from enums import MangaStatusEnum
+import web_scrapper.manganelo as manganelo
 
 
 class Application(widgets.RootWindow):
@@ -36,7 +36,7 @@ class Application(widgets.RootWindow):
 		self.search_btn = None
 		self.right_click = None
 
-		self.current_searches = {**constants.SCRAPPER_MODULE_TABLE}
+		self.current_search = None
 
 		self.child_windows = {
 			"edit_window": None,
@@ -127,7 +127,9 @@ class Application(widgets.RootWindow):
 
 	""" Re-populate the table with the database results """
 	def update_table(self):
-		query_results = database.queries.manga_select_all_with_status(self.status_dropdown.get_index())
+		status_enum_val = MangaStatusEnum.str_to_int(self.status_dropdown.get())
+
+		query_results = database.queries.manga_select_all_with_status(status_enum_val)
 
 		if query_results is None:
 			return
@@ -183,24 +185,16 @@ class Application(widgets.RootWindow):
 
 		self.search_btn.state(["disabled"])
 
-		# Create a new thread so it doesn't block the main thread
-		for k, module in self.current_searches.items():
-			new_search = constants.SCRAPPER_MODULE_TABLE[k].Search(search_input)
+		self.current_search = manganelo.Search(search_input)
 
-			self.current_searches[k] = new_search
+		threading.Thread(target=self.current_search.start).start()
 
-			threading.Thread(target=self.current_searches[k].start).start()
-
-			functions.callback_once_true(self, "finished", new_search, lambda: self.search_finished_callback())
+		functions.callback_once_true(self, "finished", self.current_search, lambda: self.search_finished_callback())
 
 	def search_finished_callback(self):
-		# Not all searches have finished
-		if not all(map(lambda s: s.finished, list(self.current_searches.values()))):
-			return
-
 		self.search_btn.state(["!disabled"])
 
-		search_results = {k: v.results for k, v in self.current_searches.items()}
+		search_results = self.current_search.results
 
 		win = windows.SearchResultsWindow(search_results, ("Title", "Description"), self.update_table)
 		win.geometry(self.geometry())

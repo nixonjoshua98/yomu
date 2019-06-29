@@ -11,38 +11,33 @@ from tkinter import messagebox
 
 class SearchResultsWindow(user_interface.widgets.ChildWindow):
 	def __init__(self, search_results, headers: tuple, callback):
-		super().__init__(f"Search Results", destroy_on_exit=True)
+		super().__init__("Search Results", destroy_on_exit=True)
 
 		self.callback = callback
 		self.search_results = search_results
 
-		notebook = ttk.Notebook(self)
+		table_callbacks = {"Button-3": self.add_manga_to_database}
 
-		for k, v in self.search_results.items():
-			# k - enum, v - Search
-			table_callbacks = {"Button-3": ft.partial(self.add_manga_to_database, k)}
+		frame = tk.Frame(self)
 
-			frame = tk.Frame(self)
-			table = user_interface.widgets.Treeview(frame, headers, binds=table_callbacks)
+		table = user_interface.widgets.Treeview(frame, headers, binds=table_callbacks)
 
-			table.pack(expand=True, fill=tk.BOTH)
+		table.pack(expand=True, fill=tk.BOTH)
 
-			notebook.add(frame, text=k.prettify())
+		table.populate(list(map(lambda r: (r.title, r.desc), search_results)))
 
-			table.populate(list(map(lambda r: (r.title, r.desc), v)))
+		frame.pack(expand=True, fill=tk.BOTH)
 
-		notebook.pack(expand=True, fill=tk.BOTH)
-
-	def add_manga_to_database(self, dict_key, event=None):
+	def add_manga_to_database(self, event=None):
 		row = event.widget.one()
 
 		if row is None:
 			return
 
-		row_index = functions.find_obj_with_attr("title", row[0], self.search_results[dict_key])
+		row_index = functions.find_obj_with_attr("title", row[0], self.search_results)
 
-		url = self.search_results[dict_key][row_index].url
-		title = self.search_results[dict_key][row_index].title
+		url = self.search_results[row_index].url
+		title = self.search_results[row_index].title
 
 		# Check if already in database
 		if database.queries.manga_select_one_with_title(title):

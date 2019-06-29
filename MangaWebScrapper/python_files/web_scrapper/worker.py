@@ -4,6 +4,7 @@ import functions
 import operator
 
 import database.queries
+import web_scrapper.manganelo as manganelo
 
 from data_classes import MangaDataClass
 
@@ -17,14 +18,7 @@ class WebScrapperWorker(threading.Thread):
 		self.completion_callback = completion_callback
 
 	def run(self):
-		scrapper_module = functions.url_to_scrapper_module(self.data.url)
-
-		if scrapper_module is None:
-			print(self.data.url, "is not a supported url")
-			self.completion_callback(self.data.id)
-			return
-
-		chapter_list = scrapper_module.ChapterList(self.data.url)
+		chapter_list = manganelo.ChapterList(self.data.url)
 
 		chapter_list.start()
 
@@ -36,9 +30,9 @@ class WebScrapperWorker(threading.Thread):
 			os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
 			if not os.path.isfile(file_path):
-				download = scrapper_module.ChapterDownload(c.url, file_path)
+				download = manganelo.ChapterDownload(c.url, file_path)
 
-				# download.start()
+				download.start()
 
 				if download.success:
 					row = MangaDataClass()

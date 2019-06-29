@@ -22,7 +22,7 @@ class MangaStatusEnum(EnumWrapper):
     RECENTLY_ADDED = 0
     FAVOURITES = 1
     READING_LIST = 2
-    RARELY_UPDATES = 3
+    # RARELY_UPDATES = 3
     DROPPED = 4
     COMPLETED = 5
 

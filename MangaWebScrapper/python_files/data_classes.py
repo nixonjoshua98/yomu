@@ -7,3 +7,10 @@ class MangaDataClass:
 	desc: str
 	url: str
 	chapter: float
+
+
+@dataclasses.dataclass(init=False)
+class MangaSearchResult:
+	title: str
+	url: str
+	desc: str

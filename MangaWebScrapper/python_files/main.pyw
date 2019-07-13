@@ -5,6 +5,12 @@ Email: nixonjoshua98@gmail.com
 Py Version: 3.7.x
 """
 
+"""
+Next Iteration:
+	- JSON to TK UI
+	- StatusEnum -> Status(int=0, text="Recently Added", downloadable=True) | def text2int, int2text etc.
+	- Reduce loose functions -> Static methods when possible
+"""
 
 
 def main():

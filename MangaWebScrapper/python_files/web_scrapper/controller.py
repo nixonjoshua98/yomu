@@ -26,7 +26,7 @@ class WebScrapperController(threading.Thread):
 		self.queue = Queue()
 
 		self.total_threads = 0
-		self.max_threads = 15
+		self.max_threads = 3
 
 		self.ids_downloading = []
 

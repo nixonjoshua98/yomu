@@ -40,7 +40,13 @@ class DownloadBase:
 
 			if image_size is not None:
 				pdf.setPageSize((image_size.width, image_size.height))
-				pdf.drawImage(image, x=0, y=0)
+
+				try:
+					pdf.drawImage(image, x=0, y=0)
+				except OSError as e:
+					print(e)
+					continue
+
 				pdf.showPage()
 		try:
 			pdf.save()

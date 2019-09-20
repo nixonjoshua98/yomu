@@ -89,7 +89,7 @@ class Application(widgets.RootWindow):
 		table_frame = tk.Frame(self)
 
 		# - Widgets
-		self.table = widgets.Treeview(table_frame, self.table_headings, (50, 500, 100, 100), table_callbacks)
+		self.table = widgets.Treeview(table_frame, self.table_headings, (50, 500, 100, 130), table_callbacks)
 
 		# - Widget placement
 		table_frame.pack(expand=True, fill=tk.BOTH)

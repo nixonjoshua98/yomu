@@ -9,7 +9,7 @@ class Treeview(ttk.Treeview):
 
         self.col_widths = [] if col_widths is None else col_widths
 
-        self.scroll = ttk.Scrollbar(self)
+        self.scroll = ttk.Scrollbar(master)
 
         self.configure(yscrollcommand=self.scroll.set)
         self.scroll.configure(command=self.yview)

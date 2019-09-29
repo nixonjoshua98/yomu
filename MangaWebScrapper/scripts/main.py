@@ -9,7 +9,7 @@ def main():
 	import time
 
 	from scripts import database as db
-	from scripts import thread_workers
+	from scripts import workers
 
 	os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
@@ -17,9 +17,11 @@ def main():
 
 	print("DB Rows:", len(db.select_all_manga()))
 
-	thread_controller = thread_workers.Controller()
+	worker_controller = workers.Controller()
 
-	thread_controller.start()
+	worker_controller.start()
+
+	time.sleep(5)
 
 
 if __name__ == '__main__':

@@ -26,14 +26,14 @@ class WebScrapperController(threading.Thread):
 		self.queue = Queue()
 
 		self.total_threads = 0
-		self.max_threads = 3
+		self.max_threads = 1
 
 		self.ids_downloading = []
 
 		self.start()
 
 	def run(self):
-		data_gen = database_generator((0, 1, 2))
+		data_gen = database_generator((0,))#, 1, 2))
 
 		while True:
 			time.sleep(0.5)

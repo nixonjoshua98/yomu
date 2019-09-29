@@ -3,7 +3,8 @@ import time
 import random
 
 from scripts import database as db
-from .worker import Worker
+from .download_worker import DownloadWorker
+from .cleanup_worker import CleanupWorker
 
 
 class Controller(threading.Thread):
@@ -29,8 +30,14 @@ class Controller(threading.Thread):
 		return True
 
 	def run(self):
-		while True:
+		"""
+		Why I didn't use multiprocessing.map - I created the 'wait_for_free_thread' method as I didn't want to spawn
+		potentially a tonne of threads which are going to bombard the server all at once. This way I can set a delay
+		between each thread being created in the controller, and not the worker. This is more convenient as I may have
+		multiple worker classes at some point.
+		"""
 
+		while True:
 			for row in self.row_generator():
 
 				time.sleep(1.0)
@@ -40,12 +47,18 @@ class Controller(threading.Thread):
 
 				self.wait_for_free_thread()
 
-				worker = Worker(row, lambda: self.on_worker_finish(row))
+				worker = DownloadWorker(row, lambda: self.on_worker_finish(row))
 
 				worker.start()
 
 				self.current_thread_count += 1
 				self.ids_processing.add(row.id)
+			# // for row in self.row_generator():
+
+			self.wait_for_free_thread()
+
+			CleanupWorker(db.select_all_manga()).start()
+		# // while True:
 
 	def on_worker_finish(self, manga):
 		self.current_thread_count -= 1

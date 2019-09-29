@@ -29,7 +29,7 @@ class WebScrapperWorker(threading.Thread):
 
 			os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-			if not os.path.isfile(file_path):
+			if not os.path.isfile(file_path) and c.chapter >= self.data.latest_chapter:
 				download = manganelo.ChapterDownload(c.url, file_path)
 
 				download.start()

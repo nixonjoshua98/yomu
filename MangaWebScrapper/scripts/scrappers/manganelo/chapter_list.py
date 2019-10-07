@@ -17,11 +17,6 @@ _function() - Inherited from base class
 
 
 class ChapterList(ScrapperBase):
-	"""
-	_function() - Inherited from base class
-
-	"""
-
 	def __init__(self, url: str, start: bool = False):
 		self.url = url
 		self.soup_list = []

@@ -15,6 +15,8 @@ class Controller(threading.Thread):
 		self.max_threads = 1
 		self.current_thread_count = 0
 
+		self.cleanup_worker = None
+
 	@staticmethod
 	def row_generator():
 		results = db.select_all_downloadable_manga()
@@ -23,11 +25,6 @@ class Controller(threading.Thread):
 
 		for row in results:
 			yield row
-
-	def wait_for_free_thread(self):
-		while self.current_thread_count >= self.max_threads:
-			time.sleep(0.5)
-		return True
 
 	def run(self):
 		"""
@@ -39,7 +36,6 @@ class Controller(threading.Thread):
 
 		while True:
 			for row in self.row_generator():
-
 				time.sleep(1.0)
 
 				if row.id in self.ids_processing:
@@ -47,7 +43,7 @@ class Controller(threading.Thread):
 
 				self.wait_for_free_thread()
 
-				worker = DownloadWorker(row, lambda: self.on_worker_finish(row))
+				worker = DownloadWorker(row, self.on_download_worker_finish)
 
 				worker.start()
 
@@ -57,9 +53,27 @@ class Controller(threading.Thread):
 
 			self.wait_for_free_thread()
 
-			CleanupWorker(db.select_all_manga()).start()
+			self.start_cleanup_worker()
 		# // while True:
 
-	def on_worker_finish(self, manga):
+	def wait_for_free_thread(self):
+		while self.current_thread_count >= self.max_threads:
+			time.sleep(0.5)
+		return True
+
+	def start_cleanup_worker(self):
+		# We only want one cleanup worker active at any one time.
+
+		if self.cleanup_worker is None:
+			self.cleanup_worker = CleanupWorker(db.select_all_manga(), self.on_cleanup_worker_finish)
+			self.cleanup_worker.start()
+
+	def on_download_worker_finish(self, manga):
 		self.current_thread_count -= 1
 		self.ids_processing.discard(manga.id)
+
+	def on_cleanup_worker_finish(self, total_removed: int):
+		self.cleanup_worker = None
+
+		if total_removed > 0:
+			print(f"Files removed: {total_removed}")

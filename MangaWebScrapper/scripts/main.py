@@ -21,7 +21,7 @@ def main():
 
 	worker_controller.start()
 
-	time.sleep(5)
+	time.sleep(60)
 
 
 if __name__ == '__main__':

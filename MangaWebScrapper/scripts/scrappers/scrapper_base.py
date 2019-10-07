@@ -7,10 +7,12 @@ class ScrapperBase:
 	def _send_request(url):
 		headers = requests.utils.default_headers()
 
+		headers["User-Agent"] = "Python"
+
 		try:
 			page = requests.get(url, stream=True, timeout=5, headers=headers)
 
-		except:  # Should narrow it down
+		except requests.exceptions.RequestException as e:  # Should narrow it down
 			return None
 
 		else:

@@ -1,8 +1,6 @@
-import os
 import threading
 
 from scripts.scrappers import manganelo
-from scripts import data
 
 
 class DownloadWorker(threading.Thread):
@@ -24,6 +22,4 @@ class DownloadWorker(threading.Thread):
 			if row.chapter_num < self.manga.chapters_read:
 				continue
 
-
-
-		self.callback()
+		self.callback(self.manga)

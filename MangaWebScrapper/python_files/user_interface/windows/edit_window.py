@@ -88,7 +88,7 @@ class MangaEditWindow(widgets.ChildWindow):
 
         ttk.Button(frame, text="Latest Chapter", command=self.latest_offline_callback).pack(side=tk.RIGHT, padx=5)
 
-        initial_index = MangaStatusEnum(self.manga_data.status).value
+        initial_index = MangaStatusEnum.get_index(self.manga_data.status)
 
         self.create_dropdown("status", "Status", initial_index, MangaStatusEnum.all_prettify())
 

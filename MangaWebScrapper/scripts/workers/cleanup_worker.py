@@ -21,8 +21,8 @@ class CleanupWorker(threading.Thread):
 			if os.path.isdir(manga_save_dir):
 				# Remove directories which I have dropped or completed and are not being downloaded
 				if not data.manga_status.from_key(m.status).downloadable:
-					shutil.rmtree(manga_save_dir)
 					files_removed += len(os.listdir(manga_save_dir))
+					shutil.rmtree(manga_save_dir)
 					continue
 
 				# Remove old chapters
@@ -45,8 +45,8 @@ class CleanupWorker(threading.Thread):
 		# Delete manga which are not in the database
 		for deleted_title in (dir_set - manga_title_set):
 			dir_path = os.path.join(data.paths.MANGA_SAVE_DIR, deleted_title)
-			shutil.rmtree(dir_path)
 			files_removed += len(os.listdir(dir_path))
+			shutil.rmtree(dir_path)
 
 		self.callback(files_removed)
 

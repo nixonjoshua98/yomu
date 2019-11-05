@@ -15,6 +15,15 @@ class EnumWrapper(enum.Enum):
 
         return getattr(cls, attr_name).value
 
+    @classmethod
+    def get_index(cls, val):
+        _enum = MangaStatusEnum(val)
+
+        for i, e in enumerate(MangaStatusEnum):
+            if e == _enum:
+                return i
+        return -1
+
 
 class MangaStatusEnum(EnumWrapper):
     """ Enum class used with the Manga model """
@@ -22,7 +31,7 @@ class MangaStatusEnum(EnumWrapper):
     RECENTLY_ADDED = 0
     FAVOURITES = 1
     READING_LIST = 2
-    # RARELY_UPDATES = 3
+    READING_ELSEWHERE = 3
     DROPPED = 4
     COMPLETED = 5
 

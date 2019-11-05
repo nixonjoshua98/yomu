@@ -35,6 +35,10 @@ class Controller(threading.Thread):
 		"""
 
 		while True:
+			self.wait_for_free_thread()
+
+			self.start_cleanup_worker()
+
 			for row in self.row_generator():
 				time.sleep(1.0)
 
@@ -49,12 +53,6 @@ class Controller(threading.Thread):
 
 				self.current_thread_count += 1
 				self.ids_processing.add(row.id)
-			# // for row in self.row_generator():
-
-			self.wait_for_free_thread()
-
-			self.start_cleanup_worker()
-		# // while True:
 
 	def wait_for_free_thread(self):
 		while self.current_thread_count >= self.max_threads:

@@ -15,8 +15,6 @@ def main():
 
 	db.create()
 
-	print("DB Rows:", len(db.select_all_manga()))
-
 	worker_controller = workers.Controller()
 
 	worker_controller.start()

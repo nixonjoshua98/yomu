@@ -9,18 +9,18 @@ from bs4 						import BeautifulSoup
 
 class Search(ManganeloBase):
 	def __init__(self, title):
-		super().__init__("panel_story_list", "story_item")
+		super().__init__("panel-search-story", "search-story-item")
 
 		self.url = self.MANGANELO_SEARCH_URL + title.replace(" ", "_")
 
 	def _extract(self):
 		for i, ele in enumerate(self.soup):
-			story_name = ele.find(class_="story_name").find(href=True)
-			story_chap = ele.find(class_="story_chapter").find(href=True)
+			story_name = ele.find(class_="item-img")
+			story_chap = ele.find(class_="item-chapter a-h text-nowrap")
 
 			row = MangaSearchResult()
 
-			row.title = story_name.text
+			row.title = story_name["title"]
 			row.desc = story_chap["title"]
 			row.url = story_name["href"]
 
@@ -32,7 +32,7 @@ class Search(ManganeloBase):
 
 class ChapterList(ManganeloBase):
 	def __init__(self, url: str):
-		super().__init__("chapter-list", "row")
+		super().__init__("panel-story-chapter-list", "a-h")
 
 		self.url = url
 
@@ -66,5 +66,5 @@ class ChapterDownload(DownloadBase):
 
 				self.image_urls = list(map(lambda i: i["src"], image_soup))
 
-			except (AttributeError, requests.ConnectionError):
-				pass
+			except (AttributeError, requests.ConnectionError) as e:
+				print(e)

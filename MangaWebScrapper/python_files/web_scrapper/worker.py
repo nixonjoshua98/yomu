@@ -18,6 +18,8 @@ class WebScrapperWorker(threading.Thread):
 		self.completion_callback = completion_callback
 
 	def run(self):
+		# URL = "https://manganelo.com/manga/read_naruto_manga_online_free3"
+
 		chapter_list = manganelo.ChapterList(self.data.url)
 
 		chapter_list.start()

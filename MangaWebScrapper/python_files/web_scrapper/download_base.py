@@ -52,6 +52,7 @@ class DownloadBase:
 			pdf.save()
 
 		except Exception:
+			print("Exception")
 			pass
 
 		else:

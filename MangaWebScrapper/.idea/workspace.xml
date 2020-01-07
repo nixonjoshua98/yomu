@@ -3,7 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="317d46c9-0047-4746-b68e-5f90b5042dba" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python_files/enums.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_files/enums.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python_files/web_scrapper/download_base.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_files/web_scrapper/download_base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python_files/web_scrapper/manganelo/manganelo.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_files/web_scrapper/manganelo/manganelo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python_files/web_scrapper/manganelo/manganelo_base.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_files/web_scrapper/manganelo/manganelo_base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python_files/web_scrapper/worker.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_files/web_scrapper/worker.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,14 +17,47 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/scripts/workers/cleanup_worker.py">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/python_files/web_scrapper/manganelo/manganelo.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+            <state relative-caret-position="1037">
+              <caret line="67" selection-start-line="67" selection-end-line="67" />
               <folding>
-                <element signature="e#0#9#0" expanded="true" />
+                <element signature="e#0#16#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/python_files/web_scrapper/download_base.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="850">
+              <caret line="54" column="28" selection-start-line="54" selection-start-column="28" selection-end-line="54" selection-end-column="28" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/python_files/web_scrapper/controller.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="459">
+              <caret line="35" column="46" selection-start-line="35" selection-start-column="46" selection-end-line="35" selection-end-column="46" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/python_files/enums.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="629">
+              <caret line="37" column="12" selection-start-line="37" selection-start-column="12" selection-end-line="37" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -66,7 +103,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/python_files/interface_widgets/drop_down.py" />
         <option value="$PROJECT_DIR$/python_files/interface_widgets/__init__.py" />
         <option value="$PROJECT_DIR$/PythonFiles/enums.py" />
         <option value="$PROJECT_DIR$/python_files/static_classes/manga_status_enum.py" />
@@ -76,14 +112,11 @@
         <option value="$PROJECT_DIR$/PythonFiles/user_interface/widgets/drop_down.py" />
         <option value="$PROJECT_DIR$/python_files/user_interface/application.py" />
         <option value="$PROJECT_DIR$/python_files/user_interface/main_table.py" />
-        <option value="$PROJECT_DIR$/python_files/web_scrapper/manganelo/manganelo.py" />
-        <option value="$PROJECT_DIR$/python_files/data_classes.py" />
         <option value="$PROJECT_DIR$/python_files/user_interface/windows/search_results_window.py" />
         <option value="$PROJECT_DIR$/python_files/functions.py" />
         <option value="$PROJECT_DIR$/python_files/main.pyw" />
         <option value="$PROJECT_DIR$/python_files/user_interface/widgets/treeview.py" />
         <option value="$PROJECT_DIR$/python_files/user_interface/windows/main_window.py" />
-        <option value="$PROJECT_DIR$/python_files/web_scrapper/download_base.py" />
         <option value="$PROJECT_DIR$/scripts/database/models.py" />
         <option value="$PROJECT_DIR$/scripts/data.py" />
         <option value="$PROJECT_DIR$/scripts/data/paths.py" />
@@ -106,17 +139,21 @@
         <option value="$PROJECT_DIR$/scripts/workers/worker.py" />
         <option value="$PROJECT_DIR$/scripts/workers/cleaner_worker.py" />
         <option value="$PROJECT_DIR$/scripts/data/manga_status.py" />
-        <option value="$PROJECT_DIR$/python_files/web_scrapper/worker.py" />
-        <option value="$PROJECT_DIR$/python_files/web_scrapper/controller.py" />
         <option value="$PROJECT_DIR$/scripts/workers/worker_base_class.py" />
-        <option value="$PROJECT_DIR$/scripts/scrappers/manganelo/chapter_list.py" />
         <option value="$PROJECT_DIR$/scripts/scrappers/scrapper_base.py" />
         <option value="$PROJECT_DIR$/scripts/workers/controller.py" />
         <option value="$PROJECT_DIR$/scripts/workers/cleanup_worker.py" />
         <option value="$PROJECT_DIR$/python_files/user_interface/windows/edit_window.py" />
-        <option value="$PROJECT_DIR$/python_files/enums.py" />
         <option value="$PROJECT_DIR$/scripts/main.py" />
+        <option value="$PROJECT_DIR$/scripts/scrappers/manganelo/chapter_list.py" />
         <option value="$PROJECT_DIR$/scripts/workers/download_worker.py" />
+        <option value="$PROJECT_DIR$/python_files/web_scrapper/manganelo/manganelo_base.py" />
+        <option value="$PROJECT_DIR$/python_files/data_classes.py" />
+        <option value="$PROJECT_DIR$/python_files/web_scrapper/manganelo/manganelo.py" />
+        <option value="$PROJECT_DIR$/python_files/web_scrapper/download_base.py" />
+        <option value="$PROJECT_DIR$/python_files/web_scrapper/worker.py" />
+        <option value="$PROJECT_DIR$/python_files/enums.py" />
+        <option value="$PROJECT_DIR$/python_files/web_scrapper/controller.py" />
       </list>
     </option>
   </component>
@@ -144,13 +181,20 @@
             <path>
               <item name="MangaWebScrapper" type="b2602c69:ProjectViewProjectNode" />
               <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
+              <item name="python_files" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MangaWebScrapper" type="b2602c69:ProjectViewProjectNode" />
               <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="scrappers" type="462c0819:PsiDirectoryNode" />
+              <item name="python_files" type="462c0819:PsiDirectoryNode" />
+              <item name="web_scrapper" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MangaWebScrapper" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MangaWebScrapper" type="462c0819:PsiDirectoryNode" />
+              <item name="python_files" type="462c0819:PsiDirectoryNode" />
+              <item name="web_scrapper" type="462c0819:PsiDirectoryNode" />
+              <item name="manganelo" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -187,7 +231,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Env v2">
+  <component name="RunManager" selected="Python.Dev Env">
     <configuration name="Dev Env" type="PythonConfigurationType" factoryName="Python">
       <module name="MangaWebScrapper" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -457,7 +501,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="Limited cleanup worker to one at a time." />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/PythonFiles/user_interface/widgets/drop_down.py" />
     <entry file="file://$PROJECT_DIR$/python_files/interface_widgets/__init__.py" />
     <entry file="file://$PROJECT_DIR$/python_files/static_classes/__init__.py" />
     <entry file="file://$PROJECT_DIR$/python_files/user_interface/toolbar.py" />
@@ -503,32 +546,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
           <caret line="25" column="39" selection-start-line="25" selection-start-column="39" selection-end-line="25" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python_files/web_scrapper/manganelo/manganelo_base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-202">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python_files/web_scrapper/manganelo/manganelo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python_files/data_classes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="13" lean-forward="true" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -698,16 +715,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/scrappers/manganelo/chapter_list.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="15" column="3" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="3" />
-          <folding>
-            <element signature="e#1#57#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/database/context_manager.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -731,43 +738,6 @@
             <element signature="e#4611#4824#0" />
             <element signature="e#4885#5037#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python_files/web_scrapper/controller.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="569">
-          <caret line="56" column="38" lean-forward="true" selection-start-line="56" selection-start-column="38" selection-end-line="56" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python_files/web_scrapper/download_base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="569">
-          <caret line="49" column="30" selection-start-line="49" selection-start-column="30" selection-end-line="49" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python_files/web_scrapper/worker.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="32" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python_files/enums.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="32" column="16" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -795,22 +765,99 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/workers/download_worker.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/workers/cleanup_worker.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/scrappers/manganelo/chapter_list.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="36" column="20" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+          <folding>
+            <element signature="e#1#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/workers/download_worker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="26" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python_files/web_scrapper/manganelo/manganelo_base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python_files/data_classes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="7" selection-start-line="5" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/kite_tutorial.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python_files/web_scrapper/worker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python_files/web_scrapper/manganelo/manganelo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1037">
+          <caret line="67" selection-start-line="67" selection-end-line="67" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python_files/web_scrapper/download_base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="850">
+          <caret line="54" column="28" selection-start-line="54" selection-start-column="28" selection-end-line="54" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python_files/enums.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="37" column="12" selection-start-line="37" selection-start-column="12" selection-end-line="37" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python_files/web_scrapper/controller.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="35" column="46" selection-start-line="35" selection-start-column="46" selection-end-line="35" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
           </folding>
         </state>
       </provider>

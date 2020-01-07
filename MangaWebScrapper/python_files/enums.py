@@ -35,6 +35,8 @@ class MangaStatusEnum(EnumWrapper):
     DROPPED = 4
     COMPLETED = 5
 
+    TEST = 6
+
 
 class WebsiteEnum:
     MANGANELO = 0

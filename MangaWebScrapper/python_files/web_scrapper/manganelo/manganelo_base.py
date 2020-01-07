@@ -34,7 +34,7 @@ class ManganeloBase:
 
 				self.soup = soup.find(class_=self.find_class).find_all(class_=self.find_all_class)
 
-			except (AttributeError, requests.ConnectionError):
+			except (AttributeError, requests.ConnectionError) as e:
 				pass
 
 	def _extract(self): ...

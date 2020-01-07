@@ -2,15 +2,10 @@
 """
 Author: Joshua Nixon
 Email: nixonjoshua98@gmail.com
-Py Version: 3.7.x
+Py Version: 3.7
 """
 
-"""
-Next Iteration:
-- Have UI class with a callback class combined (composition) -> interface_containers & interface_controllers
-	- StatusEnum -> Status(int=0, text="Recently Added", downloadable=True) | def text2int, int2text etc.
-	- Reduce loose functions -> Static methods when possible
-"""
+# TODO: Re-write this entire program.
 
 
 def main():

@@ -6,12 +6,14 @@ from web_scrapper.download_base import DownloadBase
 from data_classes 				import (MangaSearchResult, MangaDataClass)
 from bs4 						import BeautifulSoup
 
+import python_files.constants as constants
+
 
 class Search(ManganeloBase):
 	def __init__(self, title):
 		super().__init__("panel-search-story", "search-story-item")
 
-		self.url = self.MANGANELO_SEARCH_URL + title.replace(" ", "_")
+		self.url = constants.MANGANELO_SEARCH_URL + title.replace(" ", "_")
 
 	def _extract(self):
 		for i, ele in enumerate(self.soup):

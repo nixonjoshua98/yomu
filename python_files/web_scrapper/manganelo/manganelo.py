@@ -6,7 +6,7 @@ from web_scrapper.download_base import DownloadBase
 from data_classes 				import (MangaSearchResult, MangaDataClass)
 from bs4 						import BeautifulSoup
 
-import python_files.constants as constants
+import constants
 
 
 class Search(ManganeloBase):

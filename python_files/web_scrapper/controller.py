@@ -2,11 +2,11 @@ import threading
 import time
 import random
 
-from data_structures.queue import Queue
-
-import database.queries as database_queries
-
 from .worker import WebScrapperWorker
+
+from python_files.structures import Queue
+from python_files.common import manga_status
+from python_files.database import queries as database_queries
 
 
 def database_generator(status_list):
@@ -33,7 +33,8 @@ class WebScrapperController(threading.Thread):
 		self.start()
 
 	def run(self):
-		data_gen = database_generator((0, 1, 2))
+		# manga_status.all_downloadable_ids()
+		data_gen = database_generator((0,))
 
 		while True:
 			time.sleep(0.5)

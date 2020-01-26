@@ -1,6 +1,6 @@
 import sqlalchemy
 
-from .factory import DatabaseFactory
+from python_files.database.factory import DatabaseFactory
 
 
 class DatabaseSession:

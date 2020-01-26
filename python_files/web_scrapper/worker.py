@@ -2,11 +2,19 @@ import os
 import threading
 import functions
 import operator
+import dataclasses
 
 import database.queries
-import web_scrapper.manganelo as manganelo
 
-from data_classes import MangaDataClass
+from python_files import manganelo
+
+
+@dataclasses.dataclass(init=False)
+class MangaDataClass:
+	title: str
+	desc: str
+	url: str
+	chapter: float
 
 
 class WebScrapperWorker(threading.Thread):
@@ -18,8 +26,6 @@ class WebScrapperWorker(threading.Thread):
 		self.completion_callback = completion_callback
 
 	def run(self):
-		# URL = "https://manganelo.com/manga/read_naruto_manga_online_free3"
-
 		chapter_list = manganelo.ChapterList(self.data.url)
 
 		chapter_list.start()

@@ -11,8 +11,8 @@ import database.queries
 import user_interface.widgets as widgets
 import user_interface.windows as windows
 
-from enums import MangaStatusEnum
-import web_scrapper.manganelo as manganelo
+from python_files import manganelo
+from python_files.common import manga_status
 
 
 class Application(widgets.RootWindow):
@@ -63,7 +63,7 @@ class Application(widgets.RootWindow):
 		dropdown_frame = tk.Frame(toolbar_frame, relief=tk.RAISED, borderwidth=1)
 
 		# - Left side widgets
-		self.status_dropdown = widgets.Dropdown(dropdown_frame, MangaStatusEnum.all_prettify(), self.update_table)
+		self.status_dropdown = widgets.Dropdown(dropdown_frame, manga_status.all_text(), self.update_table)
 
 		# - Right side widgets
 		downloads_btn = ttk.Button(btn_frame, text="Downloads", command=self.toggle_downloads_window)
@@ -127,7 +127,13 @@ class Application(widgets.RootWindow):
 
 	""" Re-populate the table with the database results """
 	def update_table(self):
-		status_enum_val = MangaStatusEnum.str_to_int(self.status_dropdown.get())
+		status = manga_status.from_text(self.status_dropdown.get())
+
+		if status is None:
+			print(f"{self.status_dropdown.get()} could not be found")
+			return
+
+		status_enum_val = status.id
 
 		query_results = database.queries.manga_select_all_with_status(status_enum_val)
 

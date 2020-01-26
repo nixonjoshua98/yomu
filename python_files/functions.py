@@ -1,14 +1,11 @@
 import os
-import shutil
-import collections
-import PIL
-import enums
 import subprocess
 import requests
 
-from user_data import UserData
 
 from sqlalchemy.inspection import inspect
+
+from python_files.common import constants
 
 
 def send_request(url):
@@ -17,7 +14,7 @@ def send_request(url):
 	try:
 		page = requests.get(url, stream=True, timeout=5, headers=headers)
 
-	except Exception:  # Should narrow it down
+	except:
 		return None
 
 	else:
@@ -32,38 +29,10 @@ def remove_nasty_chars(s) -> str:
 
 
 def get_chapter_save_location(manga_title, chapter) -> str:
-	output_dir = os.path.join(UserData.manga_save_dir, manga_title)
+	output_dir = os.path.join(constants.MANGA_DIR, manga_title)
 	file_name = f"{manga_title} Chapter {chapter}.pdf"
 
 	return os.path.join(output_dir, file_name)
-
-
-def copy_file_url_to_file(src_url, dst_path) -> bool:
-	image_file = send_request(src_url)
-
-	if image_file:
-		with open(dst_path, "wb") as f:
-			image_file.raw.decode_content = True
-
-			try:
-				shutil.copyfileobj(image_file.raw, f)
-			except Exception as e:
-				return False
-
-			else:
-				return True
-
-
-def get_image_dimensions(path) -> collections.namedtuple or None:
-	named_tuple = collections.namedtuple("ImageDimensions", "width, height")
-
-	try:
-		with PIL.Image.open(path) as img:
-			return_tuple = named_tuple(*img.size)
-	except (OSError, UnboundLocalError):
-		return None
-	else:
-		return return_tuple
 
 
 def remove_trailing_zeros_if_zero(n):
@@ -103,7 +72,7 @@ def callback_once_true(master, attr, search_obj, callback):
 
 
 def get_latest_offline_chapter(title: str) -> float or int:
-	manga_dir = os.path.join(UserData.manga_save_dir, title)
+	manga_dir = os.path.join(constants.MANGA_DIR, title)
 
 	if os.path.isdir(manga_dir):
 		files = os.listdir(manga_dir)
@@ -113,7 +82,7 @@ def get_latest_offline_chapter(title: str) -> float or int:
 
 
 def open_manga_in_explorer(title):
-	path = os.path.join(UserData.manga_save_dir, remove_nasty_chars(title))
+	path = os.path.join(constants.MANGA_DIR, remove_nasty_chars(title))
 
 	subprocess.call("explorer {}".format(path, shell=True))
 

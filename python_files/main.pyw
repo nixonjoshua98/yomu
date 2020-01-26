@@ -10,18 +10,18 @@ Py Version: 3.7
 
 def main():
 	import os
-	import database
+
+	from python_files import database
+	from python_files.user_interface.windows import Application
+	from python_files.web_scrapper.controller import WebScrapperController
 
 	os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-	database.DatabaseFactory.create_engine()
-	database.DatabaseFactory.create_factory()
+	database.init()
 
-	import user_interface.windows
-	import web_scrapper.controller
+	manga_download_controller = WebScrapperController()
 
-	manga_download_controller = web_scrapper.controller.WebScrapperController()
-	user_interface.windows.Application(manga_download_controller).mainloop()
+	Application(manga_download_controller).mainloop()
 
 
 if __name__ == "__main__":

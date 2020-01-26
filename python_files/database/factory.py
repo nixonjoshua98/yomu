@@ -1,7 +1,7 @@
 import os
 import sqlalchemy
 
-from user_data import UserData
+from python_files.common import constants
 
 
 class DatabaseFactory:
@@ -12,11 +12,9 @@ class DatabaseFactory:
 		from .models import Base
 
 		# Create the database path if not already created
-		os.makedirs(os.path.dirname(UserData.database_path), exist_ok=True)
+		os.makedirs(os.path.dirname(constants.DB_FILE), exist_ok=True)
 
-		con_str = UserData.database_con_str + UserData.database_path
-
-		cls.engine = sqlalchemy.create_engine(con_str, echo=False)
+		cls.engine = sqlalchemy.create_engine(f"sqlite:///{constants.DB_FILE}", echo=False)
 
 		Base.metadata.create_all(cls.engine)
 

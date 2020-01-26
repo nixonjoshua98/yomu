@@ -1,8 +1,8 @@
 
-from . import models
-from .context_manager import DatabaseSession
-
 import functions
+
+from python_files.database.context_manager import DatabaseSession
+from python_files.database import models
 
 
 class InvalidFields(Exception):

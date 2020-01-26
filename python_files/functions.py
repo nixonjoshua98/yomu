@@ -1,11 +1,10 @@
-import os
 import subprocess
 import requests
 
 
 from sqlalchemy.inspection import inspect
 
-from python_files.common import constants
+from python_files.common.functions import *
 
 
 def send_request(url):
@@ -19,20 +18,6 @@ def send_request(url):
 
 	else:
 		return page if page.status_code == 200 else None
-
-
-def remove_nasty_chars(s) -> str:
-	try:
-		return "".join([i for i in s if i not in ':\\/|*"><?.,'])
-	except TypeError:
-		return s
-
-
-def get_chapter_save_location(manga_title, chapter) -> str:
-	output_dir = os.path.join(constants.MANGA_DIR, manga_title)
-	file_name = f"{manga_title} Chapter {chapter}.pdf"
-
-	return os.path.join(output_dir, file_name)
 
 
 def remove_trailing_zeros_if_zero(n):

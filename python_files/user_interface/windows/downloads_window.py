@@ -29,7 +29,7 @@ class DownloadsWindow(widgets.ChildWindow):
 		val = self.download_controller.queue.pop()
 
 		if val is not None:
-			self.table.populate([(val.title, val.chapter)], top_down=True)
+			self.table.populate([val], top_down=True)
 
 		self.after(500, self.update_table)
 

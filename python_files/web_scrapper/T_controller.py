@@ -8,22 +8,25 @@ from .T_worker import Worker
 
 
 class WorkerController(threading.Thread):
-	queue = Queue()
-
 	def __init__(self):
 		super().__init__(daemon=True)
 
-		self.max_threads = 1
+		self.queue = Queue()
+
+		self.max_threads = 5
 		self.num_threads = 0
 
 		self.busy_ids = []
 
 		self.start()
 
-	def on_chapter_download(self, manga):
+	def on_manga_done(self, manga):
 		self.busy_ids.remove(manga.id)
 
 		self.num_threads -= 1
+
+	def on_chapter_download(self, manga):
+		self.queue.append(manga)
 
 	def run(self):
 		while True:
@@ -49,7 +52,7 @@ class WorkerController(threading.Thread):
 
 				self.num_threads += 1
 
-				Worker(m, self.queue, self.on_chapter_download)
+				Worker(m, on_dl_callback=self.on_chapter_download, on_done_callback=self.on_manga_done)
 			# -
 
 			if all_ids_busy:

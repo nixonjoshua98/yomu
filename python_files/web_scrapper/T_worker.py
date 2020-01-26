@@ -1,29 +1,20 @@
 import threading
 import os
-import dataclasses
 
 from python_files.manganelo import (ChapterList, ChapterDownload)
 from python_files.database import queries
 from python_files.common import functions
 
 
-@dataclasses.dataclass()
-class MangaChapterDL:
-	id: int
-	title: str
-	chapter: str
-
-
 class Worker(threading.Thread):
-	def __init__(self, manga, q, callback):
+	def __init__(self, manga, *, on_dl_callback, on_done_callback):
 		super().__init__(daemon=False)
 
 		self.manga = manga
+		self.on_dl_callback = on_dl_callback
+		self.on_done_callback = on_done_callback
 
 		self.start()
-
-		self.q = q
-		self.callback = callback
 
 	def run(self):
 		chap_ls = ChapterList(self.manga.url, start=True)
@@ -46,14 +37,16 @@ class Worker(threading.Thread):
 			dwn = ChapterDownload(c.url, chapter_dst, start=True)
 
 			if dwn.success:
-				row = MangaChapterDL(self.manga.id, self.manga.title, c.chapter)
+				self.on_dl_callback([self.manga.title, c.chapter])
 
-				self.q.append(row)
+		if len(chap_ls.results) == 0:
+			print(f"Warning: {self.manga.id} {self.manga.title} {self.manga.url} expired")
 
-		latest_online_chap = chap_ls.results[-1].chapter
-		latest_read_chap = self.manga.latest_chapter
+		else:
+			latest_online_chap = chap_ls.results[-1].chapter
+			latest_read_chap = self.manga.latest_chapter
 
-		if latest_online_chap != latest_read_chap:
-			queries.update_latest_chapter(_id=self.manga.id, chapter=latest_online_chap)
+			if latest_online_chap != latest_read_chap:
+				queries.update_latest_chapter(_id=self.manga.id, chapter=latest_online_chap)
 
-		self.callback(self.manga)
+		self.on_done_callback(self.manga)

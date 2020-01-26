@@ -14,11 +14,11 @@ class MangaChapter:
 
 
 class ChapterList(BaseClass):
-	results = []
-	finished = False
-
 	def __init__(self, url: str, *, start: bool = False):
 		self.url = url
+
+		self.results = []
+		self.finished = False
 
 		if start:
 			self.start()

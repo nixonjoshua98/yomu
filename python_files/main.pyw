@@ -5,7 +5,7 @@ Email: nixonjoshua98@gmail.com
 Py Version: 3.7
 """
 
-# TODO: Re-write this entire program.
+# TODO: Interface
 
 
 def main():

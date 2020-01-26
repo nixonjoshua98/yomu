@@ -23,4 +23,4 @@ class Manga(Base):
     status = Column(Integer, default=0)
 
     def __str__(self):
-        return f"({self.id}, {self.title}, {self.url}, {self.chapters_read}, {self.status})"
+        return f"({self.id}, {self.title}, {self.url}, {self.chapters_read}, {self.latest_chapter}, {self.status})"

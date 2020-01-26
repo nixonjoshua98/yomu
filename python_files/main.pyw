@@ -13,15 +13,17 @@ def main():
 
 	from python_files import database
 	from python_files.user_interface.windows import Application
-	from python_files.web_scrapper.controller import WebScrapperController
+	from python_files.web_scrapper import WorkerController
 
 	os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 	database.init()
 
-	manga_download_controller = WebScrapperController()
+	controller = WorkerController()
 
-	Application(manga_download_controller).mainloop()
+	app = Application(controller)
+
+	app.mainloop()
 
 
 if __name__ == "__main__":

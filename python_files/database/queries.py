@@ -3,13 +3,29 @@ import functions
 
 from python_files.database.context_manager import DatabaseSession
 from python_files.database import models
+from python_files.common import manga_status
 
 
 class InvalidFields(Exception):
     pass
 
 
-""" Generic SQLAlchemy queries """
+def get_all_downloadable():
+    with DatabaseSession() as session:
+        s = session.query(models.Manga)
+
+        query = s.filter(models.Manga.status.in_(manga_status.all_downloadable_ids()))
+
+        results = query.all()
+
+    return results
+
+
+def update_latest_chapter(*, _id: int, chapter: int):
+    with DatabaseSession() as session:
+        row = session.query(models.Manga).filter_by(id=_id).first()
+
+        row.latest_chapter = chapter
 
 
 def _select_all_where_equals(table, **kwargs):

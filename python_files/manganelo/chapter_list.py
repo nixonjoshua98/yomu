@@ -17,8 +17,11 @@ class ChapterList(BaseClass):
 	results = []
 	finished = False
 
-	def __init__(self, url: str):
+	def __init__(self, url: str, *, start: bool = False):
 		self.url = url
+
+		if start:
+			self.start()
 
 	def start(self):
 		self._extract()

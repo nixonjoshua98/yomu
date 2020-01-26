@@ -9,13 +9,16 @@ from python_files.manganelo.base_class import BaseClass
 
 
 class ChapterDownload(BaseClass):
-	def __init__(self, src_url, dst_path):
+	def __init__(self, src_url, dst_path, *, start: bool = False):
 		self._src_url = src_url
 		self._dst_path = dst_path
 
 		self._downloaded_images = []
 
 		self.success = False
+
+		if start:
+			self.start()
 
 	def start(self):
 		image_urls = self._get_image_urls()

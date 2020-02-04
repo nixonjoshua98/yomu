@@ -13,7 +13,7 @@ class WorkerController(threading.Thread):
 
 		self.queue = Queue()
 
-		self.max_threads = 5
+		self.max_threads = 1
 		self.num_threads = 0
 
 		self.busy_ids = []

@@ -10,12 +10,13 @@ Py Version: 3.7
 
 def main():
 	import os
+	import sys
+
+	sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 	from python_files import database
 	from python_files.user_interface.windows import Application
 	from python_files.web_scrapper import WorkerController
-
-	os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 	database.init()
 

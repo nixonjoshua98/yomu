@@ -4,7 +4,7 @@ class Queue:
 
     def pop(self):
         if len(self.ls) > 0:
-            val = self.ls.pop()
+            val = self.ls.pop(0)
 
             return val
 

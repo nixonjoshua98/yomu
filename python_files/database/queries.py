@@ -16,6 +16,8 @@ def get_all_downloadable():
 
         query = s.filter(models.Manga.status.in_(manga_status.all_downloadable_ids()))
 
+        # query = s.filter(models.Manga.status.in_((0, )))
+
         results = query.all()
 
     return results

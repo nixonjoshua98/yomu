@@ -2,17 +2,16 @@ import os
 import psycopg2
 import psycopg2.extras
 
+from configparser import ConfigParser
+
 
 class DBConnection:
     def __init__(self):
-        self._con = psycopg2.connect(
-            user="postgres",
-            password="immortal999",
-            host="localhost",
-            port="5432",
-            database="mangadb"
-            )
+        config = ConfigParser()
 
+        config.read("../postgres.ini")
+
+        self._con = psycopg2.connect(**dict(config.items("postgres")))
         self.cur = self._con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
 
     @staticmethod
@@ -34,7 +33,5 @@ class DBConnection:
     def __exit__(self, *args):
         if self._con:
             self._con.commit()
-            
             self.cur.close()
-            
             self._con.close()

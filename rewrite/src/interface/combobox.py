@@ -14,6 +14,11 @@ class Combobox(ttk.Combobox):
 
 		self.bind("<<ComboboxSelected>>", self.on_selected)
 
+	def config(self, *args, **kwargs):
+		self._command = kwargs.pop("command", None)
+
+		super().config(*args, **kwargs)
+
 	@property
 	def val_index(self):
 		return self["values"].index(self.get())

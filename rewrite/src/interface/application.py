@@ -11,89 +11,97 @@ from src.common import mangastatus
 from src.database import DBConnection
 
 
-class Application(RootWindow):
+class TreeOptions(tk.Frame):
+	def __init__(self, master=None, *, command=None):
+		super(TreeOptions, self).__init__(master, relief=tk.RAISED, borderwidth=1)
+
+		self.vars = dict(updates_only=tk.BooleanVar())
+
+		for text, var in (("Updates Only", "updates_only"),):
+			c = tk.Checkbutton(self, text=text, variable=self.vars.get(var))
+
+			c.config(command=command)
+
+			c.pack(side=tk.LEFT)
+
+
+class Toolbar(tk.Frame):
+	def __init__(self, master=None):
+		super(Toolbar, self).__init__(master, relief=tk.RAISED, borderwidth=1)
+
+		self.search_entry = ttk.Entry(self)
+		self.search_btn = ttk.Button(self, text="Search")
+		self.status_combo = Combobox(self, mangastatus.all_text())
+
+		self.status_combo.pack(side=tk.LEFT, padx=5, pady=5)
+		self.search_btn.pack(side=tk.RIGHT, padx=5, pady=5)
+		self.search_entry.pack(side=tk.RIGHT, fill=tk.X, expand=True, padx=5, pady=5)
+
+
+class CentralFrame(tk.Frame):
 	TREE_HEADINGS = ["ID", "Title", "Chapters Read", "Latest Chapter"]
 
+	def __init__(self, master=None):
+		super(CentralFrame, self).__init__(master, relief=tk.RAISED)
+
+		self.tree = Treeview(self, self.TREE_HEADINGS)
+
+		self.tree.pack(fill=tk.BOTH, expand=True)
+
+
+class Application(RootWindow):
 	def __init__(self):
 		super(Application, self).__init__("Manga Tracker", "750x400")
 
 		self.current_status = mangastatus.index2status(0)
-		self.options = dict(updates_only=tk.BooleanVar())
 
-		self.tree = None
+		# - Create UI
+		self.toolbar = Toolbar(self)
+		self.options = TreeOptions(self, command=self.on_options_change)
+		self.central = CentralFrame(self)
 
-		self.create_toolbar()
-		self.create_tree()
 		self.create_menu()
 
-	def create_toolbar(self):
-		frame = tk.Frame(self, relief=tk.RAISED, borderwidth=1)
-		search_entry = ttk.Entry(frame)
-		search_btn = ttk.Button(frame, text="Search", command=self.on_search_btn)
-		status_combo = Combobox(frame, mangastatus.all_text(), command=self.on_status_combo_change)
+		# - Assign callbacks
+		self.toolbar.status_combo.config(command=self.on_status_combo_change)
 
-		frame.pack(fill=tk.X, padx=5, pady=5)
-
-		status_combo.pack(side=tk.LEFT, padx=5, pady=5)
-		search_btn.pack(side=tk.RIGHT, padx=5, pady=5)
-		search_entry.pack(side=tk.RIGHT, fill=tk.X, expand=True, padx=5, pady=5)
-
-		frame = tk.Frame(self, relief=tk.RAISED, borderwidth=1)
-
-		# Check Buttons
-		check0 = tk.Checkbutton(
-			frame,
-			text="Updates Only",
-			variable=self.options.get("updates_only"),
-			command=self.on_options_change)
-
-		check0.pack(side=tk.LEFT)
-		# -
-
-		frame.pack(fill=tk.X, padx=5)
-
-	def create_tree(self):
-		frame = tk.Frame(self, relief=tk.RAISED)
-		self.tree = Treeview(frame, self.TREE_HEADINGS)
-
+		# - Initial Method Calls
 		self.update_tree()
 
-		self.tree.pack(fill=tk.BOTH, expand=True)
-
-		frame.pack(fill=tk.BOTH, padx=5, pady=5, expand=True)
+		# - Widget placements
+		self.toolbar.pack(fill=tk.X, padx=5, pady=5)
+		self.options.pack(fill=tk.X, padx=5, pady=5)
+		self.central.pack(fill=tk.BOTH, padx=5, pady=5, expand=True)
 
 	def create_menu(self):
-		menu = tk.Menu(self.tree, tearoff=0)
+		menu = tk.Menu(self.central.tree, tearoff=0)
 
 		menu.add_command(label="Open in Browser", command=self.open_in_browser)
 
 		menu.master.bind("<Button-3>", lambda e: menu.post(e.x_root, e.y_root))
 
-	# - - - LOGIC - - -
-
 	def update_tree(self):
-		self.tree.clear()
+		self.central.tree.clear()
 
 		with DBConnection() as con:
 			query = con.get_query("selecttreemanga.sql")
-
 			if query is not None:
 				con.cur.execute(query, (self.current_status.id,))
-
 				results = con.cur.fetchall()
 
-		results = self.apply_tree_options(results)
+		results = self.apply_tree_options(self.options.vars, results)
 
-		self.tree.populate(results)
+		self.central.tree.populate(results)
 
-	def apply_tree_options(self, data):
-		if self.options.get("updates_only").get():
+	@staticmethod
+	def apply_tree_options(var_dict, data):
+		if var_dict.get("updates_only").get():
 			data = list(filter(lambda row: row.latest_chapter > row.chapters_read, data))
 
 		return data
 
 	def open_in_browser(self):
-		row = self.tree.one()
+		row = self.central.tree.one()
 
 		if row is None:
 			return
@@ -109,18 +117,10 @@ class Application(RootWindow):
 		else:
 			messagebox.showerror("URL could not be opened", f"'{result.url}' could not be opened.")
 
-	# - - - CALLBACKS - - -
-
 	def on_options_change(self):
-		def predicate():
-			self.update_tree()
-
-		self.after(50, predicate)  # Small delay to minimise the database calls when spamming
+		# Small delay to minimise the database calls when spamming
+		self.after(50, self.update_tree)
 
 	def on_status_combo_change(self, event):
 		self.current_status = mangastatus.index2status(event.widget.val_index)
-
 		self.update_tree()
-
-	def on_search_btn(self):
-		pass

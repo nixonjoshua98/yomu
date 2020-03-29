@@ -1,6 +1,11 @@
 import webbrowser
+import manganelo
+import threading
+import time
 
-from . import (RootWindow, Treeview, Combobox)
+from . import (RootWindow, Treeview, Combobox, SearchWindow)
+
+import functools as ft
 
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -51,7 +56,7 @@ class CentralFrame(tk.Frame):
 
 class Application(RootWindow):
 	def __init__(self):
-		super(Application, self).__init__("Manga Tracker", "750x400")
+		super(Application, self).__init__("Manga Tracker", geometry="750x400")
 
 		self.current_status = mangastatus.index2status(0)
 
@@ -64,6 +69,7 @@ class Application(RootWindow):
 
 		# - Assign callbacks
 		self.toolbar.status_combo.config(command=self.on_status_combo_change)
+		self.toolbar.search_btn.config(command=ft.partial(self.on_search_button, self.toolbar.search_btn))
 
 		# - Initial Method Calls
 		self.update_tree()
@@ -100,27 +106,39 @@ class Application(RootWindow):
 
 		return data
 
-	def open_in_browser(self):
+	@staticmethod
+	def open_in_browser(url):
+		if url is not None:
+			webbrowser.open(url, new=True)
+		else:
+			messagebox.showerror("URL could not be opened", f"'{url}' could not be opened.")
+
+	def on_open_in_browser(self):
 		row = self.central.tree.one()
 
-		if row is None:
-			return
+		if row is not None:
+			with DBConnection() as con:
+				query = con.get_query("url.sql")
 
-		with DBConnection() as con:
-			query = con.get_query("selecturl.sql")
-			if query is not None:
-				con.cur.execute(query, (row[0],))
-				result = con.cur.fetchone()
+				if query is not None:
+					con.cur.execute(query, (row[0],))
+					result = con.cur.fetchone()
 
-		if result is not None:
-			webbrowser.open(result.url, new=True)
-		else:
-			messagebox.showerror("URL could not be opened", f"'{result.url}' could not be opened.")
+		self.open_in_browser(result.url)
 
 	def on_options_change(self):
-		# Small delay to minimise the database calls when spamming
 		self.after(50, self.update_tree)
 
 	def on_status_combo_change(self, event):
 		self.current_status = mangastatus.index2status(event.widget.val_index)
 		self.update_tree()
+
+	def on_search_button(self, btn):
+		def predicate():
+			btn.state(["!disabled"])
+			#btn.after(100, predicate)
+
+		btn.state(["disabled"])
+
+		predicate()
+

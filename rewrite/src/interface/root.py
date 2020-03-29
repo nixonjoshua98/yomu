@@ -3,7 +3,7 @@ import tkinter as tk
 
 class RootWindow(tk.Tk):
 
-	def __init__(self, title, geometry=None):
+	def __init__(self, title, *, geometry=None):
 		super().__init__()
 
 		self.title(title)

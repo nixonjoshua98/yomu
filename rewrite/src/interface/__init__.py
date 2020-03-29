@@ -5,4 +5,5 @@ from .treeview import Treeview
 from .toplevel import Toplevel
 
 from .searchwindow import SearchWindow
+from .logwindow import LogWindow
 from .application import Application

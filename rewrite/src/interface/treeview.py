@@ -4,13 +4,15 @@ from tkinter import ttk
 
 
 class Treeview(ttk.Treeview):
-	def __init__(self, master, headings: list):
+	def __init__(self, master, headings: list, widths: list = None):
 		super(Treeview, self).__init__(master=master, columns=headings, show="headings")
 
 		self.scroll = ttk.Scrollbar(master)
 
 		self.configure(yscrollcommand=self.scroll.set)
 		self.scroll.configure(command=self.yview)
+
+		self.widths = widths if widths is not None else []
 
 		self.reset()
 
@@ -25,13 +27,18 @@ class Treeview(ttk.Treeview):
 
 	def reset(self):
 		for i, col in enumerate(self["columns"]):
-			if i in (0, ):
-				self.column(col, minwidth=50, width=50, stretch=False)
-
-			elif i in (2, 3):
-				self.column(col, minwidth=150, width=150, stretch=False)
-
 			self.heading(col, text=col)
+
+			try:
+				w = self.widths[i]
+
+				if w is None:
+					continue
+
+				self.column(col, minwidth=w, width=w, stretch=False)
+
+			except IndexError as e:
+				pass
 
 	def one(self):
 		try:

@@ -23,6 +23,4 @@ class Toplevel(tk.Toplevel):
         center_x = master_x + (master_w // 2) - (self_w // 2)
         center_y = master_y + (master_h // 2) - (self_h // 2)
 
-        print(self_w, self_h)
-
         self.geometry(f"{self_w}x{self_h}+{center_x}+{center_y}")

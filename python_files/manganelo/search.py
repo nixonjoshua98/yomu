@@ -22,6 +22,10 @@ class Search(BaseClass):
 	def __init__(self, title):
 		self.url = constants.MANGANELO_SEARCH_URL + title.replace(" ", "_")
 
+		self.results = []
+
+		print(self.url)
+
 	def start(self):
 		self._extract()
 

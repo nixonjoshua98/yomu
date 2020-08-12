@@ -24,9 +24,11 @@ class ChapterWorker(threading.Thread):
 					print(f"Handled Exception - {e} - ({row['_id']}, {row['status']}, {row['title']}, {row['url']})")
 					continue
 
-				latest_chapter = max(results.chapters, key=lambda e: e.num)
+				latest_chapter = max(results.chapters, key=lambda r: r.num)
 
 				if latest_chapter.num > row["latest_chapter"]:
 					self.database.manga.update({"_id": row["_id"]}, {"$set": {"latest_chapter": latest_chapter.num}})
 
-				time.sleep(2.5)
+				time.sleep(1)
+
+			time.sleep(60 * 15)

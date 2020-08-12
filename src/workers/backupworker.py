@@ -3,8 +3,10 @@ import json
 import time
 import threading
 
+import datetime as dt
 
-BACKUP_PATH = "D:\\Program Files\\OneDrive\\Databases"
+
+BACKUP_PATH = "D:\\Program Files\\OneDrive\\Databases\\mongo\\manga"
 
 
 class BackupWorker(threading.Thread):
@@ -24,7 +26,9 @@ class BackupWorker(threading.Thread):
 
 			os.makedirs(BACKUP_PATH, exist_ok=True)
 
-			with open(os.path.join(BACKUP_PATH, "mongo_manga.json"), "w") as fh:
+			now = dt.datetime.now().strftime("%y-%m-%d %H-%M-%S")
+
+			with open(os.path.join(BACKUP_PATH, f"{now}.json"), "w") as fh:
 				json.dump(data, fh)
 
 			time.sleep(300)

@@ -6,7 +6,7 @@ from src.interface.application import Application
 
 
 if __name__ == "__main__":
-	client = MongoClient("mongodb://localhost:27017/")
+	client = MongoClient("mongodb://localhost:27017/snacc")
 
 	worker = ChapterWorker(database=client.manga)
 	backup = BackupWorker(database=client.manga)

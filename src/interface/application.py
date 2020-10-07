@@ -52,7 +52,7 @@ class Application(tk.Tk):
 		search_entry.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
 
 		search_btn = ttk.Button(frame, text="Search")
-		search_btn.config(command=ft.partial(self.on_search_btn,search_btn, search_entry))
+		search_btn.config(command=ft.partial(self.on_search_btn, search_btn, search_entry))
 		search_btn.pack(side=tk.LEFT, padx=5, pady=5)
 
 		frame.pack(fill=tk.X, padx=5, pady=5)

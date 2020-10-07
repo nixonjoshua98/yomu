@@ -90,7 +90,9 @@ class MangaView(ChildWindow):
 		self.create()
 
 	def on_delete(self):
-		pass
+		self.database["manga"].delete_one({"_id": self.values["_id"]})
+
+		self.destroy()
 
 	def on_latest(self):
 		w = self.widgets["chapters_read"]

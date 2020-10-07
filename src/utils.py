@@ -16,6 +16,8 @@ def print_time(f):
 
 def get(ls, **kwargs):
 	for ele in ls:
+		ele = ele if isinstance(ele, dict) else ele.__dict__
+
 		if all(str(ele[k]) == str(v) for k, v in kwargs.items()):
 			return ele
 	return None

@@ -149,7 +149,7 @@ class Application(tk.Tk):
 			return None
 
 		def decorator():
-			results = tuple(search.results())
+			results = tuple(search.results)
 
 			btn.state(["!disabled"])
 

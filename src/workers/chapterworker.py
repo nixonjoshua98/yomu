@@ -1,34 +1,33 @@
 import time
-import random
 import threading
 
-from manganelo import MangaInfo
+import manganelo.rewrite as manganelo
 
 
 class ChapterWorker(threading.Thread):
-	def __init__(self, *, database):
+	def __init__(self, *, mongo):
 		super(ChapterWorker, self).__init__(daemon=True)
 
-		self.database = database
+		self.mongo = mongo
 
 	def run(self) -> None:
-		while True:
-			results = self.database.manga.aggregate([{"$match": {"$and": [{"status": {"$lt": 3}}]}}])
+		while self.is_alive():
+			results = list(self.mongo.manga.find({"status": {"$lt": 3}}))
 
-			for row in sorted(results, key=lambda _: random.random()):
-				info = MangaInfo(row["url"])
-
+			for row in results:
 				try:
-					results = info.results()
-				except AttributeError as e:
-					print(f"Handled Exception - {e} - ({row['_id']}, {row['status']}, {row['title']}, {row['url']})")
+					page = manganelo.manga_page(url=row["url"])
+				except manganelo.NotFound as e:
+					print(f"Ignoring Exception: {e}")
 					continue
 
-				latest_chapter = max(results.chapters, key=lambda r: r.num)
+				chapters = page.chapter_list()
 
-				if latest_chapter.num > row["latest_chapter"]:
-					self.database.manga.update({"_id": row["_id"]}, {"$set": {"latest_chapter": latest_chapter.num}})
+				latest = max(chapters, key=lambda chap: chap.chapter)
 
-				time.sleep(1)
+				if latest.chapter > row["latest_chapter"]:
+					self.mongo["manga"].update_one({"_id": row["_id"]}, {"$set": {"latest_chapter": latest.chapter}})
 
-			time.sleep(60 * 15)
+				time.sleep(0.2)
+
+			time.sleep(300)

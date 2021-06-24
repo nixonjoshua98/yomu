@@ -1,9 +1,7 @@
-import os
-import json
-import time
-import threading
 
-BACKUP_PATH = "D:\\Program Files\\OneDrive\\Databases\\mongo\\"
+import time
+import subprocess
+import threading
 
 
 class BackupWorker(threading.Thread):
@@ -14,16 +12,10 @@ class BackupWorker(threading.Thread):
 
 	def run(self) -> None:
 		while True:
-			data = {}
+			path = r"E:\OneDrive\Databases\mongo\Local"
 
-			for collection in self.database.collection_names():
-				collection_data = tuple(self.database[collection].find({}, {"_id": 0}))
+			cmd = f'mongodump.exe -d {self.database.name} -o "{path}"'
 
-				data[collection] = collection_data
+			subprocess.run(cmd)
 
-			os.makedirs(BACKUP_PATH, exist_ok=True)
-
-			with open(os.path.join(BACKUP_PATH, f"manga.json"), "w") as fh:
-				json.dump(data, fh, indent=1)
-
-			time.sleep(300)
+			time.sleep(60)

@@ -6,6 +6,20 @@ from pymongo import MongoClient
 
 __storage_inst = None
 
+"""
+    mangaId [_id]: Unique
+    title
+    url
+    status
+    latest_chapter
+    chapters_read
+"""
+
+"""
+    The purpose of abstract storage is so we can access different formats (Mongo, JSON, SQL etc.) via the same methods,
+    the internal fields may be different but the returned field names should be the same as above.
+"""
+
 
 class AbstractDataStorage:
 
@@ -39,7 +53,7 @@ class MongoStorage(AbstractDataStorage):
         return self._database["manga"]
 
     def delete_one(self, iid):
-        self._collection.delete_one({"_id": iid})
+        self._collection.delete_one({"_id": self._str_to_bson(iid)})
 
     def backup(self, output):
         subprocess.call(f'mongodump.exe -d {self._database.name} -o "{output}"', shell=True)
@@ -48,7 +62,10 @@ class MongoStorage(AbstractDataStorage):
         self._collection.insert_one(row)
 
     def find_one(self, iid):
-        return self._collection.find_one({"_id": self._str_to_bson(iid)})
+        row = self._collection.find_one({"_id": self._str_to_bson(iid)})
+
+        # '_rename_keys' takes a list, so we send as a list then take the first element
+        return self._rename_keys([row])[0] if row else row
 
     def find(self, query):
         return list(self._collection.find(query))
@@ -76,7 +93,20 @@ class MongoStorage(AbstractDataStorage):
             }
         ]
 
-        return list(self._collection.aggregate(pipeline))
+        return self._aggregate(pipeline)
+
+    def _aggregate(self, pipeline):
+        return self._rename_keys(list(self._collection.aggregate(pipeline)))
+
+    @staticmethod
+    def _rename_keys(ls: list):
+        renames = {"_id": "mangaId"}
+
+        for i, ele in enumerate(ls):
+            for old_key, new_key in renames.items():
+                ele[new_key] = ele.pop(old_key)
+
+        return ls
 
     @staticmethod
     def _str_to_bson(s):

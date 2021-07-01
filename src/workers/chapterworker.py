@@ -18,6 +18,7 @@ class ChapterWorker(threading.Thread):
 				results = storage_instance.get_with_status(status)
 
 				for row in results:
+
 					try:
 						page = manganelo.manga_page(url=row["url"])
 
@@ -29,7 +30,7 @@ class ChapterWorker(threading.Thread):
 					latest = max(chapters, key=lambda chap: chap.chapter)
 
 					if latest.chapter != row["latest_chapter"]:
-						storage_instance.update_one(row["_id"], {"latest_chapter": latest.chapter})
+						storage_instance.update_one(row["mangaId"], {"latest_chapter": latest.chapter})
 
 					time.sleep(0.2)
 

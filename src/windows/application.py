@@ -95,7 +95,7 @@ class Application(tk.Tk):
 	def update_tree(self):
 
 		def to_list(d):
-			return [d[k] for k in ("_id", "title", "chapters_read", "latest_chapter")]
+			return [d[k] for k in ("mangaId", "title", "chapters_read", "latest_chapter")]
 
 		self.tree_data = storage.get_instance().get_with_status(
 			statuses.text_to_id(self.combo_val),

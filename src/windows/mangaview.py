@@ -1,30 +1,34 @@
+import ast
+
 import tkinter as tk
 import tkinter.ttk as ttk
 
 from tkinter import messagebox
 
-from src.statuses import Statuses
+from src import storage, statuses
 
-from .widgets import ComboBox
-from .childwindow import ChildWindow
+from src.widgets import ChildWindow, ComboBox
 
 
 class MangaView(ChildWindow):
-	def __init__(self, *, values: dict, database):
+	def __init__(self, iid):
 		super().__init__()
 
-		# Window Configuration
-		self.resizable(0, 0)
+		self._document_iid = iid
 
-		self.values = values
-		self.database = database
+		self.values = storage.get_instance().find_one(self._document_iid)
 
 		self.widgets = dict()
-		self.frame: tk.Frame = None
+		self.frame = None
 
-		self.create()
+		self._configure_window()
+
+	def _configure_window(self):
+		self.resizable(0, 0)
 
 		self.center_in_root(400, 250)
+
+		self.create()
 
 		self.show()
 
@@ -41,8 +45,8 @@ class MangaView(ChildWindow):
 			command=self.on_latest
 		)
 
-		self.widgets["status"] = self.create_combo("Reading Status", values=Statuses.all_text)
-		self.widgets["status"].current(Statuses.index(id=self.values["status"]))
+		self.widgets["status"] = self.create_combo("Reading Status", values=statuses.all_text)
+		self.widgets["status"].current(self.values["status"])
 
 		b = ttk.Button(self.frame, text="Confirm", command=self.on_confirm)
 		b.pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
@@ -56,29 +60,18 @@ class MangaView(ChildWindow):
 		self.frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 	def on_confirm(self):
-		chapters_read = self.widgets["chapters_read"].get()
 
 		try:
-			chapters_read = float(chapters_read)
+			chapters_read = ast.literal_eval(self.widgets["chapters_read"].get())
 		except ValueError:
-			messagebox.showerror("Chapters Read", "Value must be an integer or float.")
+			return messagebox.showerror("Value Error", "Value must be an integer or float.")
 
-		status = Statuses.get(text=self.widgets["status"].get())["id"]
+		status = statuses.text_to_id(self.widgets["status"].get())
 
-		self.database.manga.update(
-			{"_id": self.values["_id"]},
-			{
-				"$set":
-					{
-						"title": self.widgets["title"].get(),
-						"url": self.widgets["url"].get(),
-						"status": status,
-						"chapters_read": chapters_read
-					},
-			}
-		)
+		self._update_document(status, chapters_read)
 
 		self.master.update_tree()
+
 		self.destroy()
 
 	def on_undo(self):
@@ -87,10 +80,10 @@ class MangaView(ChildWindow):
 		for child in children:
 			child.destroy()
 
-		self.create()
+		self._configure_window()
 
 	def on_delete(self):
-		self.database["manga"].delete_one({"_id": self.values["_id"]})
+		storage.get_instance().delete_one(self._document_iid)
 
 		self.destroy()
 
@@ -135,3 +128,15 @@ class MangaView(ChildWindow):
 		widget_inst.pack(side=tk.LEFT, fill=tk.X, padx=5, expand=True)
 
 		return widget_inst
+
+	def _update_document(self, status, chapters_read):
+
+		storage.get_instance().update_one(
+			self._document_iid,
+			{
+				"title": self.widgets["title"].get(),
+				"url": self.widgets["url"].get(),
+				"status": status,
+				"chapters_read": chapters_read
+			}
+		)

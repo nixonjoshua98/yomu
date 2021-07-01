@@ -1,21 +1,16 @@
 
 import time
-import subprocess
 import threading
+
+from src import storage
 
 
 class BackupWorker(threading.Thread):
-	def __init__(self, *, database):
+	def __init__(self):
 		super(BackupWorker, self).__init__(daemon=True)
-
-		self.database = database
 
 	def run(self) -> None:
 		while True:
-			path = r"E:\OneDrive\Databases\mongo\Local"
-
-			cmd = f'mongodump.exe -d {self.database.name} -o "{path}"'
-
-			subprocess.run(cmd)
+			storage.get_instance().backup(r"E:\OneDrive\Databases\mongo\Local")
 
 			time.sleep(60)

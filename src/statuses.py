@@ -1,27 +1,15 @@
 
-from src import utils
+all_text = (
+	"Recently Added",
+	"Favourites",
+	"Reading List",
+	"Reading Elsewhere",
+	"Dropped",
+	"Completed"
+)
+
+all_ids = (0, 1, 2, 3, 4, 5)
 
 
-class _Statuses(type):
-	_ALL = (
-		dict(id=0, text="Recently Added"),
-		dict(id=1, text="Favourites"),
-		dict(id=2, text="Reading List"),
-		dict(id=3, text="Reading Elsewhere"),
-		dict(id=4, text="Dropped"),
-		dict(id=5, text="Completed"),
-	)
-
-	@property
-	def all_text(self):
-		return tuple(s["text"] for s in self._ALL)
-
-	def get(self, **kwargs):
-		return utils.get(self._ALL, **kwargs)
-
-	def index(self, **kwargs):
-		return Statuses._ALL.index(self.get(**kwargs))
-
-
-class Statuses(metaclass=_Statuses):
-	pass
+def text_to_id(text: str):
+	return all_ids[all_text.index(text)]

@@ -3,31 +3,34 @@ import threading
 
 import manganelo.rewrite as manganelo
 
+from src import storage
+
 
 class ChapterWorker(threading.Thread):
-	def __init__(self, *, mongo):
+	def __init__(self):
 		super(ChapterWorker, self).__init__(daemon=True)
 
-		self.mongo = mongo
-
 	def run(self) -> None:
+		storage_instance = storage.get_instance()
+
 		while self.is_alive():
-			results = list(self.mongo.manga.find({"status": {"$lt": 3}}))
+			for status in (0, 1, 2):
+				results = storage_instance.get_with_status(status)
 
-			for row in results:
-				try:
-					page = manganelo.manga_page(url=row["url"])
-				except manganelo.NotFound as e:
-					print(f"Ignoring Exception: {e}")
-					continue
+				for row in results:
+					try:
+						page = manganelo.manga_page(url=row["url"])
 
-				chapters = page.chapter_list()
+					except manganelo.NotFound:
+						continue
 
-				latest = max(chapters, key=lambda chap: chap.chapter)
+					chapters = page.chapter_list()
 
-				if latest.chapter > row["latest_chapter"]:
-					self.mongo["manga"].update_one({"_id": row["_id"]}, {"$set": {"latest_chapter": latest.chapter}})
+					latest = max(chapters, key=lambda chap: chap.chapter)
 
-				time.sleep(0.2)
+					if latest.chapter != row["latest_chapter"]:
+						storage_instance.update_one(row["_id"], {"latest_chapter": latest.chapter})
 
-			time.sleep(300)
+					time.sleep(0.2)
+
+			time.sleep(60)

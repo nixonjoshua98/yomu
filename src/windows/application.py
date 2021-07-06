@@ -97,7 +97,7 @@ class Application(tk.Tk):
 		def to_list(d):
 			return [d[k] for k in ("mangaId", "title", "chapters_read", "latest_chapter")]
 
-		self.tree_data = storage.get_instance().get_with_status(
+		self.tree_data = storage.get().get_all_with_status(
 			statuses.text_to_id(self.combo_val),
 			readable_only=self.filters["readable_only"].get()
 		)
@@ -108,7 +108,7 @@ class Application(tk.Tk):
 
 	def open_in_browser(self):
 		if iid := self.tree.focus():
-			row = storage.get_instance().find_one(iid)
+			row = storage.get().find_one(iid)
 
 			webbrowser.open(row["url"], new=False)
 

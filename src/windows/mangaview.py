@@ -16,7 +16,7 @@ class MangaView(ChildWindow):
 
 		self._document_iid = iid
 
-		self.values = storage.get_instance().find_one(self._document_iid)
+		self.values = storage.get().find_one(self._document_iid)
 
 		self.widgets = dict()
 		self.frame = None
@@ -36,7 +36,7 @@ class MangaView(ChildWindow):
 		self.frame = tk.Frame(self, relief=tk.RAISED, borderwidth=1)
 
 		self.widgets["title"] = self.create_entry("Title", default=self.values["title"])
-		self.widgets["url"] = self.create_entry("Menu URL", default=self.values["url"])
+		self.widgets["url"] = self.create_entry("Url", default=self.values["url"])
 
 		self.widgets["chapters_read"] = self.create_entry_with_button(
 			"Chapters Read",
@@ -83,7 +83,7 @@ class MangaView(ChildWindow):
 		self._configure_window()
 
 	def on_delete(self):
-		storage.get_instance().delete_one(self._document_iid)
+		storage.get().delete_one(self._document_iid)
 
 		self.destroy()
 
@@ -131,7 +131,7 @@ class MangaView(ChildWindow):
 
 	def _update_document(self, status, chapters_read):
 
-		storage.get_instance().update_one(
+		storage.get().update_one(
 			self._document_iid,
 			{
 				"title": self.widgets["title"].get(),

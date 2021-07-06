@@ -30,16 +30,7 @@ class SearchView(ChildWindow):
 
 		row = self.results[int(iid)]
 
-		entries = storage.get_instance().get_with_title(row.title)
-
-		if entries:
-			if not messagebox.askyesno(
-				"Found similar existing title(s)",
-				"Do you still want to add the manga?"
-			):
-				return None
-
-		storage.get_instance().insert_one(
+		storage.get().insert_one(
 			{"title": row.title, "url": row.url, "latest_chapter": 0, "chapters_read": 0, "status": 0}
 		)
 

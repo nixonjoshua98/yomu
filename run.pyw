@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-from src.workers import ChapterWorker, BackupWorker
+from src.workers import UpdateWorker
 
 from src.windows.application import Application
 
@@ -8,7 +8,6 @@ from src.windows.application import Application
 if __name__ == "__main__":
 
 	with MongoClient() as client:
-		ChapterWorker().start()
-		BackupWorker().start()
+		UpdateWorker().start()
 
 		Application().mainloop()

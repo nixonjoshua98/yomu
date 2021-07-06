@@ -1,5 +1,4 @@
 import subprocess
-import re
 
 from bson import ObjectId
 from pymongo import MongoClient
@@ -31,13 +30,9 @@ class AbstractDataStorage:
 
     def update_one(self, iid, new_fields: dict): ...
 
-    def find(self, **kwargs): ...
-
     def find_one(self, iid): ...
 
-    def get_with_title(self, title: str, *, ignore_case: bool = True) -> list: ...
-
-    def get_with_status(self, status: int, *, readable_only: bool = False) -> list:...
+    def get_all_with_status(self, status: int, *, readable_only: bool = False) -> list: ...
 
 
 class MongoStorage(AbstractDataStorage):
@@ -67,16 +62,10 @@ class MongoStorage(AbstractDataStorage):
         # '_rename_keys' takes a list, so we send as a list then take the first element
         return self._rename_keys([row])[0] if row else row
 
-    def find(self, query):
-        return list(self._collection.find(query))
-
     def update_one(self, iid, new_fields: dict):
         self._collection.update_one({"_id": self._str_to_bson(iid)}, {"$set": {k: v for k, v in new_fields.items()}})
 
-    def get_with_title(self, title, *, ignore_case: bool = True) -> list:
-        return self.find({"title": re.compile(title, re.IGNORECASE)})
-
-    def get_with_status(self, status: int, *, readable_only: bool = False) -> list:
+    def get_all_with_status(self, status: int, *, readable_only: bool = False) -> list:
 
         match: dict = {"$match": {"status": status}}
 
@@ -84,16 +73,15 @@ class MongoStorage(AbstractDataStorage):
             match["$match"]["$and"] = [{"numAvailableChapters": {"$gt": 0}}]
 
         pipeline = [
-            {
-                "$addFields": {"numAvailableChapters": {"$subtract": ["$latest_chapter", "$chapters_read"]}}
-            },
+            {"$addFields": {"numAvailableChapters": {"$subtract": ["$latest_chapter", "$chapters_read"]}}},
             match,
-            {
-                "$sort": {"numAvailableChapters": -1}
-            }
+            {"$sort": {"numAvailableChapters": -1}}
         ]
 
         return self._aggregate(pipeline)
+
+    def _find(self, query):
+        return self._rename_keys(list(self._collection.find(query)))
 
     def _aggregate(self, pipeline):
         return self._rename_keys(list(self._collection.aggregate(pipeline)))
@@ -118,7 +106,7 @@ class MongoStorage(AbstractDataStorage):
         return s
 
 
-def get_instance():
+def get():
     global __storage_inst
 
     if __storage_inst is None:

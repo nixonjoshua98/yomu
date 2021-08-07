@@ -60,7 +60,7 @@ class MongoStorage(AbstractDataStorage):
         row = self._collection.find_one({"_id": self._str_to_bson(iid)})
 
         # '_rename_keys' takes a list, so we send as a list then take the first element
-        return self._rename_keys([row])[0] if row else row
+        return [row][0] if row else row
 
     def update_one(self, iid, new_fields: dict):
         self._collection.update_one({"_id": self._str_to_bson(iid)}, {"$set": {k: v for k, v in new_fields.items()}})
@@ -81,20 +81,10 @@ class MongoStorage(AbstractDataStorage):
         return self._aggregate(pipeline)
 
     def _find(self, query):
-        return self._rename_keys(list(self._collection.find(query)))
+        return list(self._collection.find(query))
 
     def _aggregate(self, pipeline):
-        return self._rename_keys(list(self._collection.aggregate(pipeline)))
-
-    @staticmethod
-    def _rename_keys(ls: list):
-        renames = {"_id": "mangaId"}
-
-        for i, ele in enumerate(ls):
-            for old_key, new_key in renames.items():
-                ele[new_key] = ele.pop(old_key)
-
-        return ls
+        return list(self._collection.aggregate(pipeline))
 
     @staticmethod
     def _str_to_bson(s):

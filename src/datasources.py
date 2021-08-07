@@ -1,15 +1,11 @@
 
 import abc
-import enum
 import dataclasses
 
 from typing import Union
 
 import manganelo.rewrite as manganelo
-
-
-class DataSourceType(enum.IntEnum):
-    MANGANELO = 0
+import mangakatana
 
 
 @dataclasses.dataclass(frozen=True)
@@ -20,18 +16,41 @@ class DataSourceChapter:
     chapter: Union[int, float] = None
 
 
+@dataclasses.dataclass(frozen=True)
+class DataSourceSearchResult:
+    title: str
+    url: str
+
+
 class AbstractDataSource(abc.ABC):
 
     @abc.abstractmethod
-    def get_chapters(self, *, url) -> list[DataSourceChapter]: ...
+    def search(self, url) -> list[DataSourceSearchResult]: ...
+
+    @abc.abstractmethod
+    def get_chapters(self, url) -> list[DataSourceChapter]: ...
 
 
 class _ManganeloDataSource(AbstractDataSource):
-    def get_chapters(self, *, url) -> list[DataSourceChapter]:
+
+    def search(self, title) -> list[DataSourceSearchResult]:
+        return [DataSourceSearchResult(res.title, res.url) for res in manganelo.search(title=title)]
+
+    def get_chapters(self, url) -> list[DataSourceChapter]:
+        return [DataSourceChapter(c.title, c.url, c.chapter) for c in manganelo.chapter_list(url=url)]
+
+
+class _MangaKatanaDataSource(AbstractDataSource):
+
+    def search(self, title) -> list[DataSourceSearchResult]:
+        return [DataSourceSearchResult(res.title, res.url) for res in mangakatana.search(title=title)]
+
+    def get_chapters(self, url) -> list[DataSourceChapter]:
         try:
-            return [DataSourceChapter(c.title, c.url, c.chapter) for c in manganelo.chapter_list(url=url)]
+            return [DataSourceChapter(c.title, c.url, c.chapter) for c in mangakatana.chapter_list(url=url)]
         except manganelo.NotFound:
             return []
 
 
 ManganeloDataSource = _ManganeloDataSource()
+MangaKatanaDataSource = _MangaKatanaDataSource()

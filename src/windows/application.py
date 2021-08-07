@@ -1,14 +1,12 @@
 import webbrowser
 
-import manganelo.rewrite as manganelo
-
 import tkinter as tk
 import tkinter.ttk as ttk
 import tkinter.messagebox as messagebox
 
 import functools as ft
 
-from src import utils, storage, statuses
+from src import storage, statuses
 
 from src.widgets import Treeview, ComboBox
 from src.windows import MangaView, SearchView
@@ -48,7 +46,7 @@ class Application(tk.Tk):
 		search_entry.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
 
 		search_btn = ttk.Button(frame, text="Search")
-		search_btn.config(command=ft.partial(self.on_search_btn, search_btn, search_entry))
+		search_btn.config(command=ft.partial(self.on_search_btn, search_entry))
 		search_btn.pack(side=tk.LEFT, padx=5, pady=5)
 
 		frame.pack(fill=tk.X, padx=5, pady=5)
@@ -95,7 +93,7 @@ class Application(tk.Tk):
 	def update_tree(self):
 
 		def to_list(d):
-			return [d[k] for k in ("mangaId", "title", "chapters_read", "latest_chapter")]
+			return [d[k] for k in ("_id", "title", "chapters_read", "latest_chapter")]
 
 		self.tree_data = storage.get().get_all_with_status(
 			statuses.text_to_id(self.combo_val),
@@ -117,20 +115,14 @@ class Application(tk.Tk):
 		if iid := event.widget.focus():
 			MangaView(iid)
 
-	def on_search_btn(self, btn, entry: ttk.Entry):
+	@staticmethod
+	def on_search_btn(entry: ttk.Entry):
 
 		# Refuse to search
 		if len(query := entry.get()) < 3:
 			return messagebox.showerror("Search Query", "Search query is too short.")
 
-		def callback(results):
-			btn.state(["!disabled"])
-
-			SearchView(results)
-
-		btn.state(["disabled"])
-
-		utils.run_in_pool(ft.partial(manganelo.search, title=query), ft.partial(self.after, 0, callback))
+		SearchView(query)
 
 	def on_status_change(self, event):
 		self.combo_val = event.widget.get()

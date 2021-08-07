@@ -2,7 +2,7 @@ import time
 import threading
 
 from src import storage
-from src.datasources import DataSourceType, AbstractDataSource, ManganeloDataSource
+from src.datasources import AbstractDataSource, ManganeloDataSource, MangaKatanaDataSource
 
 
 class UpdateWorker(threading.Thread):
@@ -17,13 +17,20 @@ class UpdateWorker(threading.Thread):
 				results = storage_instance.get_all_with_status(status)
 
 				for row in results:
-					source = self.get_source(DataSourceType.MANGANELO)
+					source = self.get_source(row["url"])
 
-					if chapters := source.get_chapters(url=row["url"]):
-						latest = max(chapters, key=lambda chap: chap.chapter)
+					try:
+						if not (chapters := source.get_chapters(url=row["url"])):
+							continue
 
-						if latest.chapter != row["latest_chapter"]:
-							storage_instance.update_one(row["mangaId"], {"latest_chapter": latest.chapter})
+					except BaseException as e:
+						print(f"{row['title']} | {e}")
+						continue
+
+					latest = max(chapters, key=lambda chap: chap.chapter)
+
+					if latest.chapter != row["latest_chapter"]:
+						storage_instance.update_one(row["_id"], {"latest_chapter": latest.chapter})
 
 					time.sleep(0.2)
 
@@ -32,7 +39,8 @@ class UpdateWorker(threading.Thread):
 			time.sleep(60)
 
 	@staticmethod
-	def get_source(_type) -> AbstractDataSource:
-		return {
-			DataSourceType.MANGANELO: ManganeloDataSource
-		}[_type]
+	def get_source(url: str) -> AbstractDataSource:
+		if any(map(lambda ele: ele in url, ("manganelo", "manganato"))):
+			return ManganeloDataSource
+
+		return MangaKatanaDataSource

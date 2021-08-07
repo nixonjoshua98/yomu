@@ -32,6 +32,11 @@ class MangaView(ChildWindow):
 
 		self.show()
 
+	def destroy(self):
+		self.master.update_tree()
+
+		super(MangaView, self).destroy()
+
 	def create(self):
 		self.frame = tk.Frame(self, relief=tk.RAISED, borderwidth=1)
 
@@ -69,8 +74,6 @@ class MangaView(ChildWindow):
 		status = statuses.text_to_id(self.widgets["status"].get())
 
 		self._update_document(status, chapters_read)
-
-		self.master.update_tree()
 
 		self.destroy()
 

@@ -1,4 +1,7 @@
+
 import webbrowser
+
+from typing import Optional
 
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -6,27 +9,39 @@ import tkinter.messagebox as messagebox
 
 import functools as ft
 
-from src import storage, statuses
+from src import storage
+from src.statuses import StatusList
 
-from src.widgets import Treeview, ComboBox
-from src.windows import MangaView, SearchView
+from src.combobox import ComboBox
+
+from src.widgets import Treeview
+from src.editwindow import StoryEditWindow
+from src.searchwindow import StorySearchWindow
+from src.jsonstorage import JSONStorage
 
 
 class Application(tk.Tk):
 	def __init__(self):
 		super(Application, self).__init__()
 
+		self._data = JSONStorage()
+
 		self._configure_window()
 
 		self.tree = None
 		self.tree_data = list()
-		self.combo_val = None
+
+		# - - - Widgets - - - #
+		self.status_combo: Optional[ComboBox] = None
 
 		self.filters = {"readable_only": tk.BooleanVar(value=True)}
 
 		self.create()
 
 		self.update_tree()
+
+	@property
+	def current_status(self): return self.status_combo.current_value
 
 	def _configure_window(self):
 		self.wm_title("Manga")
@@ -39,8 +54,9 @@ class Application(tk.Tk):
 		# - - - Tool Bar - - - #
 		frame = tk.Frame(self, relief=tk.RAISED, borderwidth=1)
 
-		combo = ComboBox(frame, values=statuses.all_text, command=self.on_status_change)
-		combo.pack(side=tk.LEFT, padx=5, pady=5)
+		self.status_combo = ComboBox(frame, command=lambda e: self.update_tree())
+		self.status_combo.add_options([[status.display_text, status.id] for status in StatusList])
+		self.status_combo.pack(side=tk.LEFT, padx=5, pady=5)
 
 		search_entry = ttk.Entry(frame)
 		search_entry.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
@@ -58,7 +74,7 @@ class Application(tk.Tk):
 			frame,
 			text="Readable",
 			variable=self.filters["readable_only"],
-			command=self.on_filter_update
+			command=self.update_tree
 		)
 
 		c.pack(side=tk.LEFT)
@@ -87,17 +103,13 @@ class Application(tk.Tk):
 
 		self.tree.bind("<Button-3>", lambda e: menu.post(e.x_root, e.y_root))
 
-		# - - - Attributes - - - #
-		self.combo_val = combo.get()
-
 	def update_tree(self):
 
 		def to_list(d):
 			return [d[k] for k in ("_id", "title", "chapters_read", "latest_chapter")]
 
 		self.tree_data = storage.get().get_all_with_status(
-			statuses.text_to_id(self.combo_val),
-			readable_only=self.filters["readable_only"].get()
+			self.current_status, readable_only=self.filters["readable_only"].get()
 		)
 
 		self.tree_data.reverse()
@@ -113,21 +125,12 @@ class Application(tk.Tk):
 	@staticmethod
 	def on_row_select(event):
 		if iid := event.widget.focus():
-			MangaView(iid)
+			StoryEditWindow(iid)
 
 	@staticmethod
 	def on_search_btn(entry: ttk.Entry):
 
-		# Refuse to search
 		if len(query := entry.get()) < 3:
 			return messagebox.showerror("Search Query", "Search query is too short.")
 
-		SearchView(query)
-
-	def on_status_change(self, event):
-		self.combo_val = event.widget.get()
-
-		self.update_tree()
-
-	def on_filter_update(self):
-		self.update_tree()
+		StorySearchWindow(query)

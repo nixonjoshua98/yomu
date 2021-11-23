@@ -1,2 +1,0 @@
-
-from .updateworker import UpdateWorker

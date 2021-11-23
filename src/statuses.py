@@ -1,14 +1,23 @@
-
-all_text = (
-	"Recently Added",
-	"Favourites",
-	"Reading List",
-	"Dropped",
-	"Completed"
-)
-
-all_ids = (0, 1, 2, 4, 5)
+import dataclasses
 
 
-def text_to_id(text: str):
-	return all_ids[all_text.index(text)]
+@dataclasses.dataclass(frozen=True)
+class Status:
+	id: int
+	display_text: str
+
+
+class StatusListMeta(type):
+	_ALL = (
+		Status(id=0, display_text="Recently Added"),
+		Status(id=1, display_text="Favourites"),
+		Status(id=2, display_text="Reading List"),
+		Status(id=4, display_text="Dropped"),
+		Status(id=5, display_text="Completed"),
+	)
+
+	def __iter__(self):
+		return iter(self._ALL)
+
+
+class StatusList(type, metaclass=StatusListMeta): ...

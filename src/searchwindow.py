@@ -11,9 +11,9 @@ from src.datasources import ManganeloDataSource, MangaKatanaDataSource
 from src.widgets import Treeview, ChildWindow
 
 
-class SearchView(ChildWindow):
+class StorySearchWindow(ChildWindow):
 	def __init__(self, query):
-		super(SearchView, self).__init__()
+		super(StorySearchWindow, self).__init__()
 
 		self.results = []
 
@@ -80,7 +80,7 @@ class TreeViewResults(Treeview):
 		row = self.results[int(iid)]
 
 		storage.get().insert_one(
-			{"title": row.title, "url": row.url, "latest_chapter": 0, "chapters_read": 0, "status": 0}
+			{"title": row.title, "url": row.new_url, "latest_chapter": 0, "chapters_read": 0, "status": 0}
 		)
 
-		messagebox.showinfo("Added Row", f"{row.title} has been added!")
+		messagebox.showinfo("Sucess", f"Added {row.title}")

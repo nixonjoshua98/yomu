@@ -1,9 +1,8 @@
 from pymongo import MongoClient
 
-from src.workers import UpdateWorker
+from src.updateworker import UpdateWorker
 
-from src.windows.application import Application
-
+from src.application import Application
 
 if __name__ == "__main__":
 

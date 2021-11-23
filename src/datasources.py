@@ -1,11 +1,10 @@
 
 import abc
+import manganelo
+import mangakatana
 import dataclasses
 
 from typing import Union
-
-import manganelo.rewrite as manganelo
-import mangakatana
 
 
 @dataclasses.dataclass(frozen=True)
@@ -34,20 +33,20 @@ class AbstractDataSource(abc.ABC):
 class _ManganeloDataSource(AbstractDataSource):
 
     def search(self, title) -> list[DataSourceSearchResult]:
-        return [DataSourceSearchResult(res.title, res.url) for res in manganelo.search(title=title)]
+        return [DataSourceSearchResult(res.title, res.url) for res in manganelo.get_search_results(title)][::-1]
 
     def get_chapters(self, url) -> list[DataSourceChapter]:
-        return [DataSourceChapter(c.title, c.url, c.chapter) for c in manganelo.chapter_list(url=url)]
+        return [DataSourceChapter(c.title, c.url, c.chapter) for c in manganelo.get_chapter_list(url)]
 
 
 class _MangaKatanaDataSource(AbstractDataSource):
 
     def search(self, title) -> list[DataSourceSearchResult]:
-        return [DataSourceSearchResult(res.title, res.url) for res in mangakatana.search(title=title)]
+        return [DataSourceSearchResult(res.title, res.new_url) for res in mangakatana.search(title=title)][::-1]
 
     def get_chapters(self, url) -> list[DataSourceChapter]:
         try:
-            return [DataSourceChapter(c.title, c.url, c.chapter) for c in mangakatana.chapter_list(url=url)]
+            return [DataSourceChapter(c.title, c.new_url, c.chapter) for c in mangakatana.chapter_list(url=url)]
         except manganelo.NotFound:
             return []
 

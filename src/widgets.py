@@ -1,5 +1,4 @@
 import tkinter as tk
-
 from tkinter import ttk
 
 
@@ -21,15 +20,6 @@ class ChildWindow(tk.Toplevel):
 		center_y = master_y + (master_h // 2) - (win_h // 2)
 
 		self.geometry(f"{win_w}x{win_h}+{center_x}+{center_y}")
-
-
-class ComboBox(ttk.Combobox):
-	def __init__(self, master, values, command=None):
-		super().__init__(master, state="readonly", values=values)
-
-		self.current(0)
-
-		self.bind("<<ComboboxSelected>>", command)
 
 
 class Treeview(ttk.Treeview):
@@ -63,5 +53,3 @@ class Treeview(ttk.Treeview):
 		self.scroll.pack(side=tk.RIGHT, fill=tk.Y, pady=kwargs.get("pady", 0))
 
 		super(Treeview, self).pack(**kwargs)
-
-

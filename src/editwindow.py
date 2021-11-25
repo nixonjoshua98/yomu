@@ -5,18 +5,18 @@ import tkinter.ttk as ttk
 
 from src.combobox import ComboBox
 from src.entrybox import EntryBox
-from src import storage
 from src.statuses import StatusList
-from src.widgets import ChildWindow
+from src.childwindow import ChildWindow
+from src.storage import JSONStorage
+from src.models import Story
 
 
 class StoryEditWindow(ChildWindow):
-	def __init__(self, iid):
+	def __init__(self, story_data: Story, data_storage: JSONStorage):
 		super().__init__()
 
-		self._document_iid = iid
-
-		self.values = storage.get().find_one(self._document_iid)
+		self._data_storage = data_storage
+		self._story_data = story_data
 
 		self._title: Optional[EntryBox] = None
 		self._url: Optional[EntryBox] = None
@@ -54,14 +54,14 @@ class StoryEditWindow(ChildWindow):
 	def create(self):
 		frame = tk.Frame(self, relief=tk.RAISED, borderwidth=1)
 
-		_, self._title = self._label_with_entry(frame, "Title", self.values["title"])
-		_, self._url = self._label_with_entry(frame, "Url", self.values["url"])
+		_, self._title = self._label_with_entry(frame, "Title", self._story_data.title)
+		_, self._url = self._label_with_entry(frame, "Url", self._story_data.url)
 
 		# = = Chapters Read = = #
 		_, self._chapters_read = self._label_with_entry(
 			frame,
 			"Chapters Read",
-			self.values["chapters_read"],
+			self._story_data.chapters_read,
 			numbers_only=True
 		)
 
@@ -74,7 +74,11 @@ class StoryEditWindow(ChildWindow):
 		label = tk.Label(top_frame, text="Reading Status")
 		label.pack(side=tk.LEFT, fill=tk.X)
 
-		self._status = ComboBox(btm_frame, values=[[status.display_text, status.id] for status in StatusList])
+		self._status = ComboBox(
+			btm_frame,
+			values=[[status.display_text, status.id] for status in StatusList],
+			current=self._story_data.status_int
+		)
 		self._status.pack(side=tk.LEFT, fill=tk.X, padx=5, expand=True)
 
 		# = = Action Buttons = = #
@@ -82,9 +86,6 @@ class StoryEditWindow(ChildWindow):
 		b.pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
 
 		b = ttk.Button(frame, text="Undo", command=self.on_undo)
-		b.pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
-
-		b = ttk.Button(frame, text="Delete", command=self.on_delete)
 		b.pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
 
 		frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
@@ -102,13 +103,8 @@ class StoryEditWindow(ChildWindow):
 
 		self._configure_window()
 
-	def on_delete(self):
-		storage.get().delete_one(self._document_iid)
-
-		self.destroy()
-
 	def on_latest(self):
-		self._chapters_read.set_text(self.values["latest_chapter"])
+		self._chapters_read.set_text(self._story_data.latest_chapter)
 
 	def _label_with_entry(self, master, label, text, numbers_only: bool = False):
 		top_frame, btm_frame = self._vertical_frames(master, 2)
@@ -136,13 +132,11 @@ class StoryEditWindow(ChildWindow):
 		return frames
 
 	def _update_document(self):
+		copy: Story = self._story_data.copy(deep=True)
 
-		storage.get().update_one(
-			self._document_iid,
-			{
-				"title": self.new_title,
-				"url": self.new_url,
-				"status": self.new_status,
-				"chapters_read": self.new_chapters_read
-			}
-		)
+		copy.title = self.new_title
+		copy.url = self.new_url
+		copy.status_int = self.new_status
+		copy.chapters_read = self.new_chapters_read
+
+		self._data_storage.update_one(copy)

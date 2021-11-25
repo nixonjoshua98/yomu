@@ -1,0 +1,4 @@
+
+
+class StoryNotFound(Exception):
+    ...

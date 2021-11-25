@@ -4,19 +4,20 @@ import tkinter.ttk as ttk
 
 from tkinter import messagebox
 
-from src import storage, utils
+from src import utils
 
 from src.datasources import ManganeloDataSource, MangaKatanaDataSource
 
-from src.widgets import Treeview, ChildWindow
+from src.table import Table
+from src.childwindow import ChildWindow
 
 
 class StorySearchWindow(ChildWindow):
-	def __init__(self, query):
+	def __init__(self, query, data_storage):
 		super(StorySearchWindow, self).__init__()
 
 		self.results = []
-
+		self.data_storage = data_storage
 		self.notebook = self.create_notebook()
 
 		self._configure_window()
@@ -48,7 +49,7 @@ class StorySearchWindow(ChildWindow):
 	def create_results_tree(self, title):
 		frame = tk.Frame(self.notebook, relief=tk.RAISED, borderwidth=1)
 
-		tree = TreeViewResults(frame, headings=["Result"])
+		tree = TreeViewResults(frame, self.data_storage, headings=["Result"])
 
 		tree.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 		frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
@@ -58,11 +59,12 @@ class StorySearchWindow(ChildWindow):
 		return tree
 
 
-class TreeViewResults(Treeview):
-	def __init__(self, *args, **kwargs):
-		super(TreeViewResults, self).__init__(*args, **kwargs)
+class TreeViewResults(Table):
+	def __init__(self, master, data_storage, **kwargs):
+		super(TreeViewResults, self).__init__(master, **kwargs)
 
 		self.results = []
+		self._data_storage = data_storage
 
 		self.bind("<Double-1>", self.on_click)
 
@@ -79,8 +81,6 @@ class TreeViewResults(Treeview):
 
 		row = self.results[int(iid)]
 
-		storage.get().insert_one(
-			{"title": row.title, "url": row.new_url, "latest_chapter": 0, "chapters_read": 0, "status": 0}
-		)
+		self._data_storage.insert_one(row.title, row.url, 0)
 
 		messagebox.showinfo("Sucess", f"Added {row.title}")

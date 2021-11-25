@@ -1,4 +1,5 @@
 import dataclasses
+from src import utils
 
 
 @dataclasses.dataclass(frozen=True)
@@ -15,6 +16,9 @@ class StatusListMeta(type):
 		Status(id=4, display_text="Dropped"),
 		Status(id=5, display_text="Completed"),
 	)
+
+	def get_by_id(cls, id_):
+		return utils.get(cls._ALL, id=id_)
 
 	def __iter__(self):
 		return iter(self._ALL)

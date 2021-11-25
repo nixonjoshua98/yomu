@@ -13,18 +13,18 @@ from src import storage
 from src.statuses import StatusList
 
 from src.combobox import ComboBox
-
-from src.widgets import Treeview
+from src.table import Table
 from src.editwindow import StoryEditWindow
 from src.searchwindow import StorySearchWindow
-from src.jsonstorage import JSONStorage
+
+from src.models import Story
 
 
 class Application(tk.Tk):
 	def __init__(self):
 		super(Application, self).__init__()
 
-		self._data = JSONStorage()
+		self.data_storage = storage.get()
 
 		self._configure_window()
 
@@ -84,7 +84,7 @@ class Application(tk.Tk):
 		# - - - Treeview - - - #
 		frame = tk.Frame(self)
 
-		self.tree = Treeview(
+		self.tree = Table(
 			frame,
 			headings=["Title", "Chapter Read", "Latest Chapter"],
 			widths=[500, 125, 125]
@@ -105,32 +105,26 @@ class Application(tk.Tk):
 
 	def update_tree(self):
 
-		def to_list(d):
-			return [d[k] for k in ("_id", "title", "chapters_read", "latest_chapter")]
+		def to_list(s: Story) -> tuple:
+			return s.id, s.title, s.chapters_read, s.latest_chapter
 
-		self.tree_data = storage.get().get_all_with_status(
+		self.tree_data = self.data_storage.get_all_with_status(
 			self.current_status, readable_only=self.filters["readable_only"].get()
 		)
-
-		self.tree_data.reverse()
 
 		self.tree.populate(map(to_list, self.tree_data))
 
 	def open_in_browser(self):
-		if iid := self.tree.focus():
-			row = storage.get().find_one(iid)
+		if (iid := self.tree.focus()) and (story := self.data_storage.find_one(iid)):
+			webbrowser.open(story.url, new=False)
 
-			webbrowser.open(row["url"], new=False)
-
-	@staticmethod
-	def on_row_select(event):
+	def on_row_select(self, event):
 		if iid := event.widget.focus():
-			StoryEditWindow(iid)
+			StoryEditWindow(self.data_storage.find_one(iid), self.data_storage)
 
-	@staticmethod
-	def on_search_btn(entry: ttk.Entry):
+	def on_search_btn(self, entry: ttk.Entry):
 
 		if len(query := entry.get()) < 3:
 			return messagebox.showerror("Search Query", "Search query is too short.")
 
-		StorySearchWindow(query)
+		StorySearchWindow(query, self.data_storage)

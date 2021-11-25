@@ -1,105 +1,108 @@
-import subprocess
-
-from bson import ObjectId
+import os
+import secrets
 from pymongo import MongoClient
-
-__storage_inst = None
-
-"""
-    mangaId [_id]: Unique
-    title
-    url
-    status
-    latest_chapter
-    chapters_read
-"""
-
-"""
-    The purpose of abstract storage is so we can access different formats (Mongo, JSON, SQL etc.) via the same methods,
-    the internal fields may be different but the returned field names should be the same as above.
-"""
+import json
+from typing import Optional, KeysView, Union
+from src.models import Story
+import functools as ft
+from threading import Lock as ThreadLock
 
 
-class AbstractDataStorage:
-
-    def backup(self, output): ...
-
-    def insert_one(self, row: dict): ...
-
-    def delete_one(self, iid): ...
-
-    def update_one(self, iid, new_fields: dict): ...
-
-    def find_one(self, iid): ...
-
-    def get_all_with_status(self, status: int, *, readable_only: bool = False) -> list: ...
-
-
-class MongoStorage(AbstractDataStorage):
+class JSONStorage:
     def __init__(self):
         self._client = MongoClient()
+        self._lock = ThreadLock()
 
     @property
-    def _database(self):
-        return self._client["manga"]
+    def data_file_name(self):
+        return os.path.join(os.getcwd(), "stories.json")
+
+    def update_one(self, story: Story):
+        self._update_stories_data_file({story.id: story.dict()})
+
+    def get_all_with_status(self, status: int, *, readable_only: bool = False) -> list[Story]:
+        stories = [s for s in self.get_all_stories() if s.status_int == status]
+
+        if readable_only:
+            stories = [s for s in stories if s.latest_chapter > s.chapters_read]
+
+        return sorted(stories, key=lambda s: s.latest_chapter - s.chapters_read)
+
+    def get_all_stories(self) -> list[Story]:
+        data = self.read_stories_file()
+
+        return [Story.parse_obj(s) for s in data.values()]
+
+    def insert_one(self, title, url, status):
+        self._insert_story(title, url, status)
+
+    def all(self):
+        return list(self._collection.find())
+
+    def read_stories_file(self) -> dict:
+        with open(self.data_file_name, "r") as fh:
+            return {k: {"storyId": k, **v} for k, v in json.load(fh).items()}
+
+    def set_(self, data: list[dict]):
+        for x in data:
+            x.pop("_id")
+
+        data = [{
+            "storyId": i,
+            "latestChapter": d.pop("latest_chapter", 0),
+            "latestChapterRead": d.pop("chapters_read", 0),
+            **d
+        } for i, d in enumerate(data)]
+
+        d = {str(d.pop("storyId")): d for d in data}
+
+        with open(self.data_file_name, "w") as fh:
+            json.dump(d, fh, indent=2)
 
     @property
     def _collection(self):
-        return self._database["manga"]
+        return self._client["manga"]["manga"]
 
-    def delete_one(self, iid):
-        self._collection.delete_one({"_id": self._str_to_bson(iid)})
+    def _insert_story(self, title, url, status):
+        stories: dict = self.read_stories_file()
 
-    def backup(self, output):
-        subprocess.call(f'mongodump.exe -d {self._database.name} -o "{output}"', shell=True)
+        story = Story(
+            storyId=self._get_unique_key(stories.keys()),
+            title=title,
+            url=url,
+            status=status
+        )
 
-    def insert_one(self, row: dict):
-        self._collection.insert_one(row)
+        self._update_stories_data_file({story.id: story.dict()})
 
-    def find_one(self, iid):
-        row = self._collection.find_one({"_id": self._str_to_bson(iid)})
+    def find_one(self, story_id) -> Optional[Story]:
+        story_dict = self.read_stories_file().get(story_id)
 
-        # '_rename_keys' takes a list, so we send as a list then take the first element
-        return [row][0] if row else row
-
-    def update_one(self, iid, new_fields: dict):
-        self._collection.update_one({"_id": self._str_to_bson(iid)}, {"$set": {k: v for k, v in new_fields.items()}})
-
-    def get_all_with_status(self, status: int, *, readable_only: bool = False) -> list:
-
-        match: dict = {"$match": {"status": status}}
-
-        if readable_only:
-            match["$match"]["$and"] = [{"numAvailableChapters": {"$gt": 0}}]
-
-        pipeline = [
-            {"$addFields": {"numAvailableChapters": {"$subtract": ["$latest_chapter", "$chapters_read"]}}},
-            match,
-            {"$sort": {"numAvailableChapters": -1}}
-        ]
-
-        return self._aggregate(pipeline)
-
-    def _find(self, query):
-        return list(self._collection.find(query))
-
-    def _aggregate(self, pipeline):
-        return list(self._collection.aggregate(pipeline))
+        return Story.parse_obj(story_dict) if story_dict else None
 
     @staticmethod
-    def _str_to_bson(s):
-        """ Converts a 'str' to 'ObjectId' used in MongoDB. """
+    def _find_one_story(data, story_id) -> dict:
+        return data.get(story_id)
 
-        if isinstance(s, (str,)):
-            return ObjectId(s)
+    def _update_stories_data_file(self, data: dict):
+        old_file = self.read_stories_file()
+        new_file = {**old_file, **data}
 
-        return s
+        try:
+            with self._lock, open(self.data_file_name, "w") as fh:
+                json.dump(new_file, fh, indent=2)
+
+        except json.JSONDecodeError:
+            self._update_stories_data_file(old_file)
+
+    @staticmethod
+    def _get_unique_key(existing_keys: Union[list[str], KeysView[str]]) -> str:
+        while (key := secrets.token_hex(8)) in existing_keys:
+            ...
+
+        return key
 
 
+@ft.cache
 def get():
-    global __storage_inst
-
-    if __storage_inst is None:
-        __storage_inst = MongoStorage()
-
-    return __storage_inst
+    return JSONStorage()

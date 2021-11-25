@@ -3,7 +3,7 @@ from typing import Sequence, Any
 
 
 class ComboBox:
-    def __init__(self, master=None, command=None, values=None):
+    def __init__(self, master=None, command=None, values=None, current=None):
 
         self._data = []  # [ ["Display Value", 0], ["Text", "HiddenValue"], "Text" ]
 
@@ -15,7 +15,15 @@ class ComboBox:
         if isinstance(values, Sequence):
             self.add_options(values)
 
+        if current is not None:
+            self.set_current(current)
+
         self._combo.bind("<<ComboboxSelected>>", self._on_combo_change)
+
+    def set_current(self, value):
+        values = self.values
+
+        self._combo.current(values.index(value))
 
     def _on_combo_change(self, _):
         if self._command is not None:
@@ -42,6 +50,17 @@ class ComboBox:
         for opt in self._data:
             if isinstance(opt, Sequence):
                 opt = opt[0]
+
+            ls.append(opt)
+
+        return ls
+
+    @property
+    def values(self) -> list:
+        ls = []
+        for opt in self._data:
+            if isinstance(opt, Sequence):
+                opt = opt[1]
 
             ls.append(opt)
 

@@ -1,5 +1,5 @@
 from tkinter import ttk
-from typing import Sequence, Any
+from typing import Any, Sequence
 
 
 class ComboBox:

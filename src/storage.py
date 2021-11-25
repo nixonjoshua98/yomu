@@ -1,16 +1,15 @@
+import functools as ft
+import json
 import os
 import secrets
-from pymongo import MongoClient
-import json
-from typing import Optional, KeysView, Union
-from src.models import Story
-import functools as ft
 from threading import Lock as ThreadLock
+from typing import KeysView, Optional, Union
+
+from src.models import Story
 
 
 class JSONStorage:
     def __init__(self):
-        self._client = MongoClient()
         self._lock = ThreadLock()
 
     @property
@@ -36,32 +35,14 @@ class JSONStorage:
     def insert_one(self, title, url, status):
         self._insert_story(title, url, status)
 
-    def all(self):
-        return list(self._collection.find())
+    def find_one(self, story_id) -> Optional[Story]:
+        story_dict = self.read_stories_file().get(story_id)
+
+        return Story.parse_obj(story_dict) if story_dict else None
 
     def read_stories_file(self) -> dict:
         with open(self.data_file_name, "r") as fh:
             return {k: {"storyId": k, **v} for k, v in json.load(fh).items()}
-
-    def set_(self, data: list[dict]):
-        for x in data:
-            x.pop("_id")
-
-        data = [{
-            "storyId": i,
-            "latestChapter": d.pop("latest_chapter", 0),
-            "latestChapterRead": d.pop("chapters_read", 0),
-            **d
-        } for i, d in enumerate(data)]
-
-        d = {str(d.pop("storyId")): d for d in data}
-
-        with open(self.data_file_name, "w") as fh:
-            json.dump(d, fh, indent=2)
-
-    @property
-    def _collection(self):
-        return self._client["manga"]["manga"]
 
     def _insert_story(self, title, url, status):
         stories: dict = self.read_stories_file()
@@ -70,15 +51,10 @@ class JSONStorage:
             storyId=self._get_unique_key(stories.keys()),
             title=title,
             url=url,
-            status=status
+            status=status,
         )
 
         self._update_stories_data_file({story.id: story.dict()})
-
-    def find_one(self, story_id) -> Optional[Story]:
-        story_dict = self.read_stories_file().get(story_id)
-
-        return Story.parse_obj(story_dict) if story_dict else None
 
     @staticmethod
     def _find_one_story(data, story_id) -> dict:

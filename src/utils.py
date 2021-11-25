@@ -1,11 +1,12 @@
+import datetime as dt
 import threading
 from typing import Any, Iterable, Optional, TypeVar
-import datetime as dt
 
 T = TypeVar("T")
 
 
-def utcnow(): return dt.datetime.utcnow()
+def utcnow():
+    return dt.datetime.utcnow()
 
 
 def get(ls: Iterable[T], **attrs: Any) -> Optional[T]:
@@ -27,7 +28,6 @@ def get(ls: Iterable[T], **attrs: Any) -> Optional[T]:
 
 
 def run_in_pool(func, callback):
-
     def _run_in_pool():
         callback(func())
 

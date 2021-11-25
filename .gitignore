@@ -1,5 +1,6 @@
 ﻿venv/
 .idea/
+stories.json
 
 
 # Byte-compiled / optimized / DLL files

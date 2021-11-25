@@ -1,6 +1,9 @@
-from pydantic import BaseModel as _BaseModel, Field
 from typing import Union
-from src.statuses import StatusList, Status
+
+from pydantic import BaseModel as _BaseModel
+from pydantic import Field
+
+from src.statuses import Status, StatusList
 
 
 class BaseModel(_BaseModel):

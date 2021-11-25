@@ -8,6 +8,11 @@ from typing import KeysView, Optional, Union
 from src.models import Story
 
 
+@ft.cache
+def get():
+    return JSONStorage()
+
+
 class JSONStorage:
     def __init__(self):
         self._lock = ThreadLock()
@@ -16,10 +21,10 @@ class JSONStorage:
     def data_file_name(self):
         return os.path.join(os.getcwd(), "stories.json")
 
-    def update_one(self, story: Story):
-        self._update_stories_data_file({story.id: story.dict()})
+    def update_story(self, story: Story):
+        self._update_data_file_key({story.id: story.dict()})
 
-    def get_all_with_status(self, status: int, *, readable_only: bool = False) -> list[Story]:
+    def get_stories_with_status(self, status: int, *, readable_only: bool = False) -> list[Story]:
         stories = [s for s in self.get_all_stories() if s.status_int == status]
 
         if readable_only:
@@ -32,10 +37,13 @@ class JSONStorage:
 
         return [Story.parse_obj(s) for s in data.values()]
 
-    def insert_one(self, title, url, status):
-        self._insert_story(title, url, status)
+    def insert_story(self, title, url, status) -> Story:
+        return self._insert_story(title, url, status)
 
-    def find_one(self, story_id) -> Optional[Story]:
+    def delete_story(self, story: Story):
+        self._remove_data_file_key(story.id)
+
+    def get_story(self, story_id) -> Optional[Story]:
         story_dict = self.read_stories_file().get(story_id)
 
         return Story.parse_obj(story_dict) if story_dict else None
@@ -44,7 +52,7 @@ class JSONStorage:
         with open(self.data_file_name, "r") as fh:
             return {k: {"storyId": k, **v} for k, v in json.load(fh).items()}
 
-    def _insert_story(self, title, url, status):
+    def _insert_story(self, title, url, status) -> Story:
         stories: dict = self.read_stories_file()
 
         story = Story(
@@ -54,22 +62,30 @@ class JSONStorage:
             status=status,
         )
 
-        self._update_stories_data_file({story.id: story.dict()})
+        self._update_data_file_key({story.id: story.dict()})
 
-    @staticmethod
-    def _find_one_story(data, story_id) -> dict:
-        return data.get(story_id)
+        return story
 
-    def _update_stories_data_file(self, data: dict):
+    def _update_data_file_key(self, data: dict):
         old_file = self.read_stories_file()
-        new_file = {**old_file, **data}
+        self._write_stories_data_file({**old_file, **data})
+
+    def _remove_data_file_key(self, key: str):
+        data = self.read_stories_file()
+        data.pop(key, None)
+        self._write_stories_data_file(data)
+
+    def _write_stories_data_file(self, data: dict):
+        old_file = self.read_stories_file()
 
         try:
+            # Lock the file and attempt to write to it
             with self._lock, open(self.data_file_name, "w") as fh:
-                json.dump(new_file, fh, indent=2)
+                json.dump(data, fh, indent=2)
 
+        # Revert back to the old version
         except json.JSONDecodeError:
-            self._update_stories_data_file(old_file)
+            self._write_stories_data_file(old_file)
 
     @staticmethod
     def _get_unique_key(existing_keys: Union[list[str], KeysView[str]]) -> str:
@@ -77,8 +93,3 @@ class JSONStorage:
             ...
 
         return key
-
-
-@ft.cache
-def get():
-    return JSONStorage()

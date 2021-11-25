@@ -20,7 +20,7 @@ class UpdateWorker(threading.Thread):
 
         while self.is_alive():
             for status in (0, 1, 2, 3):
-                results: list[Story] = self._data_storage.get_all_with_status(status)
+                results: list[Story] = self._data_storage.get_stories_with_status(status)
 
                 for story in results:
                     source = self.get_source(story.url)
@@ -53,12 +53,12 @@ class UpdateWorker(threading.Thread):
             if search_result.title == story.title:
                 story.url = search_result.url
 
-                return self._data_storage.update_one(story)
+                return self._data_storage.update_story(story)
 
     def update_story_latest_chapter(self, story: Story, chapter: DataSourceChapter):
         story.latest_chapter = chapter.chapter
 
-        self._data_storage.update_one(story)
+        self._data_storage.update_story(story)
 
     @staticmethod
     def get_source(url: str) -> AbstractDataSource:

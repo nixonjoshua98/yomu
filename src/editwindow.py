@@ -16,7 +16,7 @@ class StoryEditWindow(ChildWindow):
         super().__init__()
 
         self._data_storage = data_storage
-        self._story_data = story_data
+        self._story = story_data
 
         self._title: Optional[EntryBox] = None
         self._url: Optional[EntryBox] = None
@@ -43,7 +43,7 @@ class StoryEditWindow(ChildWindow):
 
     def _configure_window(self):
         self.resizable(0, 0)
-
+        self.title(self._story.title)
         self.center_in_root(400, 250)
 
         self.create()
@@ -58,16 +58,16 @@ class StoryEditWindow(ChildWindow):
     def create(self):
         frame = tk.Frame(self, relief=tk.RAISED, borderwidth=1)
 
-        self._title = self._label_with_entry(frame, "Title", self._story_data.title)
-        self._url = self._label_with_entry(frame, "Url", self._story_data.url)
+        self._title = self._label_with_entry(frame, "Title", self._story.title)
+        self._url = self._label_with_entry(frame, "Url", self._story.url)
 
         # = = Chapters Read = = #
         self._chapters_read = self._label_with_entry(
-            frame, "Chapters Read", self._story_data.chapters_read, numbers_only=True
+            frame, "Chapters Read", self._story.chapters_read, numbers_only=True
         )
 
         btn = ttk.Button(
-            self._chapters_read.master, text="Latest", command=self.on_latest
+            self._chapters_read.master, text="Latest", command=self.on_latest_chapter_read
         )
         btn.pack(side=tk.LEFT)
 
@@ -80,7 +80,7 @@ class StoryEditWindow(ChildWindow):
         self._status = ComboBox(
             btm_frame,
             values=[[status.display_text, status.id] for status in StatusList],
-            current=self._story_data.status_int,
+            current=self._story.status_int,
         )
         self._status.pack(side=tk.LEFT, fill=tk.X, padx=5, expand=True)
 
@@ -89,6 +89,9 @@ class StoryEditWindow(ChildWindow):
         b.pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
 
         b = ttk.Button(frame, text="Undo", command=self.on_undo)
+        b.pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
+
+        b = ttk.Button(frame, text="Delete", command=self.on_delete)
         b.pack(fill=tk.X, side=tk.LEFT, pady=5, padx=5, expand=True)
 
         frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
@@ -106,8 +109,13 @@ class StoryEditWindow(ChildWindow):
 
         self._configure_window()
 
-    def on_latest(self):
-        self._chapters_read.set_text(self._story_data.latest_chapter)
+    def on_delete(self):
+        self._data_storage.delete_story(self._story)
+
+        self.destroy()
+
+    def on_latest_chapter_read(self):
+        self._chapters_read.set_text(self._story.latest_chapter)
 
     def _label_with_entry(self, master, label, text, numbers_only: bool = False):
         top_frame, btm_frame = self._vertical_frames(master, 2)
@@ -135,11 +143,11 @@ class StoryEditWindow(ChildWindow):
         return frames
 
     def _update_document(self):
-        copy: Story = self._story_data.copy(deep=True)
+        copy: Story = self._story.copy(deep=True)
 
         copy.title = self.new_title
         copy.url = self.new_url
         copy.status_int = self.new_status
         copy.chapters_read = self.new_chapters_read
 
-        self._data_storage.update_one(copy)
+        self._data_storage.update_story(copy)

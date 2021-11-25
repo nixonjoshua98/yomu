@@ -104,19 +104,19 @@ class Application(tk.Tk):
         def to_list(s: Story) -> tuple:
             return s.id, s.title, s.chapters_read, s.latest_chapter
 
-        self.tree_data = self.data_storage.get_all_with_status(
+        self.tree_data = self.data_storage.get_stories_with_status(
             self.current_status, readable_only=self.filters["readable_only"].get()
         )
 
         self.tree.populate(map(to_list, self.tree_data))
 
     def open_in_browser(self):
-        if (iid := self.tree.focus()) and (story := self.data_storage.find_one(iid)):
+        if (iid := self.tree.focus()) and (story := self.data_storage.get_story(iid)):
             webbrowser.open(story.url, new=False)
 
     def on_row_select(self, event):
         if iid := event.widget.focus():
-            StoryEditWindow(self.data_storage.find_one(iid), self.data_storage)
+            StoryEditWindow(self.data_storage.get_story(iid), self.data_storage)
 
     def on_search_btn(self, entry: ttk.Entry):
 

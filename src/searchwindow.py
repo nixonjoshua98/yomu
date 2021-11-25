@@ -81,6 +81,6 @@ class TreeViewResults(Table):
 
         row = self.results[int(iid)]
 
-        self._data_storage.insert_one(row.title, row.url, 0)
+        self._data_storage.insert_story(row.title, row.url, 0)
 
         messagebox.showinfo("Sucess", f"Added {row.title}")

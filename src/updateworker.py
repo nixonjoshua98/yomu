@@ -19,6 +19,8 @@ class UpdateWorker(threading.Thread):
     def run(self) -> None:
 
         while self.is_alive():
+            self.backup_json()
+            
             for status in (0, 1, 2, 3):
                 results: list[Story] = self._data_storage.get_stories_with_status(status)
 
@@ -40,25 +42,29 @@ class UpdateWorker(threading.Thread):
 
                     time.sleep(0.2)
 
-            with open(
-                f"E:\\OneDrive\\Backups\\YomuData\\stories-{int(utils.utcnow().timestamp())}.json",
-                "w+",
-            ) as fh:
-                json.dump(self._data_storage.read_stories_file(), fh, indent=2)
-
             time.sleep(60)
 
     def update_missing_story(self, source: AbstractDataSource, story: Story):
-        for search_result in source.search(story.title):
-            if search_result.title == story.title:
-                story.url = search_result.url
+        if story.can_update_missing_story():
+            story.last_missing_story_check = utils.utcnow()
 
-                return self._data_storage.update_story(story)
+            for search_result in source.search(story.title):
+                if search_result.title == story.title:
+                    story.url = search_result.url
+
+            self._data_storage.update_story(story)
 
     def update_story_latest_chapter(self, story: Story, chapter: DataSourceChapter):
         story.latest_chapter = chapter.chapter
 
         self._data_storage.update_story(story)
+
+    def backup_json(self):
+        with open(
+                f"E:\\OneDrive\\Backups\\Yomu\\stories-{int(utils.utcnow().timestamp())}.json",
+                "w+",
+        ) as fh:
+            json.dump(self._data_storage.read_stories_file(), fh, indent=2)
 
     @staticmethod
     def get_source(url: str) -> AbstractDataSource:

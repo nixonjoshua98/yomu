@@ -4,7 +4,7 @@ import os
 import secrets
 from threading import Lock as ThreadLock
 from typing import KeysView, Optional, Union
-
+import datetime as dt
 from src.models import Story
 
 
@@ -25,7 +25,7 @@ class JSONStorage:
         self._update_data_file_key({story.id: story.dict()})
 
     def get_stories_with_status(self, status: int, *, readable_only: bool = False) -> list[Story]:
-        stories = [s for s in self.get_all_stories() if s.status_int == status]
+        stories = [s for s in self.get_all_stories() if s.status_value == status]
 
         if readable_only:
             stories = [s for s in stories if s.latest_chapter > s.chapters_read]
@@ -50,7 +50,9 @@ class JSONStorage:
 
     def read_stories_file(self) -> dict:
         with open(self.data_file_name, "r") as fh:
-            return {k: {"storyId": k, **v} for k, v in json.load(fh).items()}
+            d: dict = json.load(fh, object_hook=_JsonHooks.load_object_hook)
+
+            return {k: {"storyId": k, **v} for k, v in d.items()}
 
     def _insert_story(self, title, url, status) -> Story:
         stories: dict = self.read_stories_file()
@@ -79,12 +81,10 @@ class JSONStorage:
         old_file = self.read_stories_file()
 
         try:
-            # Lock the file and attempt to write to it
             with self._lock, open(self.data_file_name, "w") as fh:
-                json.dump(data, fh, indent=2)
+                json.dump(data, fh, indent=2, default=_JsonHooks.dump_default)
 
-        # Revert back to the old version
-        except json.JSONDecodeError:
+        except (TypeError, json.JSONDecodeError):
             self._write_stories_data_file(old_file)
 
     @staticmethod
@@ -93,3 +93,18 @@ class JSONStorage:
             ...
 
         return key
+
+
+class _JsonHooks:
+    @staticmethod
+    def dump_default(x):
+        if isinstance(x, (dt.datetime,)):
+            return {"_isoformat": x.isoformat()}
+        return str(x)
+
+    @staticmethod
+    def load_object_hook(x):
+        if (iso := x.get('_isoformat')) is not None:
+            return dt.datetime.fromisoformat(iso)
+
+        return x

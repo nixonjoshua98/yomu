@@ -80,7 +80,7 @@ class StoryEditWindow(ChildWindow):
         self._status = ComboBox(
             btm_frame,
             values=[[status.display_text, status.id] for status in StatusList],
-            current=self._story.status_int,
+            current=self._story.status_value,
         )
         self._status.pack(side=tk.LEFT, fill=tk.X, padx=5, expand=True)
 
@@ -147,7 +147,7 @@ class StoryEditWindow(ChildWindow):
 
         copy.title = self.new_title
         copy.url = self.new_url
-        copy.status_int = self.new_status
+        copy.status_value = self.new_status
         copy.chapters_read = self.new_chapters_read
 
         self._data_storage.update_story(copy)

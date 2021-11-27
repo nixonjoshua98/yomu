@@ -28,7 +28,4 @@ def get(ls: Iterable[T], **attrs: Any) -> Optional[T]:
 
 
 def run_in_pool(func, callback):
-    def _run_in_pool():
-        callback(func())
-
-    (_ := threading.Thread(target=_run_in_pool)).start()
+    threading.Thread(target=lambda: callback(func())).start()

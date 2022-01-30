@@ -4,8 +4,9 @@ import tkinter.ttk as ttk
 from tkinter import messagebox
 
 from src import utils
+from src.models import Story
 from src.childwindow import ChildWindow
-from src.datasources import MangaKatanaDataSource, ManganeloDataSource
+from src.datasources import MangakatanaDataSource, ManganeloDataSource, DataSourceSearchResult
 from src.table import Table
 
 
@@ -23,7 +24,7 @@ class StorySearchWindow(ChildWindow):
             query, ManganeloDataSource, self.create_results_tree("Manganelo")
         )
         self.pull_results(
-            query, MangaKatanaDataSource, self.create_results_tree("MangaKatana")
+            query, MangakatanaDataSource, self.create_results_tree("MangaKatana")
         )
 
         self.show()
@@ -63,7 +64,7 @@ class TreeViewResults(Table):
     def __init__(self, master, data_storage, **kwargs):
         super(TreeViewResults, self).__init__(master, **kwargs)
 
-        self.results = []
+        self.results: list[DataSourceSearchResult] = []
         self._data_storage = data_storage
 
         self.bind("<Double-1>", self.on_click)
@@ -81,6 +82,13 @@ class TreeViewResults(Table):
 
         row = self.results[int(iid)]
 
-        self._data_storage.insert_story(row.title, row.url, 0)
+        story = Story(
+            source_id=row.source_id,
+            title=row.title,
+            url=row.url,
+            status=0
+        )
 
-        messagebox.showinfo("Sucess", f"Added {row.title}")
+        self._data_storage.insert_story(story)
+
+        messagebox.showinfo("Success", f"Added '{row.title}'")

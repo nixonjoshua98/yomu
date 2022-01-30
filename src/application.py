@@ -18,7 +18,7 @@ class Application(tk.Tk):
     def __init__(self):
         super(Application, self).__init__()
 
-        self.data_storage = storage.get()
+        self.data_storage = storage.get_instance()
 
         self._configure_window()
 

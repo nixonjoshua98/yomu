@@ -1,7 +1,8 @@
+from bson import ObjectId
+
 from pydantic import BaseModel as _BaseModel
 from pydantic import Field
-from src import utils
-import datetime as dt
+
 
 class NumberField(str):
     @classmethod
@@ -20,6 +21,10 @@ class NumberField(str):
 
 
 class BaseModel(_BaseModel):
+
+    class Config:
+        allow_population_by_field_name = True
+
     def __hash__(self):
         return hash((type(self),) + tuple(self.__dict__.values()))
 
@@ -30,13 +35,11 @@ class BaseModel(_BaseModel):
 
 
 class Story(BaseModel):
-    id: str = Field(..., alias="storyId")
+    id: str = Field(alias="storyId", default_factory=lambda: str(ObjectId()))
+
     title: str
     url: str
+    source_id: int = Field(None, alias="sourceId")
     latest_chapter: NumberField = Field(0, alias="latestChapter")
     chapters_read: NumberField = Field(0, alias="latestChapterRead")
     status_value: int = Field(..., alias="status")
-    last_missing_story_check: dt.datetime = Field(None, alias="lastMissingStoryCheck")
-
-    def can_update_missing_story(self) -> bool:
-        return self.last_missing_story_check is None or (utils.utcnow() - self.last_missing_story_check).days >= 1

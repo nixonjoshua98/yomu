@@ -5,63 +5,107 @@ from typing import Union
 import mangakatana
 import manganelo
 
-from src.errors import StoryNotFound
+from src.models import Story
+
+
+def get_data_source(story: Story):
+    source = {
+        StoryDataSource.MANGANELO: ManganeloDataSource,
+        StoryDataSource.MANGAKATANA: MangakatanaDataSource
+    }.get(story.source_id)
+
+    if source is None:
+        if any(map(lambda ele: ele in story.url, ("manganelo", "manganato"))):
+            return ManganeloDataSource
+        else:
+            return MangakatanaDataSource
+
+    return source
+
+
+class StoryDataSource:
+    MANGANELO = 0  # Manganato
+    MANGAKATANA = 1
 
 
 @dataclasses.dataclass(frozen=True)
 class DataSourceChapter:
-    title: str = None
-    url: str = None
+    source_id: int
 
-    chapter: Union[int, float] = None
+    title: str
+    url: str
+    chapter: Union[int, float]
 
 
 @dataclasses.dataclass(frozen=True)
 class DataSourceSearchResult:
+    source_id: int
+
     title: str
     url: str
+    source_id: int
 
 
 class AbstractDataSource(abc.ABC):
+
+    @staticmethod
     @abc.abstractmethod
-    def search(self, title) -> list[DataSourceSearchResult]:
-        ...
+    def search(title) -> list[DataSourceSearchResult]: ...
 
+    @staticmethod
     @abc.abstractmethod
-    def get_chapters(self, url) -> list[DataSourceChapter]:
-        ...
+    def get_chapters(url) -> list[DataSourceChapter]: ...
 
 
-class _ManganeloDataSource(AbstractDataSource):
-    def search(self, title) -> list[DataSourceSearchResult]:
-        return [
-            DataSourceSearchResult(res.title, res.url)
-            for res in manganelo.get_search_results(title)
-        ][::-1]
+class ManganeloDataSource(AbstractDataSource):
 
-    def get_chapters(self, url) -> list[DataSourceChapter]:
-        try:
-            return [
-                DataSourceChapter(c.title, c.url, c.chapter)
-                for c in manganelo.get_chapter_list(url)
-            ]
-        except manganelo.NotFound:
-            raise StoryNotFound()
+    @staticmethod
+    def search(title) -> list[DataSourceSearchResult]:
+        ls = []
 
+        for ele in manganelo.get_search_results(title):
+            ls.append(DataSourceSearchResult(source_id=StoryDataSource.MANGANELO, title=ele.title, url=ele.url))
 
-class _MangaKatanaDataSource(AbstractDataSource):
-    def search(self, title) -> list[DataSourceSearchResult]:
-        return [
-            DataSourceSearchResult(res.title, res.url)
-            for res in mangakatana.search(title=title)
-        ][::-1]
+        return ls[::-1]
 
-    def get_chapters(self, url) -> list[DataSourceChapter]:
-        return [
-            DataSourceChapter(c.title, c.url, c.chapter)
-            for c in mangakatana.chapter_list(url=url)
-        ]
+    @staticmethod
+    def get_chapters(url) -> list[DataSourceChapter]:
+        ls = []
+
+        for ele in manganelo.get_chapter_list(url):
+            inst = DataSourceChapter(
+                source_id=StoryDataSource.MANGANELO,
+                chapter=ele.chapter,
+                title=ele.title,
+                url=ele.url
+            )
+
+            ls.append(inst)
+
+        return ls
 
 
-ManganeloDataSource = _ManganeloDataSource()
-MangaKatanaDataSource = _MangaKatanaDataSource()
+class MangakatanaDataSource(AbstractDataSource):
+
+    @staticmethod
+    def search(title) -> list[DataSourceSearchResult]:
+        ls = []
+
+        for ele in mangakatana.search(title=title):
+            ls.append(DataSourceSearchResult(source_id=StoryDataSource.MANGAKATANA, title=ele.title, url=ele.url))
+
+        return ls[::-1]
+
+    @staticmethod
+    def get_chapters(url) -> list[DataSourceChapter]:
+        ls = []
+
+        for ele in mangakatana.chapter_list(url=url):
+            ls.append(DataSourceChapter(
+                source_id=StoryDataSource.MANGAKATANA,
+                chapter=ele.chapter,
+                title=ele.title,
+                url=ele.url
+            ))
+
+        return ls

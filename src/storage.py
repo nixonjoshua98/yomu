@@ -1,15 +1,15 @@
 import functools as ft
 import json
 import os
-import secrets
+from src import utils
 from threading import Lock as ThreadLock
-from typing import KeysView, Optional, Union
+from typing import Optional
 import datetime as dt
 from src.models import Story
 
 
 @ft.cache
-def get():
+def get_instance():
     return JSONStorage()
 
 
@@ -22,7 +22,7 @@ class JSONStorage:
         return os.path.join(os.getcwd(), "stories.json")
 
     def update_story(self, story: Story):
-        self._update_data_file_key({story.id: story.dict()})
+        self._append_data_file({story.id: story.dict()})
 
     def get_stories_with_status(self, status: int, *, readable_only: bool = False) -> list[Story]:
         stories = [s for s in self.get_all_stories() if s.status_value == status]
@@ -37,8 +37,8 @@ class JSONStorage:
 
         return [Story.parse_obj(s) for s in data.values()]
 
-    def insert_story(self, title, url, status) -> Story:
-        return self._insert_story(title, url, status)
+    def insert_story(self, story: Story):
+        self._append_data_file({story.id: story.dict()})
 
     def delete_story(self, story: Story):
         self._remove_data_file_key(story.id)
@@ -54,21 +54,13 @@ class JSONStorage:
 
             return {k: {"storyId": k, **v} for k, v in d.items()}
 
-    def _insert_story(self, title, url, status) -> Story:
-        stories: dict = self.read_stories_file()
+    def backup(self):
+        f = f"E:\\OneDrive\\Backups\\Yomu\\stories-{int(utils.utcnow().timestamp())}.json"
 
-        story = Story(
-            storyId=self._get_unique_key(stories.keys()),
-            title=title,
-            url=url,
-            status=status,
-        )
+        with open(f, "w+",) as fh:
+            json.dump(self.read_stories_file(), fh, indent=2, default=_JsonHooks.dump_default)
 
-        self._update_data_file_key({story.id: story.dict()})
-
-        return story
-
-    def _update_data_file_key(self, data: dict):
+    def _append_data_file(self, data: dict):
         old_file = self.read_stories_file()
         self._write_stories_data_file({**old_file, **data})
 
@@ -87,15 +79,9 @@ class JSONStorage:
         except (TypeError, json.JSONDecodeError):
             self._write_stories_data_file(old_file)
 
-    @staticmethod
-    def _get_unique_key(existing_keys: Union[list[str], KeysView[str]]) -> str:
-        while (key := secrets.token_hex(8)) in existing_keys:
-            ...
-
-        return key
-
 
 class _JsonHooks:
+
     @staticmethod
     def dump_default(x):
         if isinstance(x, (dt.datetime,)):
@@ -106,5 +92,4 @@ class _JsonHooks:
     def load_object_hook(x):
         if (iso := x.get('_isoformat')) is not None:
             return dt.datetime.fromisoformat(iso)
-
         return x

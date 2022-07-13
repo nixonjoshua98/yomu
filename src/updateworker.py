@@ -1,20 +1,18 @@
 import threading
 import time
 from src import datasources
-from src.storage import JSONStorage
+from src.storage import MongoRepository
 
 
 class UpdateWorker(threading.Thread):
-    def __init__(self, data_storage: JSONStorage):
+    def __init__(self, data_storage: MongoRepository):
         super(UpdateWorker, self).__init__(daemon=True)
 
-        self.data: JSONStorage = data_storage
+        self.data: MongoRepository = data_storage
 
     def run(self) -> None:
 
         while self.is_alive():
-            self.data.backup()
-
             for status in (0, 1, 2, 3):
 
                 for story in self.data.get_stories_with_status(status):
@@ -26,8 +24,6 @@ class UpdateWorker(threading.Thread):
                             continue
 
                         latest = max(chapters, key=lambda chap: chap.chapter)
-
-                        story.source_id = latest.source_id
 
                         # Update the chapters latest chapter
                         if latest.chapter != story.latest_chapter:

@@ -1,23 +1,10 @@
-import datetime as dt
 import threading
 from typing import Any, Iterable, Optional, TypeVar
 
 T = TypeVar("T")
 
 
-def utcnow():
-    return dt.datetime.utcnow()
-
-
 def get(ls: Iterable[T], **attrs: Any) -> Optional[T]:
-    """
-    Search through a iterable for an element which matches all attributes.
-
-    :param ls: Iterable to search through
-    :param attrs: Attribute values to search for
-    :return: The result or None
-    """
-
     for val in ls:
         val_dict = val.__dict__
 

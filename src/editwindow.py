@@ -8,11 +8,11 @@ from src.combobox import ComboBox
 from src.entrybox import EntryBox
 from src.models import Story
 from src.statuses import StatusList
-from src.storage import JSONStorage
+from src.storage import MongoRepository
 
 
 class StoryEditWindow(ChildWindow):
-    def __init__(self, story_data: Story, data_storage: JSONStorage):
+    def __init__(self, story_data: Story, data_storage: MongoRepository):
         super().__init__()
 
         self._data_storage = data_storage
@@ -80,7 +80,7 @@ class StoryEditWindow(ChildWindow):
         self._status = ComboBox(
             btm_frame,
             values=[[status.display_text, status.id] for status in StatusList],
-            current=self._story.status_value,
+            current=self._story.status,
         )
         self._status.pack(side=tk.LEFT, fill=tk.X, padx=5, expand=True)
 
@@ -147,7 +147,7 @@ class StoryEditWindow(ChildWindow):
 
         copy.title = self.new_title
         copy.url = self.new_url
-        copy.status_value = self.new_status
+        copy.status = self.new_status
         copy.chapters_read = self.new_chapters_read
 
         self._data_storage.update_story(copy)

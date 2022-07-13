@@ -9,29 +9,14 @@ from src.models import Story
 
 
 def get_data_source(story: Story):
-    source = {
-        StoryDataSource.MANGANELO: ManganeloDataSource,
-        StoryDataSource.MANGAKATANA: MangakatanaDataSource
-    }.get(story.source_id)
+    if any(map(lambda ele: ele in story.url, ("manganelo", "manganato"))):
+        return ManganeloDataSource
 
-    if source is None:
-        if any(map(lambda ele: ele in story.url, ("manganelo", "manganato"))):
-            return ManganeloDataSource
-        else:
-            return MangakatanaDataSource
-
-    return source
-
-
-class StoryDataSource:
-    MANGANELO = 0  # Manganato
-    MANGAKATANA = 1
+    return MangakatanaDataSource
 
 
 @dataclasses.dataclass(frozen=True)
 class DataSourceChapter:
-    source_id: int
-
     title: str
     url: str
     chapter: Union[int, float]
@@ -39,11 +24,8 @@ class DataSourceChapter:
 
 @dataclasses.dataclass(frozen=True)
 class DataSourceSearchResult:
-    source_id: int
-
     title: str
     url: str
-    source_id: int
 
 
 class AbstractDataSource(abc.ABC):
@@ -64,7 +46,7 @@ class ManganeloDataSource(AbstractDataSource):
         ls = []
 
         for ele in manganelo.get_search_results(title):
-            ls.append(DataSourceSearchResult(source_id=StoryDataSource.MANGANELO, title=ele.title, url=ele.url))
+            ls.append(DataSourceSearchResult(title=ele.title, url=ele.url))
 
         return ls[::-1]
 
@@ -74,7 +56,6 @@ class ManganeloDataSource(AbstractDataSource):
 
         for ele in manganelo.get_chapter_list(url):
             inst = DataSourceChapter(
-                source_id=StoryDataSource.MANGANELO,
                 chapter=ele.chapter,
                 title=ele.title,
                 url=ele.url
@@ -92,7 +73,7 @@ class MangakatanaDataSource(AbstractDataSource):
         ls = []
 
         for ele in mangakatana.search(title=title):
-            ls.append(DataSourceSearchResult(source_id=StoryDataSource.MANGAKATANA, title=ele.title, url=ele.url))
+            ls.append(DataSourceSearchResult(title=ele.title, url=ele.url))
 
         return ls[::-1]
 
@@ -102,7 +83,6 @@ class MangakatanaDataSource(AbstractDataSource):
 
         for ele in mangakatana.chapter_list(url=url):
             ls.append(DataSourceChapter(
-                source_id=StoryDataSource.MANGAKATANA,
                 chapter=ele.chapter,
                 title=ele.title,
                 url=ele.url

@@ -1,4 +1,3 @@
-import functools as ft
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import messagebox
@@ -35,10 +34,7 @@ class StorySearchWindow(ChildWindow):
 
     @staticmethod
     def pull_results(query, datasource, tree):
-        def callback(results):
-            tree.populate(results)
-
-        utils.run_in_pool(ft.partial(datasource.search, query), callback)
+        utils.run_in_pool(lambda: datasource.search(query), lambda results: tree.populate(results))
 
     def create_notebook(self):
         notebook = ttk.Notebook(self)
@@ -83,7 +79,6 @@ class TreeViewResults(Table):
         row = self.results[int(iid)]
 
         story = Story(
-            source_id=row.source_id,
             title=row.title,
             url=row.url,
             status=0

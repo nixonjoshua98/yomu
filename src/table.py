@@ -20,7 +20,6 @@ class Table(ttk.Treeview):
                 self.column(col, minwidth=widths[i], width=widths[i], stretch=tk.YES)
 
     def populate(self, data):
-
         self.clear()
 
         for i, row in enumerate(data):

@@ -5,11 +5,11 @@ import tkinter.ttk as ttk
 import webbrowser
 from typing import Optional
 
-from src import storage
+from src import storage, utils
 from src.combobox import ComboBox
 from src.editwindow import StoryEditWindow
 from src.models import Story
-from src.searchwindow import StorySearchWindow
+from src.search_result_window import SearchResultWindow
 from src.statuses import StatusList
 from src.table import Table
 
@@ -102,7 +102,7 @@ class Application(tk.Tk):
 
     def update_tree(self):
         def to_list(s: Story) -> tuple:
-            return s.id, s.title, s.chapters_read, s.latest_chapter
+            return s.id, s.title, utils.format_number(s.chapters_read), utils.format_number(s.latest_chapter)
 
         self.tree_data = self.data_storage.get_stories_with_status(
             self.current_status, readable_only=self.filters["readable_only"].get()
@@ -123,4 +123,4 @@ class Application(tk.Tk):
         if len(query := entry.get()) < 3:
             return messagebox.showerror("Search Query", "Search query is too short.")
 
-        StorySearchWindow(query, self.data_storage)
+        SearchResultWindow(query, self.data_storage)

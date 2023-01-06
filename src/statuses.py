@@ -12,7 +12,6 @@ class Status:
 class StatusListMeta(type):
     _ALL = (
         Status(id=0, display_text="Recently Added"),
-        Status(id=1, display_text="Favourites"),
         Status(id=2, display_text="Reading List"),
         Status(id=4, display_text="Dropped"),
         Status(id=5, display_text="Completed"),

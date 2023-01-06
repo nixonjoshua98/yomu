@@ -5,13 +5,13 @@ from tkinter import messagebox
 from src import utils
 from src.models import Story
 from src.childwindow import ChildWindow
-from src.datasources import MangakatanaDataSource, ManganeloDataSource, DataSourceSearchResult
+from src.datasources import MangakatanaDataSource, DataSourceSearchResult
 from src.table import Table
 
 
-class StorySearchWindow(ChildWindow):
+class SearchResultWindow(ChildWindow):
     def __init__(self, query, data_storage):
-        super(StorySearchWindow, self).__init__()
+        super(SearchResultWindow, self).__init__()
 
         self.results = []
         self.data_storage = data_storage
@@ -19,9 +19,6 @@ class StorySearchWindow(ChildWindow):
 
         self._configure_window()
 
-        self.pull_results(
-            query, ManganeloDataSource, self.create_results_tree("Manganelo")
-        )
         self.pull_results(
             query, MangakatanaDataSource, self.create_results_tree("MangaKatana")
         )

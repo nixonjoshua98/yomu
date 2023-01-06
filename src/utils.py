@@ -1,7 +1,15 @@
-import threading
-from typing import Any, Iterable, Optional, TypeVar
+from typing import Any, Iterable, Optional, TypeVar, Union
+from concurrent.futures import ThreadPoolExecutor
 
 T = TypeVar("T")
+
+__thread_pool = ThreadPoolExecutor(max_workers=1)
+
+
+def format_number(number: float) -> str:
+    if (int_value := int(number)) == number:
+        return str(int_value)
+    return str(number)
 
 
 def get(ls: Iterable[T], **attrs: Any) -> Optional[T]:
@@ -15,4 +23,4 @@ def get(ls: Iterable[T], **attrs: Any) -> Optional[T]:
 
 
 def run_in_pool(func, callback):
-    threading.Thread(target=lambda: callback(func())).start()
+    __thread_pool.submit(lambda: callback(func()))

@@ -1,4 +1,10 @@
-﻿venv/
+﻿# Custom Start
+
+./config.json
+
+# Custom End
+
+venv/
 .idea/
 
 # Byte-compiled / optimized / DLL files

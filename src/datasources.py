@@ -5,7 +5,7 @@ from typing import Union
 import mangakatana
 import manganelo
 
-from src.models import Story
+from src.models.story import Story
 
 
 def get_data_source(story: Story):

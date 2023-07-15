@@ -3,7 +3,7 @@ import tkinter.ttk as ttk
 from tkinter import messagebox
 
 from src import utils
-from src.models import Story
+from src.models.story import Story
 from src.childwindow import ChildWindow
 from src.datasources import MangakatanaDataSource, DataSourceSearchResult
 from src.table import Table

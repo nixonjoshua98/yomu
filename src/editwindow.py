@@ -3,10 +3,11 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from typing import Optional
 
+from src import utils
 from src.childwindow import ChildWindow
 from src.combobox import ComboBox
 from src.widgets.entrybox import EntryBox
-from src.models import Story
+from src.models.story import Story
 from src.statuses import StatusList
 from src.storage import MongoRepository
 
@@ -63,7 +64,7 @@ class StoryEditWindow(ChildWindow):
 
         # = = Chapters Read = = #
         self._chapters_read = self._label_with_entry(
-            frame, "Chapters Read", self._story.chapters_read, entry_type="float"
+            frame, "Chapters Read", utils.format_number(self._story.chapters_read), entry_type="float"
         )
 
         btn = ttk.Button(
@@ -115,7 +116,7 @@ class StoryEditWindow(ChildWindow):
         self.destroy()
 
     def on_latest_chapter_read(self):
-        self._chapters_read.set_text(self._story.latest_chapter)
+        self._chapters_read.set_text(utils.format_number(self._story.latest_chapter))
 
     def _label_with_entry(self, master, label, text, entry_type: str = "text"):
         top_frame, btm_frame = self._vertical_frames(master, 2)

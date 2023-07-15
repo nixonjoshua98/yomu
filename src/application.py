@@ -8,16 +8,18 @@ from typing import Optional
 from src import storage, utils
 from src.combobox import ComboBox
 from src.editwindow import StoryEditWindow
-from src.models import Story
+from src.models import Story, AppConfig
 from src.search_result_window import SearchResultWindow
 from src.statuses import StatusList
 from src.table import Table
+from src.common.email_util import send_email
 
 
 class Application(tk.Tk):
-    def __init__(self):
+    def __init__(self, config: AppConfig):
         super(Application, self).__init__()
 
+        self.config = config
         self.data_storage = storage.get_instance()
 
         self._configure_window()
@@ -62,6 +64,9 @@ class Application(tk.Tk):
         search_btn.config(command=ft.partial(self.on_search_btn, search_entry))
         search_btn.pack(side=tk.LEFT, padx=5, pady=5)
 
+        dump_btn = ttk.Button(frame, text="Dump", command=self.on_dump_button_pressed)
+        dump_btn.pack(side=tk.LEFT, padx=5, pady=5)
+
         frame.pack(fill=tk.X, padx=5, pady=5)
 
         # - - - Filter Menu - - - #
@@ -93,10 +98,13 @@ class Application(tk.Tk):
 
         frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-        # - - - Menu - - - #
+        self._create_context_menu()
+
+    def _create_context_menu(self):
         menu = tk.Menu(self.tree, tearoff=0)
 
         menu.add_command(label="Open in Browser", command=self.open_in_browser)
+        menu.add_command(label="Mark as read", command=self.mark_as_read)
 
         self.tree.bind("<Button-3>", lambda e: menu.post(e.x_root, e.y_root))
 
@@ -113,6 +121,32 @@ class Application(tk.Tk):
     def open_in_browser(self):
         if (iid := self.tree.focus()) and (story := self.data_storage.get_story(iid)):
             webbrowser.open(story.url, new=False)
+
+    def mark_as_read(self):
+        if not (iid := self.tree.focus()) or not (story := self.data_storage.get_story(iid)):
+            return
+
+        story.chapters_read = story.latest_chapter
+
+        self.data_storage.update_story(story)
+
+        self.update_tree()
+
+    def on_dump_button_pressed(self):
+        ls = self.data_storage.get_readable_stories()
+
+        ls = [
+            f"[{x.chapters_read} / {x.latest_chapter}] {x.title}\n{x.url}"
+            for x in ls
+        ]
+
+        send_email(
+            "Manage Dump",
+            self.config.email_sender.email_address,
+            self.config.email_receiver,
+            self.config.email_sender.password,
+            "\n\n".join(ls)
+        )
 
     def on_row_select(self, event):
         if iid := event.widget.focus():

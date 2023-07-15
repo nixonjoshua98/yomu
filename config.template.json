@@ -1,0 +1,8 @@
+{
+  "emailSender": {
+    "emailAddress": "",
+    "password": ""
+  },
+
+  "emailReceiver" : ""
+}

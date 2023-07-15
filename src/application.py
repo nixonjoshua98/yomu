@@ -141,7 +141,7 @@ class Application(tk.Tk):
         ]
 
         send_email(
-            "Manage Dump",
+            "Yomu Story Dump",
             self.config.email_sender.email_address,
             self.config.email_receiver,
             self.config.email_sender.password,

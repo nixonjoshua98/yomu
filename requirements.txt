@@ -1,4 +1,0 @@
-mangakatana==0.3
-manganelo==1.21.0
-pydantic~=1.8.2
-pymongo~=3.10.1

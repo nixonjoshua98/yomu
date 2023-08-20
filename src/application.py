@@ -5,22 +5,24 @@ import tkinter.ttk as ttk
 import webbrowser
 from typing import Optional
 
-from src import storage, utils
+from src import utils
+from src.app_config import AppConfig
 from src.combobox import ComboBox
+from src.data_entities import Story
+from src.data_repository import DataRepository
 from src.editwindow import StoryEditWindow
-from src.models import Story, AppConfig
+from src.email_util import send_email
 from src.search_result_window import SearchResultWindow
 from src.statuses import StatusList
 from src.table import Table
-from src.common.email_util import send_email
 
 
 class Application(tk.Tk):
-    def __init__(self, config: AppConfig):
+    def __init__(self, config: AppConfig, repository: DataRepository):
         super(Application, self).__init__()
 
+        self.repository = repository
         self.config = config
-        self.data_storage = storage.get_instance()
 
         self._configure_window()
 
@@ -41,7 +43,7 @@ class Application(tk.Tk):
         return self.status_combo.current_value
 
     def _configure_window(self):
-        self.wm_title("Manga")
+        self.wm_title("Yomu")
         self.geometry("800x400")
         self.resizable(0, 0)
 
@@ -110,33 +112,38 @@ class Application(tk.Tk):
 
     def update_tree(self):
         def to_list(s: Story) -> tuple:
-            return s.id, s.title, utils.format_number(s.chapters_read), utils.format_number(s.latest_chapter)
+            return (
+                s.id,
+                s.title,
+                utils.format_number(s.latest_chapter_read),
+                utils.format_number(s.latest_chapter),
+            )
 
-        self.tree_data = self.data_storage.get_stories_with_status(
+        self.tree_data = self.repository.get_stories_with_status(
             self.current_status, readable_only=self.filters["readable_only"].get()
         )
 
         self.tree.populate(map(to_list, self.tree_data))
 
     def open_in_browser(self):
-        if (iid := self.tree.focus()) and (story := self.data_storage.get_story(iid)):
+        if (iid := self.tree.focus()) and (story := self.repository.get(iid)):
             webbrowser.open(story.url, new=False)
 
     def mark_as_read(self):
-        if not (iid := self.tree.focus()) or not (story := self.data_storage.get_story(iid)):
+        if not (iid := self.tree.focus()) or not (story := self.repository.get(iid)):
             return
 
-        story.chapters_read = story.latest_chapter
+        story.latest_chapter_read = story.latest_chapter
 
-        self.data_storage.update_story(story)
+        self.repository.update(story)
 
         self.update_tree()
 
     def on_dump_button_pressed(self):
-        ls = self.data_storage.get_readable_stories()
+        ls = self.repository.get_readable_stories()
 
         ls = [
-            f"[{x.chapters_read} / {x.latest_chapter}] {x.title}\n{x.url}"
+            f"[{x.latest_chapter_read} / {x.latest_chapter}] {x.title}\n{x.url}"
             for x in ls
         ]
 
@@ -145,16 +152,16 @@ class Application(tk.Tk):
             self.config.email_sender.email_address,
             self.config.email_receiver,
             self.config.email_sender.password,
-            "\n\n".join(ls)
+            "\n\n".join(ls),
         )
 
     def on_row_select(self, event):
         if iid := event.widget.focus():
-            StoryEditWindow(self.data_storage.get_story(iid), self.data_storage)
+            StoryEditWindow(iid, self.repository)
 
     def on_search_btn(self, entry: ttk.Entry):
 
         if len(query := entry.get()) < 3:
             return messagebox.showerror("Search Query", "Search query is too short.")
 
-        SearchResultWindow(query, self.data_storage)
+        SearchResultWindow(query, self.repository)

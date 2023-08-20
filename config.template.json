@@ -3,6 +3,6 @@
     "emailAddress": "",
     "password": ""
   },
-
+  "databasePath": "",
   "emailReceiver" : ""
 }

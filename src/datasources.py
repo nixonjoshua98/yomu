@@ -5,7 +5,7 @@ from typing import Union
 import mangakatana
 import manganelo
 
-from src.models.story import Story
+from src.data_entities import Story
 
 
 def get_data_source(story: Story):
@@ -29,18 +29,18 @@ class DataSourceSearchResult:
 
 
 class AbstractDataSource(abc.ABC):
+    @staticmethod
+    @abc.abstractmethod
+    def search(title) -> list[DataSourceSearchResult]:
+        ...
 
     @staticmethod
     @abc.abstractmethod
-    def search(title) -> list[DataSourceSearchResult]: ...
-
-    @staticmethod
-    @abc.abstractmethod
-    def get_chapters(url) -> list[DataSourceChapter]: ...
+    def get_chapters(url) -> list[DataSourceChapter]:
+        ...
 
 
 class ManganeloDataSource(AbstractDataSource):
-
     @staticmethod
     def search(title) -> list[DataSourceSearchResult]:
         ls = []
@@ -55,11 +55,7 @@ class ManganeloDataSource(AbstractDataSource):
         ls = []
 
         for ele in manganelo.get_chapter_list(url):
-            inst = DataSourceChapter(
-                chapter=ele.chapter,
-                title=ele.title,
-                url=ele.url
-            )
+            inst = DataSourceChapter(chapter=ele.chapter, title=ele.title, url=ele.url)
 
             ls.append(inst)
 
@@ -67,7 +63,6 @@ class ManganeloDataSource(AbstractDataSource):
 
 
 class MangakatanaDataSource(AbstractDataSource):
-
     @staticmethod
     def search(title) -> list[DataSourceSearchResult]:
         ls = []
@@ -82,10 +77,8 @@ class MangakatanaDataSource(AbstractDataSource):
         ls = []
 
         for ele in mangakatana.chapter_list(url=url):
-            ls.append(DataSourceChapter(
-                chapter=ele.chapter,
-                title=ele.title,
-                url=ele.url
-            ))
+            ls.append(
+                DataSourceChapter(chapter=ele.chapter, title=ele.title, url=ele.url)
+            )
 
         return ls

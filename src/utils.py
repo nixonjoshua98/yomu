@@ -1,5 +1,5 @@
-from typing import Any, Iterable, Optional, TypeVar, Union
 from concurrent.futures import ThreadPoolExecutor
+from typing import Any, Iterable, Optional, TypeVar, Union
 
 T = TypeVar("T")
 

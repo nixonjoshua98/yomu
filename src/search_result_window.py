@@ -3,9 +3,10 @@ import tkinter.ttk as ttk
 from tkinter import messagebox
 
 from src import utils
-from src.models.story import Story
 from src.childwindow import ChildWindow
-from src.datasources import MangakatanaDataSource, DataSourceSearchResult
+from src.data_entities import Story
+from src.data_repository import DataRepository
+from src.datasources import DataSourceSearchResult, MangakatanaDataSource
 from src.table import Table
 
 
@@ -31,7 +32,9 @@ class SearchResultWindow(ChildWindow):
 
     @staticmethod
     def pull_results(query, datasource, tree):
-        utils.run_in_pool(lambda: datasource.search(query), lambda results: tree.populate(results))
+        utils.run_in_pool(
+            lambda: datasource.search(query), lambda results: tree.populate(results)
+        )
 
     def create_notebook(self):
         notebook = ttk.Notebook(self)
@@ -58,7 +61,7 @@ class TreeViewResults(Table):
         super(TreeViewResults, self).__init__(master, **kwargs)
 
         self.results: list[DataSourceSearchResult] = []
-        self._data_storage = data_storage
+        self._data_storage: DataRepository = data_storage
 
         self.bind("<Double-1>", self.on_click)
 
@@ -75,12 +78,6 @@ class TreeViewResults(Table):
 
         row = self.results[int(iid)]
 
-        story = Story(
-            title=row.title,
-            url=row.url,
-            status=0
-        )
-
-        self._data_storage.insert_story(story)
+        self._data_storage.add(Story(row.title, row.url))
 
         messagebox.showinfo("Success", f"Added '{row.title}'")

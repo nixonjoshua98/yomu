@@ -18,9 +18,7 @@ class EntryBox(ttk.Entry):
 
     @staticmethod
     def get_input_validator(type_: str) -> Optional[Callable[[str], bool]]:
-        return {
-            "float": _float_validator
-        }.get(type_)
+        return {"float": _float_validator}.get(type_)
 
     def _configure_validation(self, type_: str):
         validator = self.get_input_validator(type_)

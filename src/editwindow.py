@@ -6,18 +6,17 @@ from typing import Optional
 from src import utils
 from src.childwindow import ChildWindow
 from src.combobox import ComboBox
-from src.widgets.entrybox import EntryBox
-from src.models.story import Story
+from src.data_repository import DataRepository
+from src.entrybox import EntryBox
 from src.statuses import StatusList
-from src.storage import MongoRepository
 
 
 class StoryEditWindow(ChildWindow):
-    def __init__(self, story_data: Story, data_storage: MongoRepository):
+    def __init__(self, id_: int, data_storage: DataRepository):
         super().__init__()
 
         self._data_storage = data_storage
-        self._story = story_data
+        self._story = data_storage.get(id_)
 
         self._title: Optional[EntryBox] = None
         self._url: Optional[EntryBox] = None
@@ -64,11 +63,16 @@ class StoryEditWindow(ChildWindow):
 
         # = = Chapters Read = = #
         self._chapters_read = self._label_with_entry(
-            frame, "Chapters Read", utils.format_number(self._story.chapters_read), entry_type="float"
+            frame,
+            "Chapters Read",
+            utils.format_number(self._story.latest_chapter_read),
+            entry_type="float",
         )
 
         btn = ttk.Button(
-            self._chapters_read.master, text="Latest", command=self.on_latest_chapter_read
+            self._chapters_read.master,
+            text="Latest",
+            command=self.on_latest_chapter_read,
         )
         btn.pack(side=tk.LEFT)
 
@@ -111,7 +115,7 @@ class StoryEditWindow(ChildWindow):
         self._configure_window()
 
     def on_delete(self):
-        self._data_storage.delete_story(self._story)
+        self._data_storage.delete(self._story)
 
         self.destroy()
 
@@ -144,11 +148,9 @@ class StoryEditWindow(ChildWindow):
         return frames
 
     def _update_document(self):
-        copy: Story = self._story.copy(deep=True)
+        self._story.title = self.new_title
+        self._story.url = self.new_url
+        self._story.status = self.new_status
+        self._story.latest_chapter_read = self.new_chapters_read
 
-        copy.title = self.new_title
-        copy.url = self.new_url
-        copy.status = self.new_status
-        copy.chapters_read = self.new_chapters_read
-
-        self._data_storage.update_story(copy)
+        self._data_storage.update(self._story)

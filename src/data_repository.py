@@ -13,15 +13,19 @@ class DataRepository:
 
     def update(self, source: "Story"):
         with self._session_maker.begin() as session:
-            linked_story: Story = (
-                session.query(Story).filter(Story.id == source.id).first()
-            )
-
+            linked_story: Story = session.query(Story).filter(Story.id == source.id).first()
             linked_story.update(source)
 
     def delete(self, source: "Story"):
         with self._session_maker.begin() as session:
             session.query(Story).filter(Story.id == source.id).delete()
+
+    def get(self, id_: int):
+        with self._session_maker.begin() as session:
+            linked_story: Story = session.query(Story).filter(Story.id == id_).first()
+            session.expunge_all()
+
+        return linked_story
 
     def get_stories_with_status(self, status: int, readable_only: bool = False):
         with self._session_maker.begin() as session:
@@ -30,7 +34,11 @@ class DataRepository:
             if readable_only:
                 query = query.filter(Story.latest_chapter > Story.latest_chapter_read)
 
-            ls = query.all()
+            ls = (
+                query
+                .order_by(Story.latest_chapter - Story.latest_chapter_read, Story.title.desc())
+                .all()
+            )
 
             session.expunge_all()
 
@@ -42,24 +50,9 @@ class DataRepository:
                 session.query(Story)
                 .filter(Story.status == 0 or Story.status == 2)
                 .filter(Story.latest_chapter > Story.latest_chapter_read)
+                .order_by(Story.latest_chapter - Story.latest_chapter_read)
                 .all()
             )
-
-            session.expunge_all()
-
-        return ls
-
-    def get(self, id_: int):
-        with self._session_maker.begin() as session:
-            linked_story: Story = session.query(Story).filter(Story.id == id_).first()
-
-            session.expunge_all()
-
-        return linked_story
-
-    def get_all(self):
-        with self._session_maker.begin() as session:
-            ls = session.query(Story).all()
 
             session.expunge_all()
 

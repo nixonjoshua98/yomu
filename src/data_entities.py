@@ -23,6 +23,10 @@ class Story(Base):
         self.title = title
         self.url = url
 
+    @property
+    def has_unread_chapter(self) -> bool:
+        return self.latest_chapter > self.latest_chapter_read
+
     def update(self, story: "Story"):
         assert self.id == story.id
 

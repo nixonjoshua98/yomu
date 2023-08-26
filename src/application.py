@@ -29,7 +29,6 @@ class Application(tk.Tk):
         self.tree = None
         self.tree_data = list()
 
-        # - - - Widgets - - - #
         self.status_combo: Optional[ComboBox] = None
 
         self.filters = {"readable_only": tk.BooleanVar(value=True)}
@@ -100,15 +99,27 @@ class Application(tk.Tk):
 
         frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-        self._create_context_menu()
+        self.tree.bind("<Button-3>", self._post_context_menu)
 
-    def _create_context_menu(self):
-        menu = tk.Menu(self.tree, tearoff=0)
+    def _post_context_menu(self, e):
+        iid = self.tree.focus()
 
-        menu.add_command(label="Open in Browser", command=self.open_in_browser)
-        menu.add_command(label="Mark as read", command=self.mark_as_read)
+        if iid == "" or (story := self.repository.get(iid)) is None:
+            return
 
-        self.tree.bind("<Button-3>", lambda e: menu.post(e.x_root, e.y_root))
+        menu = self._create_context_menu(self.tree, story)
+
+        menu.post(e.x_root, e.y_root)
+
+    def _create_context_menu(self, parent, story: Story) -> tk.Menu:
+        menu = tk.Menu(parent, tearoff=0)
+
+        menu.add_command(label="Open in Browser", command=lambda : self._open_story_url(story))
+
+        if story.has_unread_chapter:
+            menu.add_command(label="Mark as read", command=lambda: self._read_story(story))
+
+        return menu
 
     def update_tree(self):
         def to_list(s: Story) -> tuple:
@@ -125,27 +136,19 @@ class Application(tk.Tk):
 
         self.tree.populate(map(to_list, self.tree_data))
 
-    def open_in_browser(self):
-        if (iid := self.tree.focus()) and (story := self.repository.get(iid)):
-            webbrowser.open(story.url, new=False)
+    @staticmethod
+    def _open_story_url(story: Story):
+        webbrowser.open(story.url, new=False)
 
-    def mark_as_read(self):
-        if not (iid := self.tree.focus()) or not (story := self.repository.get(iid)):
-            return
-
+    def _read_story(self, story: Story):
         story.latest_chapter_read = story.latest_chapter
-
         self.repository.update(story)
-
         self.update_tree()
 
     def on_dump_button_pressed(self):
         ls = self.repository.get_readable_stories()
 
-        ls = [
-            f"[{x.latest_chapter_read} / {x.latest_chapter}] {x.title}\n{x.url}"
-            for x in ls
-        ]
+        ls = [f"[{x.latest_chapter_read} / {x.latest_chapter}] {x.title}\n{x.url}" for x in ls]
 
         send_email(
             "Yomu Story Dump",

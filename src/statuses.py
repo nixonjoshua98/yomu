@@ -1,9 +1,7 @@
-import dataclasses
-
-from src import utils
+import dataclasses as dc
 
 
-@dataclasses.dataclass(frozen=True)
+@dc.dataclass(frozen=True)
 class Status:
     id: int
     display_text: str
@@ -18,7 +16,7 @@ class StatusListMeta(type):
     )
 
     def get_by_id(cls, id_):
-        return utils.get(cls._ALL, id=id_)
+        return next(x for x in cls._ALL if x.id == id_)
 
     def __iter__(self):
         return iter(self._ALL)
@@ -26,3 +24,4 @@ class StatusListMeta(type):
 
 class StatusList(type, metaclass=StatusListMeta):
     ...
+

@@ -20,7 +20,6 @@ class UpdateWorker(threading.Thread):
                     source = datasources.get_data_source(story)
 
                     try:
-                        # Chapters may not have been found
                         if not (chapters := source.get_chapters(url=story.url)):
                             continue
 

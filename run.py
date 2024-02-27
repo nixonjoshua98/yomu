@@ -15,7 +15,7 @@ def initialize_database(file_path: str) -> DataRepository:
 
     Base.metadata.create_all(engine)
 
-    session_maker = sessionmaker()
+    session_maker = sessionmaker(expire_on_commit=False)
 
     session_maker.configure(bind=engine)
 

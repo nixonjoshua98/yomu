@@ -21,9 +21,7 @@ class ComboBox:
         self._combo.bind("<<ComboboxSelected>>", self._on_combo_change)
 
     def set_current(self, value):
-        values = self.values
-
-        self._combo.current(values.index(value))
+        self._combo.current(self.values.index(value))
 
     def _on_combo_change(self, _):
         if self._command is not None:

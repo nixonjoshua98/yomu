@@ -78,6 +78,12 @@ class TreeViewResults(Table):
 
         row = self.results[int(iid)]
 
-        self._data_storage.add(Story(row.title, row.url))
+        story = Story(row.title, row.url)
 
-        messagebox.showinfo("Success", f"Added '{row.title}'")
+        existing_story = self._data_storage.get_with_url(story.url)
+
+        if existing_story is None:
+            self._data_storage.add(story)
+            messagebox.showinfo(story.title, "Added")
+        else:
+            messagebox.showerror(story.title, "Already exists")

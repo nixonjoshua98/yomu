@@ -7,9 +7,18 @@ class DataRepository:
     def __init__(self, session_maker: "sessionmaker"):
         self._session_maker: sessionmaker = session_maker
 
+    def get_with_url(self, url: str):
+        with self._session_maker.begin() as session:
+            linked_story: Story = session.query(Story).filter(Story.url == url).first()
+            session.expunge_all()
+
+        return linked_story
+
     def add(self, source: "Story"):
         with self._session_maker.begin() as session:
             session.add(source)
+            session.commit()
+            session.expunge_all()
 
     def update(self, source: "Story"):
         with self._session_maker.begin() as session:

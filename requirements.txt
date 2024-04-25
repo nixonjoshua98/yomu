@@ -1,4 +1,4 @@
 mangakatana==0.3
-pydantic==1.8.2
+pydantic==1.10.13
 SQLAlchemy==2.0.20
 manganelo==1.21.0
